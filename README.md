@@ -1,0 +1,2 @@
+# muglabirfikrimvar
+Bir fikrin var
