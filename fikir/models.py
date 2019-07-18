@@ -5,8 +5,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Department(models.Model):
-    DepartmentName = models.CharField(max_length=100)
-    Description = models.CharField(max_length=250)
+    DepartmentName = models.CharField(max_length=100,verbose_name='Departman Adı')
+    Description = models.CharField(max_length=250,verbose_name='Departman Açıklaması')
+    class Meta:
+        verbose_name = "Departman"
+        verbose_name_plural = "Departmanlar"
     def __str__(self):
         return self.DepartmentName
 
