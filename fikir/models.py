@@ -97,7 +97,7 @@ class UserLike(models.Model):
     LikeDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Beğenme Tarihi')
     class Meta:
         verbose_name = "Beğeni"
-        verbose_name_plural = "Beğenilerim"
+        verbose_name_plural = "Beğeniler"
     def __str__(self):
         return self.User
 
