@@ -93,7 +93,7 @@ class UserProfile(models.Model):
 
 class UserLike(models.Model):
     User = models.ForeignKey(UserProfile,on_delete=models.PROTECT,verbose_name='Kullanıcı')
-    Idea = models.ForeignKey(Idea,null=True,on_delete=models.PROTECT,verbose_name='Fİkir')
+    Idea = models.ForeignKey(Idea,null=True,on_delete=models.PROTECT,verbose_name='Fikir')
     LikeDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Beğenme Tarihi')
     class Meta:
         verbose_name = "Beğeni"
