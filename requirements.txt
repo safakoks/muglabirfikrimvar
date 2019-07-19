@@ -2,3 +2,4 @@ setuptools
 Django~=2.0.7
 mysqlclient
 Pillow
+django-recaptcha

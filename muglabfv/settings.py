@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fikir',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -131,8 +132,15 @@ LOGIN_REDIRECT_URL = 'fikir:IndexView'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'huseyinsavasli48@gmail.com'
-EMAIL_HOST_PASSWORD = 'rinogest2121289'
-EMAIL_PORT = 587
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'huseyinsavasli48@gmail.com'
+# EMAIL_HOST_PASSWORD = '*************'
+# EMAIL_PORT = 587
+
+
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+# RECAPTCHA_PUBLIC_KEY = '6Ld6ga4UAAAAAKMqGl_sA2LFze_eK5nc6w40S87i'
+# RECAPTCHA_PRIVATE_KEY = '6Ld6ga4UAAAAAO1-WkQsH959QmrNOrMq5uy2VN3c'
+

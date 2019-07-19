@@ -1,9 +1,9 @@
 
-
+<div class="form ">
 {% for field in form %}
 <div class="form-group">
         <div class="row">
-                <div class=" col-md-4"> 
+        <div class=" col-md-4"> 
                                {{ field.label_tag }}
                                 {% if field.help_text %}
                                 <p class="help">{{ field.help_text|safe }}</p>
@@ -17,3 +17,4 @@
        
 </div>
 {% endfor %}
+</div>

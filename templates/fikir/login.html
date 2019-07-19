@@ -1,30 +1,22 @@
-  
-{% extends 'fikir/base.html' %}
+{% extends 'fikir/registiration.html' %}
 
-{% block  title%}
-{{ pagetitle }}
-{% endblock %}
-
-
-{% block main %}
-
-<section>
+{% block extra %}
 <div class="row ">
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-      <div class=" card card-signin my-5">
+    <div class="col-sm-10 col-md-10 col-lg-5 mx-auto">
+      
+<div class="card-body">
+    <div class="row">
+    <div class="col-md-4">
+       <a href="{% url "fikir:SignupView" %}"><button class="btn btn-md btn-primary btn-block ">Üye Ol</button></a> 
+    </div>
+    <div class="col-md-8">
+        <a href="{% url "password_reset" %}"> <button  class="btn btn-md btn-warning btn-block">Parolamı Unuttum</button></a> 
+    </div>
 
-        <div class="card-body">
-          <h5 class="card-title text-center">{{ formtitle }}</h5>
-          <span class="label label-warning">{% if form.errors %} {%endif%} </span>
-
-          <form class="form-signin" method="post" enctype='multipart/form-data' >
-                {% csrf_token %}
-                {% include "fikir/form_template.html" %}
-            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">{{buttontext}}</button>
-          </form>
-        </div>
-      </div>
+    </div>
+  </div>
     </div>
 </div>
 </section>
+
 {% endblock %}

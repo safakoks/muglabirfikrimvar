@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from .models import UserProfile
 from django import  forms
+from captcha.fields import ReCaptchaField
 import datetime
 
 
@@ -23,6 +24,7 @@ class UserForm(forms.ModelForm):
     profilePhoto=forms.ImageField(label='Profil Fotoğrafı')
     username    = forms.CharField(max_length=50,label='Kullanıcı Adı')
     password    = forms.CharField(widget=forms.PasswordInput,label='Parola')
+    captcha      = ReCaptchaField(label='')
     
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
