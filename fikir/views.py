@@ -5,10 +5,16 @@ from .forms import *
 from django.views.generic.base import View
 from django.contrib.auth.forms import *
 from .models import *
-# Create your views here.
+from django.core.mail import EmailMessage
+from .tokens import account_activation_token
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.http import HttpResponse
+# Create your views here
 
 def IndexView(request):
-    template_name = 'fikir/index.html'
+    template_name = 'fikir/homepage.html'
     return render(request, template_name, {})
 
 class LoginView(View):
@@ -58,15 +64,33 @@ class UserFormView(View):
             user.save()
             # Kullanıcıya bağlı kullanıcı profili oluşturma
             userprofile = UserProfile()
+            userEmail = form.cleaned_data['email']
+
             userprofile.Name            = form.cleaned_data['name']
             userprofile.Surname         = form.cleaned_data['surname']
             userprofile.PhoneNumber     = form.cleaned_data['phoneNumber']
             userprofile.Birthday        = form.cleaned_data['birthday']
-            userprofile.Email           = form.cleaned_data['email']
+            userprofile.Email           = userEmail
             userprofile.ProfilePhoto    = form.cleaned_data['profilePhoto']
             userprofile.UserT           = user
             userprofile.save()
 
+
+            # Aktivasyon maili gönderme
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your blog account.'
+            message = render_to_string('active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+            to_email = userEmail
+            email = EmailMessage(
+                        mail_subject, message, to=[to_email]
+            )
+            email.send()
+            print(form.errors)
             # Oluşturulan Kullanıcıyla giriş yapma
             user = authenticate(username = username,password= password)
             if  user is not None:
@@ -74,5 +98,20 @@ class UserFormView(View):
                     login(request,user)
                     return redirect('fikir:IndexView')
 
-        self.formVariables["warningmessage"] =form.errors
+        self.formVariables["warningmessage"] = form.errors
         return render(request,self.template_name,self.formVariables)
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        # return redirect('home')
+        return redirect('fikir:IndexView')
+    else:
+        return HttpResponse('Aktivasyon maili geçersiz')
