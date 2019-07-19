@@ -1,95 +1,152 @@
 {% extends 'fikir/index.html' %}
+{% load staticfiles %}
+
 
 {% block bestideas %}
-<div class="row">
-  
- <div class="card-deck">
-    <div class="card">
-      <img src="..." class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Fikir Başlığı</h5>
-        <p class="card-text">Fikir Özeti</p>
+<div class="container-fluid w-75 mt-4">
+    <!-- Card -->
+<div class="card card-cascade wider reverse">
+
+        <!-- Card image -->
+        <div class="view view-cascade overlay">
+          <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Slides/img%20(70).jpg" alt="Card image cap">
+          <a href="#!">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+      
+        <!-- Card content -->
+        <div class="card-body card-body-cascade text-center">
+      
+          <!-- Title -->
+          <h4 class="card-title"><strong>Muğla Büyükşehir Belediyesi</strong></h4>
+          <!-- Subtitle -->
+          <h6 class="font-weight-bold indigo-text py-2">Bir Fikrim Var</h6>
+          <!-- Text -->
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem perspiciatis voluptatum a, quo nobis, non commodi quia repellendus sequi nulla voluptatem dicta reprehenderit, placeat laborum ut beatae ullam suscipit veniam.
+          </p>
+      
+          <!-- Linkedin -->
+          <a class="px-2 fa-lg li-ic"><i class="fab fa-linkedin-in"></i></a>
+          <!-- Twitter -->
+          <a class="px-2 fa-lg tw-ic"><i class="fab fa-twitter"></i></a>
+          <!-- Dribbble -->
+          <a class="px-2 fa-lg fb-ic"><i class="fab fa-facebook-f"></i></a>
+      
+        </div>
+      
       </div>
-    </ul>
-    <div class="card-body">
-      <a href="#" class="card-link">BEĞEN</a>
-      <a href="#" class="card-link">Another link</a>
-    </div>
-      <div class="card-footer">
-        <small class="text-muted">Last updated 3 mins ago</small>
+      <!-- Card -->
+<!-- Card group -->
+<div class="card-group">
+
+        <!-- Card -->
+        <div class="card mb-4">
+      
+          <!-- Card image -->
+          <div class="view overlay">
+            <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/49.jpg" alt="Card image cap">
+            <a href="#!">
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+      
+          <!-- Card content -->
+          <div class="card-body">
+      
+            <!-- Title -->
+            <h4 class="card-title">Fikir Başlığı</h4>
+            <!-- Text -->
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+            <button type="button" class="btn btn-primary btn-md">Read more</button>
+      
+          </div>
+          <!-- Card content -->
+      
+        </div>
+        <!-- Card -->
+      
+        <!-- Card -->
+        <div class="card mb-4">
+      
+          <!-- Card image -->
+          <div class="view overlay">
+            <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/48.jpg" alt="Card image cap">
+            <a href="#!">
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+      
+          <!-- Card content -->
+          <div class="card-body">
+            <!-- Title -->
+            <h4 class="card-title">Fikir Başlığı</h4>
+            <!-- Text -->
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+            <button type="button" class="btn btn-primary btn-md">Read more</button>
+      
+          </div>
+          <!-- Card content -->
+          
+      
+        </div>
+        <!-- Card -->
+      
+        <!-- Card -->
+        <div class="card mb-4">
+      
+          <!-- Card image -->
+          <div class="view overlay">
+            <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/77.jpg" alt="Card image cap">
+            <a href="#!">
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+      
+          <!-- Card content -->
+          <div class="card-body">
+      
+            <!-- Title -->
+            <h4 class="card-title">Fikir Başlığı</h4>
+            <!-- Text -->
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+            <button type="button" class="btn btn-primary btn-md">Read more</button>
+      
+          </div>
+          <!-- Card content -->
+      
+        </div>
+        <!-- Card -->
+      
       </div>
-    </div>
-  <div class="column"></div>
-  <div class="card">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Fikir Başlığı</h5>
-      <p class="card-text">Fikir Özeti</p>
-    </div>
-  </ul>
-  <div class="card-body">
-    <a href="#" class="card-link">BEĞEN</a>
-    <a href="#" class="card-link">Another link</a>
-  </div>
-    <div class="card-footer">
-      <small class="text-muted">Last updated 3 mins ago</small>
-    </div>
-  </div>
- <div class="column"></div>
-<div class="card">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Fikir Başlığı</h5>
-      <p class="card-text">Fikir Özeti</p>
-    </div>
-  </ul>
-  <div class="card-body">
-    <a href="#" class="card-link">BEĞEN</a>
-    <a href="#" class="card-link">Another link</a>
-  </div>
-    <div class="card-footer">
-      <small class="text-muted">Last updated 3 mins ago</small>
-    </div>
-  </div>
-  <div class="column"></div>
-    <div class="card">
-      <img src="..." class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Fikir Başlığı</h5>
-        <p class="card-text">Fikir Özeti</p>
-      </div>
-    </ul>
-    <div class="card-body">
-      <a href="#" class="card-link">BEĞEN</a>
-      <a href="#" class="card-link">Another link</a>
-    </div>
-      <div class="card-footer">
-        <small class="text-muted">Last updated 3 mins ago</small>
-      </div>
-    </div>
-  <div class="column"></div>
-    <div class="card">
-      <img src="..." class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Fikir Başlığı</h5>
-        <p class="card-text">Fikir Özeti</p>
-      </div>
-    </ul>
-    <div class="card-body">
-      <a href="#" class="card-link">BEĞEN</a>
-      <a href="#" class="card-link">Another link</a>
-    </div>
-      <div class="card-footer">
-        <small class="text-muted">Last updated 3 mins ago</small>
-      </div>
-    </div>
-  <div class="column"></div>
- </div>
+      <!-- Card group -->
+                  
 </div>
+
 {% endblock %}
 
 {% block filter %}
 {% endblock %}
 
 {% block latestideas %} 
+<!-- <div class="container mt-4">
+        <div class="w-25 bg-warning">
+                <div class="card" style="width: 18rem;">
+                    <img src="{% static 'mbblogo.png' %}" class="img-fluid">
+                    <div class="card-body">
+                    <h5 class="card-title">Fikir Başlığı</h5>                    
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Gönderen</li>                   
+                        </ul>
+                    <div class="card-body">
+                    <a href="#" class="card-link">Beğeni Sayısı</a>
+                    <button type="button" class="btn btn-outline-primary ml-5">Beğen</button>
+                    </div>
+                      </div>
+    </div>
+    </div> -->
 {% endblock %}
