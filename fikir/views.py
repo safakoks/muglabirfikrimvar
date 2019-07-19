@@ -5,7 +5,6 @@ from .forms import *
 from django.views.generic.base import View
 from django.contrib.auth.forms import *
 from .models import *
-from PIL import Image
 # Create your views here.
 
 def IndexView(request):
@@ -59,13 +58,13 @@ class UserFormView(View):
             user.save()
             # Kullanıcıya bağlı kullanıcı profili oluşturma
             userprofile = UserProfile()
-            userprofile.Name        = form.cleaned_data['name']
-            userprofile.Surname     = form.cleaned_data['surname']
-            userprofile.PhoneNumber = form.cleaned_data['phoneNumber']
-            userprofile.Birthday    = form.cleaned_data['birthday']
-            userprofile.Email       = form.cleaned_data['email']
-            userprofile.ProfilePhoto= form.cleaned_data['profilePhoto']
-            userprofile.UserT= user
+            userprofile.Name            = form.cleaned_data['name']
+            userprofile.Surname         = form.cleaned_data['surname']
+            userprofile.PhoneNumber     = form.cleaned_data['phoneNumber']
+            userprofile.Birthday        = form.cleaned_data['birthday']
+            userprofile.Email           = form.cleaned_data['email']
+            userprofile.ProfilePhoto    = form.cleaned_data['profilePhoto']
+            userprofile.UserT           = user
             userprofile.save()
 
             # Oluşturulan Kullanıcıyla giriş yapma
