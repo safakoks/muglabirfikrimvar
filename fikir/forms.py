@@ -1,11 +1,39 @@
 from django.contrib.auth.models import User
+from .models import UserProfile
 from django import  forms
+from captcha.fields import ReCaptchaField
+import datetime
+
+
+
+class LoginForm(forms.Form):
+    username    = forms.CharField(max_length=50,label='Kullanıcı Adı')
+    password    = forms.CharField(widget=forms.PasswordInput,label='Parola')
+    remember_me = forms.BooleanField(required=False,label='Beni Hatırla', widget=forms.CheckboxInput())
+
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 
 class UserForm(forms.ModelForm):
-    email = forms.CharField(widget=forms.EmailInput)
-    password = forms.CharField(widget=forms.PasswordInput)
+    name        = forms.CharField(max_length=100,label='Ad')
+    surname     = forms.CharField(max_length=100,label='Soyad')
+    phoneNumber = forms.CharField(max_length=100,label='Telefon Numarası')
+    birthday    = forms.DateField(label="Doğum Günü",initial=datetime.date.today)
+    email       = forms.EmailField(label='Email')
+    profilePhoto=forms.ImageField(label='Profil Fotoğrafı')
+    username    = forms.CharField(max_length=50,label='Kullanıcı Adı')
+    password    = forms.CharField(widget=forms.PasswordInput,label='Parola')
+    captcha      = ReCaptchaField(label='')
+    
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
     class Meta:
         model = User
-        fields = ['email','password']
+        fields = ['username', 'password', 'name','surname','phoneNumber','birthday','email','profilePhoto']

@@ -1,0 +1,5 @@
+{% autoescape off %}
+Merhaba {{ user.username }},
+Üyeliğini onaylamak için aşağıdaki linke tıkla:
+http://{{ domain }}{% url 'fikir:activate' uidb64=uid token=token %}
+{% endautoescape %}

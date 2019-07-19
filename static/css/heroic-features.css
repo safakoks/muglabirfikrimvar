@@ -6,3 +6,10 @@
 body {
   padding-top: 56px;
 }
+
+footer {
+  position: fixed;
+  height: 5% !important;
+  bottom: 0;
+  width: 100%;
+}

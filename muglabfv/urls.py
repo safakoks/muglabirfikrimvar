@@ -15,8 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('fikir.urls')),
+    url(r'^parola_sifirla/$', auth_views.password_reset, name='password_reset'),
+    url(r'^parola_sifirla/basarili/$', auth_views.password_reset_done, name='password_reset_done'),
+    url(r'^sifirla/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        auth_views.password_reset_confirm, name='password_reset_confirm'),
+    url(r'^sifirla/basarili/$', auth_views.password_reset_complete, name='password_reset_complete'),
 ]

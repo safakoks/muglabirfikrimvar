@@ -1,7 +1,27 @@
 {% extends 'fikir/base.html' %}
 {% block homeActive %} 
-active
+    active
 {% endblock %}
-    {% block  title%}
-             Anasayfa
-        {% endblock %}
+{% block title%} Anasayfa {% endblock %}
+
+{% block main %}
+
+<div class="row">
+    {% block bestideas %}
+    {% endblock %}
+</div>
+
+<div class="row">
+    {% block filter %}
+    {% endblock %}
+</div>
+
+<div class="row">
+ <div class="container"> 
+     {% block latestideas %} 
+     {% endblock %}
+ </div>
+</div>
+
+{% endblock %}
+
