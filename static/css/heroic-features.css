@@ -9,7 +9,7 @@ body {
 
 footer {
   position: fixed;
-  height: 100px;
+  height: 5% !important;
   bottom: 0;
   width: 100%;
 }

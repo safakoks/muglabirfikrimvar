@@ -2,39 +2,25 @@
 {% extends 'fikir/base.html' %}
 
 {% block  title%}
-        Giriş Sayfası
+{{ pagetitle }}
 {% endblock %}
-
 
 
 {% block main %}
 
 <section>
-<div class="row">
+<div class="row ">
     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-      <div class="card card-signin my-5">
+      <div class=" card card-signin my-5">
+
         <div class="card-body">
-          <h5 class="card-title text-center">Giriş</h5>
-          <form class="form-signin" method="post" >
+          <h5 class="card-title text-center">{{ formtitle }}</h5>
+          <span class="label label-warning">{% if form.errors %} {%endif%} </span>
+
+          <form class="form-signin" method="post" enctype='multipart/form-data' >
                 {% csrf_token %}
-                {{ form.as_p }}
-            <!-- <div class="form-label-group">
-              <input type="email" id="inputEmail" class="form-control" placeholder="Email adresinizi giriniz" required autofocus>
-              <label for="inputEmail">Email Adresi</label>
-            </div>
-
-            <div class="form-label-group">
-              <input type="password" id="inputPassword" class="form-control" placeholder="Parolanızı giriniz" required>
-              <label for="inputPassword">Parola</label>
-            </div>
-
-            <div class="custom-control custom-checkbox mb-3">
-              <input type="checkbox" class="custom-control-input" id="customCheck1">
-              <label class="custom-control-label" for="customCheck1">Parolamı hatırla</label>
-            </div>
-            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Giriş</button>
-            <hr class="my-4"> -->
-            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Giriş</button>
+                {% include "fikir/form_template.html" %}
+            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">{{buttontext}}</button>
           </form>
         </div>
       </div>
