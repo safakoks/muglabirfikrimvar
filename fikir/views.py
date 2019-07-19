@@ -37,6 +37,8 @@ class LoginView(View):
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
+                    if not form.cleaned_data.get('remember_me'):
+                        request.session.set_expiry(0)
                     login(request, user)
                     return redirect('fikir:IndexView')
         self.formVariables["warningmessage"] = form.errors

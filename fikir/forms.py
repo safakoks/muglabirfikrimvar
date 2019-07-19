@@ -9,6 +9,9 @@ import datetime
 class LoginForm(forms.Form):
     username    = forms.CharField(max_length=50,label='Kullanıcı Adı')
     password    = forms.CharField(widget=forms.PasswordInput,label='Parola')
+    remember_me = forms.BooleanField(required=False,label='Beni Hatırla', widget=forms.CheckboxInput())
+
+
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
