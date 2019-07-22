@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-
+from PIL import Image
 
 # Create your models here.
 class Department(models.Model):
@@ -90,6 +90,15 @@ class UserProfile(models.Model):
         verbose_name_plural = "Kullanıcı Profilleri"
     def __str__(self):
         return self.Name + " " + self.Surname
+    def save(self):
+        if not self.ProfilePhoto:
+            return            
+        super(UserProfile, self).save()
+        image = Image.open(self.ProfilePhoto)
+        (width, height) = image.size     
+        size = ( 250, 250)
+        image = image.resize(size, Image.ANTIALIAS)
+        image.save(self.ProfilePhoto.path)
   
 class UserLike(models.Model):
     User = models.ForeignKey(UserProfile,on_delete=models.PROTECT,verbose_name='Kullanıcı')
