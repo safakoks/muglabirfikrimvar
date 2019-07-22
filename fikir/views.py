@@ -24,6 +24,15 @@ def IndexView(request):
     template_name = 'fikir/homepage.html'
     return render(request, template_name, {})
 
+
+def TimelineView(request):
+    template_name = 'fikir/timeline.html'
+    return render(request, template_name, {})
+
+def ProfileView(request):
+    template_name = 'fikir/profile.html'
+    return render(request, template_name, {})
+
 class LoginView(View):
     form_class = LoginForm
     template_name = "fikir/login.html"
