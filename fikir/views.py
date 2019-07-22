@@ -11,7 +11,14 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponse
+from enum import Enum
 # Create your views here
+
+class MessageType(Enum):
+    danger = 1
+    warning = 2
+    success = 3
+    info = 4
 
 def IndexView(request):
     template_name = 'fikir/homepage.html'
@@ -25,8 +32,11 @@ class LoginView(View):
     'pagetitle':'Giriş',
     'formtitle':'Giriş',
     'buttontext' : 'Giriş',
-    'warningmessage':''}
+    'messagetext':'',
+    'messagetype':''}
     def get(self, request):
+        self.formVariables["messagetype"] = ""
+        self.formVariables["messagetext"] = ""
         return render(request, self.template_name, self.formVariables)
 
     def post(self, request):
@@ -41,7 +51,12 @@ class LoginView(View):
                         request.session.set_expiry(0)
                     login(request, user)
                     return redirect('fikir:IndexView')
-        self.formVariables["warningmessage"] = form.errors
+            self.formVariables["messagetype"] = MessageType.warning.name
+            self.formVariables["messagetext"] = "Kullanıcı Adı veya Parola Yanlış"
+            return render(request, self.template_name, self.formVariables)
+        
+        self.formVariables["messagetext"] = "Değerler geçersiz"
+        self.formVariables["messagetype"] = MessageType.warning.name
         return render(request, self.template_name, self.formVariables)
 
 class UserFormView(View):
@@ -51,7 +66,8 @@ class UserFormView(View):
     'pagetitle':'Üye Ol',
     'formtitle':'Fikirlerini Paylaşmak İçin Üye Ol',
     'buttontext' : "Üye Ol",
-    'warningmessage':''}
+    'messagetext':'',
+    'messagetype':''}
     def get(self, request):
             return render(request, self.template_name,self.formVariables)
 
@@ -100,7 +116,8 @@ class UserFormView(View):
                     login(request,user)
                     return redirect('fikir:IndexView')
 
-        self.formVariables["warningmessage"] = form.errors
+        self.formVariables["messagetype"] = "danger"
+        self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
 
 def activate(request, uidb64, token):
