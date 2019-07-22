@@ -62,7 +62,7 @@ class LoginView(View):
                     if not form.cleaned_data.get('remember_me'):
                         request.session.set_expiry(0)
                     login(request, user)
-                    return redirect('fikir:IndexView')
+                    return redirect('fikir:TimelineView')
             self.formVariables["messagetype"] = MessageType.warning.name
             self.formVariables["messagetext"] = "Kullanıcı Adı veya Parola Yanlış"
             return render(request, self.template_name, self.formVariables)
