@@ -5,13 +5,18 @@
         <div class="row">
         <div class=" col-md-4"> 
                                {{ field.label_tag }}
-                                {% if field.help_text %}
-                                <p class="help">{{ field.help_text|safe }}</p>
-                                {% endif %}
+                                
                                 </div>
         <div class="col-md-8">
                 <div id="" class="text-danger small">{{ field.errors }}</div>
                 {{ field }}
+                {% if field.help_text %}
+
+                                <small id="{{ field.auto_id }}HelpBlock" class="form-text text-muted">
+                                                {{ field.help_text|safe }}
+                                              </small>
+                                <p class="help"></p>
+                                {% endif %}
         </div>
 </div>
        

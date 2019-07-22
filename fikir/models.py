@@ -31,11 +31,11 @@ class Status(models.Model):
     def __str__(self):
         return self.StatusName
 
-class Adress(models.Model):
-    District = models.CharField(max_length=100,verbose_name='İlçe')
-    Neighborhood = models.CharField(max_length=250,verbose_name='Semt')
-    Street = models.CharField(max_length=100,verbose_name='Sokak')
-    AdressDesc = models.CharField(max_length=250,verbose_name='Adres Açıklaması')
+class Address(models.Model):
+    District        = models.CharField(max_length=100,verbose_name='İlçe')
+    Neighborhood    = models.CharField(max_length=250,verbose_name='Semt')
+    Street          = models.CharField(max_length=100,verbose_name='Sokak')
+    AdressDesc      = models.CharField(max_length=250,verbose_name='Adres Açıklaması')
     class Meta:
         verbose_name = "Adres"
         verbose_name_plural = "Adresler"
@@ -51,31 +51,34 @@ class Keyword(models.Model):
     def __str__(self):
         return self.Word
 
-class Photo(models.Model):
-    Image = models.ImageField(verbose_name='Fotoğraf')
-    class Meta:
-        verbose_name = "Fotoğraf"
-        verbose_name_plural = "Fotoğraflar"
-    def __str__(self):
-        return self.Image
+
 
 
 class Idea(models.Model):
-    Title = models.CharField(primary_key=True,max_length=100,verbose_name='Başlık')
-    ideatype = models.ForeignKey(IdeaType,null=True,on_delete=models.PROTECT,verbose_name='Fikir Tipi')
+    Title       = models.CharField(primary_key=True,max_length=100,verbose_name='Başlık')
+    ideatype    = models.ForeignKey(IdeaType,null=True,on_delete=models.PROTECT,verbose_name='Fikir Tipi')
     Description = models.CharField(max_length=250,verbose_name='Açıklama')
-    adress = models.ForeignKey(Adress,null=True,on_delete=models.PROTECT,verbose_name='Adres')
-    department = models.ForeignKey(Department,on_delete=models.PROTECT,verbose_name='Departman')
+    adress      = models.ForeignKey(Address,null=True,on_delete=models.PROTECT,verbose_name='Adres')
+    department  = models.ForeignKey(Department,on_delete=models.PROTECT,verbose_name='Departman')
     CreatedDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Yaratılış Tarihi')
-    IgnoreDesc = models.CharField(max_length=500,verbose_name='Red Açıklaması')
-    IsApproved = models.BooleanField(default=True,verbose_name='Onaylandı mı?')
-    IsActive = models.BooleanField(default=True,verbose_name='Aktiflik Durumu')
-    status = models.ForeignKey(Status,null=True,on_delete=models.PROTECT,verbose_name='Durum')
+    IgnoreDesc  = models.CharField(max_length=500,verbose_name='Red Açıklaması')
+    IsApproved  = models.BooleanField(default=False,verbose_name='Onaylandı mı?')
+    IsActive    = models.BooleanField(default=True,verbose_name='Aktiflik Durumu')
+    status      = models.ForeignKey(Status,null=True,on_delete=models.PROTECT,verbose_name='Durum')
     class Meta:
         verbose_name = "Fikir"
         verbose_name_plural = "Fikirler"
     def __str__(self):
         return self.Title
+
+class Photo(models.Model):
+    Image = models.ImageField(verbose_name='Fotoğraf')
+    Idea= models.ForeignKey(Idea,verbose_name='Fikir',null=True,on_delete=models.PROTECT,)
+    class Meta:
+        verbose_name = "Fotoğraf"
+        verbose_name_plural = "Fotoğraflar"
+    def __str__(self):
+        return self.Image
 
 class UserProfile(models.Model):
     Name = models.CharField(max_length=100,verbose_name='Ad')

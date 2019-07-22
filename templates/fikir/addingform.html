@@ -1,0 +1,34 @@
+{% extends 'fikir/base.html' %}
+
+{% block  title%}
+{{ pagetitle }}
+{% endblock %}
+{% load staticfiles %}
+{% block main %}
+{% block extraup %}
+{% endblock %}
+
+<div class="row">
+    <div class="mx-auto">
+      <div class=" card card-signin my-5">
+        <div class="card-body">
+          <div class="row text-center">
+              <div class="col-md-6 text-center "> 
+              <h3 class="card-title mt-3">{{ formtitle }}</h3>
+            </div>
+          </div>
+          <br/>
+          <span class="label label-warning">{% if form.errors %} {%endif%} </span>
+          <form class="form-signin" method="post" enctype='multipart/form-data' >
+                {% csrf_token %}
+                {% include "fikir/form_template.html" %}
+                <button class="btn btn-md btn-primary btn-block text-uppercase" type="submit">{{buttontext}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% block extrabottom %}
+{% endblock %}
+{% endblock %}

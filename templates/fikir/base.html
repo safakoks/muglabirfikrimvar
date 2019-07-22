@@ -38,12 +38,8 @@
             {% if user.is_authenticated %}
 
             <li class="nav-item">
-                <span class="nav-link" href="#"> {{ user.get_username }}</span>
+                <span class="nav-link" href="{% url "fikir:ProfileView" %}"> {{ user.get_username }}</span>
             </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Profil</a>
-          </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Hesap Ayarları</a>
           </li>

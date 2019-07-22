@@ -129,6 +129,34 @@ class UserFormView(View):
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
 
+
+class NewIdeaView(View):
+    form_class = NewIdeaForm
+    template_name = "fikir/addingform.html"
+    formVariables = {
+    'form': form_class,
+    'pagetitle':'Yeni Fikir',
+    'formtitle':'Yeni Fikir',
+    'buttontext' : 'Ekle',
+    'messagetext':'',
+    'messagetype':''}
+    def get(self, request):
+        self.formVariables["messagetype"] = ""
+        self.formVariables["messagetext"] = ""
+        return render(request, self.template_name, self.formVariables)
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            newIdea = Idea()
+            newAddress = Address()
+
+            userEmail = form.cleaned_data['email']
+        
+        return render(request, self.template_name, self.formVariables)
+
+
+
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
