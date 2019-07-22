@@ -5,177 +5,296 @@
 {% block bestideas %}
 <div class="container-fluid w-75 mt-4">
 <!--Carousel Wrapper-->
-<div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
-
-    <!--Controls-->
-    <div class="controls-top">
-      <a class="btn-floating" href="#multi-item-example" data-slide="prev"><i class="fas fa-chevron-left"></i></a>
-      <a class="btn-floating" href="#multi-item-example" data-slide="next"><i
-          class="fas fa-chevron-right"></i></a>
-    </div>
-    <!--/.Controls-->
-  
-    <!--Indicators-->
-    <ol class="carousel-indicators">
-      <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
-      <li data-target="#multi-item-example" data-slide-to="1"></li>
-      <li data-target="#multi-item-example" data-slide-to="2"></li>
-    </ol>
-    <!--/.Indicators-->
-  
-    <!--Slides-->
-    <div class="carousel-inner" role="listbox">
-  
-      <!--First slide-->
-      <div class="carousel-item active">
-  
-        <div class="col-md-4">
-          <div class="card mb-2">
-            <img class="card-img-top"
-              src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg"
-              alt="Card image cap">
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                card's content.</p>
-              <a class="btn btn-primary">Button</a>
+<div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">
+        <!--Indicators-->
+        <ol class="carousel-indicators">
+          <li data-target="#carousel-example-2" data-slide-to="0" class="active"></li>
+          <li data-target="#carousel-example-2" data-slide-to="1"></li>
+          <li data-target="#carousel-example-2" data-slide-to="2"></li>
+        </ol>
+        <!--/.Indicators-->
+        <!--Slides-->
+        <div class="carousel-inner" role="listbox">
+          <div class="carousel-item active">
+            <div class="view">
+              <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(68).jpg"
+                alt="First slide">
+              <div class="mask rgba-black-light"></div>
+            </div>
+            <div class="carousel-caption">
+              <h3 class="h3-responsive">Light mask</h3>
+              <p>First text</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <!--Mask color-->
+            <div class="view">
+              <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg"
+                alt="Second slide">
+              <div class="mask rgba-black-strong"></div>
+            </div>
+            <div class="carousel-caption">
+              <h3 class="h3-responsive">Strong mask</h3>
+              <p>Secondary text</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <!--Mask color-->
+            <div class="view">
+              <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(9).jpg"
+                alt="Third slide">
+              <div class="mask rgba-black-slight"></div>
+            </div>
+            <div class="carousel-caption">
+              <h3 class="h3-responsive">Slight mask</h3>
+              <p>Third text</p>
             </div>
           </div>
         </div>
-  
-        <div class="col-md-4">
-          <div class="card mb-2">
-            <img class="card-img-top"
-              src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(18).jpg"
-              alt="Card image cap">
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                card's content.</p>
-              <a class="btn btn-primary">Button</a>
-            </div>
-          </div>
-        </div>
-  
-        <div class="col-md-4">
-          <div class="card mb-2">
-            <img class="card-img-top"
-              src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(35).jpg"
-              alt="Card image cap">
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                card's content.</p>
-              <a class="btn btn-primary">Button</a>
-            </div>
-          </div>
-        </div>
-  
+        <!--/.Slides-->
+        <!--Controls-->
+        <a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+        <!--/.Controls-->
       </div>
-      <!--/.First slide-->
-  
-      <!--Second slide-->
-      <div class="carousel-item">
-  
-        <div class="col-md-4">
-          <div class="card mb-2">
-            <img class="card-img-top"
-              src="https://mdbootstrap.com/img/Photos/Horizontal/City/4-col/img%20(60).jpg" alt="Card image cap">
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                card's content.</p>
-              <a class="btn btn-primary">Button</a>
-            </div>
-          </div>
+      <!--/.Carousel Wrapper-->
         </div>
-  
-        <div class="col-md-4">
-          <div class="card mb-2">
-            <img class="card-img-top"
-              src="https://mdbootstrap.com/img/Photos/Horizontal/City/4-col/img%20(47).jpg" alt="Card image cap">
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                card's content.</p>
-              <a class="btn btn-primary">Button</a>
-            </div>
-          </div>
-        </div>
-  
-        <div class="col-md-4">
-          <div class="card mb-2">
-            <img class="card-img-top"
-              src="https://mdbootstrap.com/img/Photos/Horizontal/City/4-col/img%20(48).jpg" alt="Card image cap">
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                card's content.</p>
-              <a class="btn btn-primary">Button</a>
-            </div>
-          </div>
-        </div>
-  
-      </div>
-      <!--/.Second slide-->
-  
-      <!--Third slide-->
-      <div class="carousel-item">
-  
-        <div class="col-md-4">
-          <div class="card mb-2">
-            <img class="card-img-top"
-              src="https://mdbootstrap.com/img/Photos/Horizontal/Food/4-col/img%20(53).jpg" alt="Card image cap">
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                card's content.</p>
-              <a class="btn btn-primary">Button</a>
-            </div>
-          </div>
-        </div>
-  
-        <div class="col-md-4">
-          <div class="card mb-2">
-            <img class="card-img-top"
-              src="https://mdbootstrap.com/img/Photos/Horizontal/Food/4-col/img%20(45).jpg" alt="Card image cap">
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                card's content.</p>
-              <a class="btn btn-primary">Button</a>
-            </div>
-          </div>
-        </div>
-  
-        <div class="col-md-4">
-          <div class="card mb-2">
-            <img class="card-img-top"
-              src="https://mdbootstrap.com/img/Photos/Horizontal/Food/4-col/img%20(51).jpg" alt="Card image cap">
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                card's content.</p>
-              <a class="btn btn-primary">Button</a>
-            </div>
-          </div>
-        </div>
-  
-      </div>
-      <!--/.Third slide-->
-  
-    </div>
-    <!--/.Slides-->
-  
-  </div>
-</div>
-  <!--/.Carousel Wrapper-->
+         
 {% endblock %}
 
 {% block filter %}
+<div class="container-fluid w-75 mt-4">
+      <!--Navbar-->
+      <nav class="navbar navbar-expand-lg navbar-light blue-grey lighten-5 mb-4">
+      
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="#">Filtre</a>
+          
+            <!-- Collapse button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+          
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          
+              <!-- Links -->
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Haftanın En İyileri <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Ayın En İyileri</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Gerçekleştirilenler</a>
+                </li>
+          
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Listele</a>
+                  <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">En Popülerler</a>
+                    <a class="dropdown-item" href="#">Zamana Göre En Son</a>
+                    <a class="dropdown-item" href="#">Zamana Göre İlk</a>
+                  </div>
+                </li>
+          
+              </ul>
+              <!-- Links -->
+          
+              <!-- Search form -->
+              <form class="form-inline">
+                <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+              </form>
+            </div>
+            <!-- Collapsible content -->
+        </div>
 {% endblock %}
 
 {% block latestideas %} 
+
+<div class="container-fluid w-75 mt-4">
+        <!-- Section heading -->
+        <h2 class="h1-responsive font-weight-bold my-5">FİKİRLERİNİZ</h2>
+        <!-- Section description -->
+        <p class="grey-text w-responsive mx-auto mb-5">Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+          officia deserunt mollit est laborum.</p>
+        
+        <!-- Grid row -->
+        <div class="row d-flex justify-content-center">
+        
+          <!-- Grid column -->
+          <div class="col-md-4 col-xl-4 mb-4">
+            <!--Featured image-->
+            <div class="view overlay rounded z-depth-2">
+              <img src="https://mdbootstrap.com/img/Photos/Others/laptop-sm.jpg" class="img-fluid" alt="Sample project image">
+              <a>
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
+            <!--Excerpt-->
+            <div class="card-body">
+              <a href="" class="green-text">
+                <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-chart-line pr-2"></i>Yol Yapım</h5>
+              </a>
+              <h4 class="font-weight-bold mb-3">Yaya Yolu Fikrim</h4>
+              <p>Yayaların zorlanmadan yürüyebilecekleri engelli vatandaşlarımızın da yaya yolunda her türlü olanağa sahip olacağı bir yaya yolu fikrim var.</p>
+              <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
+              <div class="card-body">
+                    <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
+                    </div>
+            </div>
+          </div>
+          <!-- Grid column -->
+
+           <!-- Grid column -->
+           <div class="col-md-4 col-xl-4 mb-4">
+                <!--Featured image-->
+                <div class="view overlay rounded z-depth-2">
+                  <img src="https://mdbootstrap.com/img/Photos/Others/laptop-sm.jpg" class="img-fluid" alt="Sample project image">
+                  <a>
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
+                </div>
+                <!--Excerpt-->
+                <div class="card-body">
+                  <a href="" class="green-text">
+                    <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-chart-line pr-2"></i>Marketing</h5>
+                  </a>
+                  <h4 class="font-weight-bold mb-3">Title of the news</h4>
+                  <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit cupidatat
+                    proident voluptatem quia numquam.</p>
+                    <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
+                    <div class="card-body">
+                          <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
+                          </div>
+                </div>
+              </div>
+              <!-- Grid column -->
+        
+          <!-- Grid column -->
+          <div class="col-md-4 col-xl-4 mb-4">
+            <!--Featured image-->
+            <div class="view overlay rounded z-depth-2">
+              <img src="https://mdbootstrap.com/img/Photos/Others/images/19.jpg" class="img-fluid" alt="Sample project image">
+              <a>
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
+            
+            <!--Excerpt-->
+            <div class="card-body">
+              <a href="" class="blue-text">
+                <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-eye pr-2"></i>Entertainment</h5>
+              </a>
+              <h4 class="font-weight-bold mb-3">Title of the news</h4>
+              <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam nisi ut
+                aliquid, aspernatur aut odit aut fugit.</p>
+                <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
+                <div class="card-body">
+                      <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
+                      </div>
+            </div>
+          </div>
+          <!-- Grid column -->
+        
+        </div>
+        <!-- Grid row -->
+        
+        <!-- Grid row -->
+        <div class="row d-flex justify-content-center">
+        
+          <!-- Grid column -->
+          <div class="col-md-4 col-xl-4 mb-md-0 mb-4">
+            <!--Featured image-->
+            <div class="view overlay rounded z-depth-2">
+              <img src="https://mdbootstrap.com/img/Photos/Others/images/48.jpg" class="img-fluid" alt="Sample project image">
+              <a>
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
+            <!--Excerpt-->
+            <div class="card-body pb-md-0">
+              <a href="" class="brown-text">
+                <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-camera pr-2"></i>Travel</h5>
+              </a>
+              <h4 class="font-weight-bold mb-3">Title of the news</h4>
+              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+                totam rem aperiam, eaque ipsa.
+              </p>
+              <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
+              <div class="card-body">
+                    <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
+                    </div>
+            </div>
+          </div>
+          <!-- Grid column -->
+
+           <!-- Grid column -->
+           <div class="col-md-4 col-xl-4 mb-md-0 mb-4">
+                <!--Featured image-->
+                <div class="view overlay rounded z-depth-2">
+                  <img src="https://mdbootstrap.com/img/Photos/Others/images/48.jpg" class="img-fluid" alt="Sample project image">
+                  <a>
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
+                </div>
+                <!--Excerpt-->
+                <div class="card-body pb-md-0">
+                  <a href="" class="brown-text">
+                    <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-camera pr-2"></i>Travel</h5>
+                  </a>
+                  <h4 class="font-weight-bold mb-3">Title of the news</h4>
+                  <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+                    totam rem aperiam, eaque ipsa.
+                  </p>
+                  <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
+              <div class="card-body">
+                    <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
+                    </div>
+                </div>
+              </div>
+              <!-- Grid column -->
+        
+          <!-- Grid column -->
+          <div class="col-md-4 col-xl-4">
+            <!--Featured image-->
+            <div class="view overlay rounded z-depth-2">
+              <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/img (56).jpg" class="img-fluid"
+                alt="Sample project image">
+              <a>
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
+            <!--Excerpt-->
+            <div class="card-body pb-0">
+              <a href="" class="cyan-text">
+                <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-phone pr-2"></i>Technology</h5>
+              </a>
+              <h4 class="font-weight-bold mb-3">Title of the news</h4>
+              <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur,
+                illum qui dolorem eum fugiat quo voluptas.</p>
+                <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
+                <div class="card-body">
+                      <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
+                      </div>
+            </div>
+          </div>
+          <!-- Grid column -->
+        
+        </div>
+        <!-- Grid row -->
+    </div>
+   
 {% endblock %}
 
  
