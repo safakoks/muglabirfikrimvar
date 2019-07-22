@@ -66,11 +66,10 @@ class UserProfile(models.Model):
         size = ( 250, 250)
         image = image.resize(size, Image.ANTIALIAS)
         image.save(self.ProfilePhoto.path)
-  
 
 
 class Idea(models.Model):
-    Title       = models.CharField(primary_key=True,max_length=100,verbose_name='Başlık')
+    Title       = models.CharField(null=True,max_length=100,verbose_name='Başlık')
     Ideatype    = models.ForeignKey(IdeaType,null=True,on_delete=models.PROTECT,verbose_name='Fikir Tipi')
     Description = models.CharField(max_length=250,verbose_name='Açıklama')
     UserAddress = models.ForeignKey(Address,null=True,on_delete=models.PROTECT,verbose_name='Adres')
@@ -91,7 +90,7 @@ class Idea(models.Model):
 
 class Keyword(models.Model):
     Word = models.CharField(max_length=100,verbose_name='Anahtar Kelime')
-    Idea= models.CharField(max_length=250,verbose_name='Fikir')
+    # Idea= models.ForeignKey(Idea,verbose_name='Fikir',null=True,on_delete=models.CASCADE,)
     class Meta:
         verbose_name = "Anahtar Kelime"
         verbose_name_plural = "Anahtar Kelimeler"
@@ -100,16 +99,15 @@ class Keyword(models.Model):
 
 class Photo(models.Model):
     Image = models.ImageField(verbose_name='Fotoğraf')
-    Idea= models.ForeignKey(Idea,verbose_name='Fikir',null=True,on_delete=models.PROTECT,)
+    # Idea= models.ForeignKey(Idea,verbose_name='Fikir',null=True,on_delete=models.CASCADE,)
     class Meta:
         verbose_name = "Fotoğraf"
         verbose_name_plural = "Fotoğraflar"
-    def __str__(self):
-        return self.Image
+
 
 class UserLike(models.Model):
     User = models.ForeignKey(UserProfile,on_delete=models.PROTECT,verbose_name='Kullanıcı')
-    Idea = models.ForeignKey(Idea,null=True,on_delete=models.PROTECT,verbose_name='Fikir')
+    # Idea = models.ForeignKey(Idea,null=True,on_delete=models.PROTECT,verbose_name='Fikir')
     LikeDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Beğenme Tarihi')
     class Meta:
         verbose_name = "Beğeni"

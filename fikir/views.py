@@ -149,7 +149,7 @@ class NewIdeaView(View):
         return render(request, self.template_name, self.formVariables)
 
     def post(self, request):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST,request.FILES)
         if form.is_valid():
             # Giriş yapan kullanıcıyı alma
             currentUser = request.user
@@ -196,6 +196,7 @@ class NewIdeaView(View):
             return render(request,self.template_name,self.formVariables)
 
         # Başarısız form girdisi durumunda
+        print(form.errors)
         self.formVariables["messagetype"] = MessageType.danger.name
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
