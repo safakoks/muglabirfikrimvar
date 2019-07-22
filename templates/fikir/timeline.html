@@ -74,7 +74,7 @@
       <nav class="navbar navbar-expand-lg navbar-light blue-grey lighten-5 mb-4">
       
             <!-- Navbar brand -->
-            <a class="navbar-brand" href="#">Filtre</a>
+            
           
             <!-- Collapse button -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -117,6 +117,8 @@
             </div>
             <!-- Collapsible content -->
         </div>
+      
+       
 {% endblock %}
 
 {% block latestideas %} 
@@ -125,9 +127,17 @@
         <!-- Section heading -->
         <h2 class="h1-responsive font-weight-bold my-5">FİKİRLERİNİZ</h2>
         <!-- Section description -->
+        <div class="mt-0 float-right col-md-2 text-center">
+                <a href="#" class="btn btn-info btn-block">
+                  <i class="fa fa-plus"></i> YENİ FİKİR
+                </a>
+                 
+        </div>
+        <div class="col-md-9">
         <p class="grey-text w-responsive mx-auto mb-5">Duis aute irure dolor in reprehenderit in voluptate velit esse
           cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
           officia deserunt mollit est laborum.</p>
+        </div>
         
         <!-- Grid row -->
         <div class="row d-flex justify-content-center">
