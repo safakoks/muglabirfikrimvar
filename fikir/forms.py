@@ -65,7 +65,10 @@ class NewIdeaForm(forms.ModelForm):
             'district',
             'neighborhood',
             'street',
-            'adressDesc']
+            'adressDesc',
+            'ideaPhoto1',
+            'ideaPhoto2',
+            'ideaPhoto3']
 
     def __init__(self, *args, **kwargs):
         super(NewIdeaForm, self).__init__(*args, **kwargs)

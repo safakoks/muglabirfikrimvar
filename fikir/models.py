@@ -42,43 +42,7 @@ class Address(models.Model):
     def __str__(self):
         return self.District
 
-class Keyword(models.Model):
-    Word = models.CharField(max_length=100,verbose_name='Anahtar Kelime')
-    Idea= models.CharField(max_length=250,verbose_name='Fikir')
-    class Meta:
-        verbose_name = "Anahtar Kelime"
-        verbose_name_plural = "Anahtar Kelimeler"
-    def __str__(self):
-        return self.Word
 
-
-
-
-class Idea(models.Model):
-    Title       = models.CharField(primary_key=True,max_length=100,verbose_name='Başlık')
-    ideatype    = models.ForeignKey(IdeaType,null=True,on_delete=models.PROTECT,verbose_name='Fikir Tipi')
-    Description = models.CharField(max_length=250,verbose_name='Açıklama')
-    adress      = models.ForeignKey(Address,null=True,on_delete=models.PROTECT,verbose_name='Adres')
-    department  = models.ForeignKey(Department,on_delete=models.PROTECT,verbose_name='Departman')
-    CreatedDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Yaratılış Tarihi')
-    IgnoreDesc  = models.CharField(max_length=500,verbose_name='Red Açıklaması')
-    IsApproved  = models.BooleanField(default=False,verbose_name='Onaylandı mı?')
-    IsActive    = models.BooleanField(default=True,verbose_name='Aktiflik Durumu')
-    status      = models.ForeignKey(Status,null=True,on_delete=models.PROTECT,verbose_name='Durum')
-    class Meta:
-        verbose_name = "Fikir"
-        verbose_name_plural = "Fikirler"
-    def __str__(self):
-        return self.Title
-
-class Photo(models.Model):
-    Image = models.ImageField(verbose_name='Fotoğraf')
-    Idea= models.ForeignKey(Idea,verbose_name='Fikir',null=True,on_delete=models.PROTECT,)
-    class Meta:
-        verbose_name = "Fotoğraf"
-        verbose_name_plural = "Fotoğraflar"
-    def __str__(self):
-        return self.Image
 
 class UserProfile(models.Model):
     Name = models.CharField(max_length=100,verbose_name='Ad')
@@ -103,6 +67,46 @@ class UserProfile(models.Model):
         image = image.resize(size, Image.ANTIALIAS)
         image.save(self.ProfilePhoto.path)
   
+
+
+class Idea(models.Model):
+    Title       = models.CharField(primary_key=True,max_length=100,verbose_name='Başlık')
+    Ideatype    = models.ForeignKey(IdeaType,null=True,on_delete=models.PROTECT,verbose_name='Fikir Tipi')
+    Description = models.CharField(max_length=250,verbose_name='Açıklama')
+    UserAddress = models.ForeignKey(Address,null=True,on_delete=models.PROTECT,verbose_name='Adres')
+    department  = models.ForeignKey(Department,on_delete=models.PROTECT,verbose_name='Departman')
+    CreatedDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Yaratılış Tarihi')
+    IgnoreDesc  = models.CharField(max_length=500,verbose_name='Red Açıklaması')
+    IsApproved  = models.BooleanField(default=False,verbose_name='Onaylandı mı?')
+    IsActive    = models.BooleanField(default=True,verbose_name='Aktiflik Durumu')
+    Status      = models.ForeignKey(Status,null=True,on_delete=models.PROTECT,verbose_name='Durum')
+    AddedUser   = models.ForeignKey(UserProfile,null=True,on_delete=models.PROTECT,verbose_name='Ekleyen Kullanıcı')
+  
+    class Meta:
+        verbose_name = "Fikir"
+        verbose_name_plural = "Fikirler"
+    def __str__(self):
+        return self.Title
+
+
+class Keyword(models.Model):
+    Word = models.CharField(max_length=100,verbose_name='Anahtar Kelime')
+    Idea= models.CharField(max_length=250,verbose_name='Fikir')
+    class Meta:
+        verbose_name = "Anahtar Kelime"
+        verbose_name_plural = "Anahtar Kelimeler"
+    def __str__(self):
+        return self.Word
+
+class Photo(models.Model):
+    Image = models.ImageField(verbose_name='Fotoğraf')
+    Idea= models.ForeignKey(Idea,verbose_name='Fikir',null=True,on_delete=models.PROTECT,)
+    class Meta:
+        verbose_name = "Fotoğraf"
+        verbose_name_plural = "Fotoğraflar"
+    def __str__(self):
+        return self.Image
+
 class UserLike(models.Model):
     User = models.ForeignKey(UserProfile,on_delete=models.PROTECT,verbose_name='Kullanıcı')
     Idea = models.ForeignKey(Idea,null=True,on_delete=models.PROTECT,verbose_name='Fikir')

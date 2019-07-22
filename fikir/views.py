@@ -12,27 +12,30 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponse
 from enum import Enum
-# Create your views here
 
+# Mesaj tipleri kullanım -> MessageType.danger.name
 class MessageType(Enum):
     danger = 1
     warning = 2
     success = 3
     info = 4
 
+# Giriş sayfası
 def IndexView(request):
     template_name = 'fikir/homepage.html'
     return render(request, template_name, {})
 
-
+# Kullanıcı ana ekranı
 def TimelineView(request):
     template_name = 'fikir/timeline.html'
     return render(request, template_name, {})
 
+# Profil sayfası
 def ProfileView(request):
     template_name = 'fikir/profile.html'
     return render(request, template_name, {})
 
+# Giriş ekranı
 class LoginView(View):
     form_class = LoginForm
     template_name = "fikir/login.html"
@@ -68,6 +71,7 @@ class LoginView(View):
         self.formVariables["messagetype"] = MessageType.warning.name
         return render(request, self.template_name, self.formVariables)
 
+# Üye olma
 class UserFormView(View):
     form_class = UserForm
     template_name = "fikir/signup.html"
@@ -117,7 +121,6 @@ class UserFormView(View):
             #             mail_subject, message, to=[to_email]
             # )
             # email.send()
-            print(form.errors)
             # Oluşturulan Kullanıcıyla giriş yapma
             user = authenticate(username = username,password= password)
             if  user is not None:
@@ -125,11 +128,11 @@ class UserFormView(View):
                     login(request,user)
                     return redirect('fikir:IndexView')
 
-        self.formVariables["messagetype"] = "danger"
+        self.formVariables["messagetype"] = MessageType.danger.name
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
 
-
+# Yeni fikir ekleme
 class NewIdeaView(View):
     form_class = NewIdeaForm
     template_name = "fikir/addingform.html"
@@ -148,14 +151,54 @@ class NewIdeaView(View):
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            newIdea = Idea()
+            # Giriş yapan kullanıcıyı alma
+            currentUser = request.user
+
+            # Yeni Adres oluşturma
             newAddress = Address()
+            newAddress.AdressDesc = form.cleaned_data['adressDesc']
+            newAddress.District = form.cleaned_data['district']
+            newAddress.Neighborhood = form.cleaned_data['neighborhood']
+            newAddress.Street = form.cleaned_data['street']
+            newAddress.save()
 
-            userEmail = form.cleaned_data['email']
-        
-        return render(request, self.template_name, self.formVariables)
+            # Yeni fikir oluşturma
+            newIdea = Idea()
+            newIdea.Title = form.cleaned_data['title']
+            newIdea.Description = form.cleaned_data['description']
+            newIdea.ideatype = form.cleaned_data['ideatype']
+            newIdea.department = form.cleaned_data['department']
+            newIdea.CreatedDate = datetime.datetime.now()
+            newIdea.AddedUser = UserProfile.objects.filter(UserT = currentUser).first()
+            newIdea.UserAddress = newAddress            
+            newIdea.IsApproved = False            
+            newIdea.save()
 
+            # Fikir fotoğrafları ekleme
+            Photo1 = Photo()
+            Photo2 = Photo()
+            Photo3 = Photo()
 
+            Photo1.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto1']
+            Photo2.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto2']
+            Photo3.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto3']
+
+            Photo1.Idea = newIdea
+            Photo2.Idea = newIdea
+            Photo3.Idea = newIdea
+
+            Photo1.save()
+            Photo2.save()
+            Photo3.save()
+
+            self.formVariables["messagetype"] = MessageType.success.name
+            self.formVariables["messagetext"] = "Yeni fikriniz başarıyla oluşturuldu"
+            return render(request,self.template_name,self.formVariables)
+
+        # Başarısız form girdisi durumunda
+        self.formVariables["messagetype"] = MessageType.danger.name
+        self.formVariables["messagetext"] = form.errors.values
+        return render(request,self.template_name,self.formVariables)
 
 def activate(request, uidb64, token):
     try:
