@@ -77,6 +77,7 @@ class Idea(models.Model):
     CreatedDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Yaratılış Tarihi')
     IgnoreDesc  = models.CharField(max_length=500,null=True,blank=True,verbose_name='Red Açıklaması')
     IsApproved  = models.BooleanField(default=False,verbose_name='Onaylandı mı?')
+    IsOnHomePage  = models.BooleanField(default=False,verbose_name='Anasayfada görünsün mü?')
     IsActive    = models.BooleanField(default=True,verbose_name='Aktiflik Durumu')
     Status      = models.ForeignKey(Status,null=True,on_delete=models.PROTECT,verbose_name='Durum')
     AddedUser   = models.ForeignKey(UserProfile,null=True,on_delete=models.PROTECT,verbose_name='Ekleyen Kullanıcı')
