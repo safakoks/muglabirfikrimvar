@@ -10,6 +10,6 @@ urlpatterns = [
      path('profil/',  views.ProfileView, name='ProfileView'),     
      path('yenifikir/',  views.NewIdeaView.as_view(), name='NewIdeaView'),     
      path('cikis/', auth_views.logout,  {'next_page': "fikir:IndexView"},  name='Logout'),
-     path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        views.activate, name='activate'),
+#      path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+#         views.activate, name='activate'),
 ]
