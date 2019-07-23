@@ -19,15 +19,17 @@ class LoginForm(forms.Form):
 
 
 class UserForm(forms.ModelForm):
-    name        = forms.CharField(max_length=100,label='Ad')
-    surname     = forms.CharField(max_length=100,label='Soyad')
+    
+    name        = forms.CharField(max_length=100,label='Ad',help_text='Lütfen adınızı giriniz')
+    surname     = forms.CharField(max_length=100,label='Soyad',help_text='Lütfen soyadınızı giriniz')
     phoneNumber = forms.CharField(max_length=100,label='Telefon Numarası')
     birthday    = forms.DateField(label="Doğum Günü",initial=datetime.date.today)
-    email       = forms.EmailField(label='Email')
-    profilePhoto=forms.ImageField(label='Profil Fotoğrafı')
+    email       = forms.EmailField(label='Email',help_text='*gerekli')
+    profilePhoto= forms.ImageField(label='Profil Fotoğrafı',help_text='Lütfen profil fotoğrafınızı giriniz')
     username    = forms.CharField(max_length=50,label='Kullanıcı Adı')
-    password    = forms.CharField(widget=forms.PasswordInput,label='Parola')
+    password    = forms.CharField(widget=forms.PasswordInput,label='Parola',help_text='*gerekli')
     captcha      = ReCaptchaField(label='')
+
     
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
@@ -45,16 +47,38 @@ class NewIdeaForm(forms.ModelForm):
         label='Fikir Başlığı',
         help_text='Fikir başlığı en fazla 100 karakter içerebilir',
         error_messages={'required': 'Lütfen fikir başlığı giriniz'})
-    ideatype        = forms.ModelChoiceField(queryset=IdeaType.objects.all())
-    district        = forms.CharField(max_length=50)
-    neighborhood    = forms.CharField(max_length=50)
-    street          = forms.CharField(max_length=50)
-    adressDesc      = forms.CharField(widget=forms.Textarea,max_length=200)
-    description     = forms.CharField(widget=forms.Textarea,max_length=300)
-    department      = forms.ModelChoiceField(queryset=Department.objects.all())
+    ideatype = forms.ModelChoiceField(queryset=IdeaType.objects.all(),
+        label='Fikir Tipi',
+        help_text='Fikir tipi en fazla 100 karakter içerebilir')
+    department =forms.ModelChoiceField(queryset=Department.objects.all(),
+        label='Bölüm',
+        help_text='Lütfen birini seçiniz',)
+    description     = forms.CharField(widget=forms.Textarea,
+        max_length=300,
+        label='Açıklama',
+        help_text='En fazla 300 karekter girebilirsiniz')
+    district        = forms.CharField(
+        max_length=50,
+        label='İlçe ',
+        help_text='En fazla 50 karekter içerir')
+    neighborhood    = forms.CharField(
+        max_length=50,
+        label='Mahalle',
+        help_text='En fazla 50 karekter içerir')
+    street  = forms.CharField(
+        max_length=50,
+        label='Cadde',
+        help_text='En fazla 50 karekter içerir')
+    adressDesc      = forms.CharField(widget=forms.Textarea,
+        max_length=200,
+        label='Adres',
+        help_text='En fazla 200 karekter girebilirsiniz')
+ 
     ideaPhoto1      = forms.ImageField(label='Fikir Fotoğrafı 1')
     ideaPhoto2      = forms.ImageField(label='Fikir Fotoğrafı 2')
     ideaPhoto3      = forms.ImageField(label='Fikir Fotoğrafı 3')
+      
+         
     class Meta:
         model = Idea
         fields = [
