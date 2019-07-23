@@ -4,8 +4,8 @@ from django.contrib.auth import authenticate,login,logout
 from .forms import *
 from django.views.generic.base import View
 from django.contrib.auth.forms import *
-from django.db.models import Prefetch
 from .models import *
+from django.db.models import Prefetch
 from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 from django.template.loader import render_to_string
@@ -24,8 +24,10 @@ class MessageType(Enum):
 # Giriş sayfası
 def IndexView(request):
     template_name = 'fikir/homepage.html'
-    threeIdeas = Idea.objects.all().order_by('?')[0:3]
-    return render(request, template_name, {'object_list':threeIdeas})
+    # threeIdeas = Idea.objects.all().order_by('?')[0:3]
+    ideas = Idea.objects.all().order_by('-id')[:3]
+    # print(ideas[2].photo_set.first().Image.url)
+    return render(request, template_name, {'object_list':ideas})
 
 # Kullanıcı ana ekranı
 def TimelineView(request):

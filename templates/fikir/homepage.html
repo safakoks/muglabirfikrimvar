@@ -27,11 +27,11 @@
           </p>
       
           <!-- Linkedin -->
-          <a class="px-2 fa-lg li-ic"><i class="fab fa-linkedin-in"></i></a>
+          <a class="px-2 fa-lg li-ic h3 m-2"><i class="fa fa-3x fa-pencil"></i></a>
           <!-- Twitter -->
-          <a class="px-2 fa-lg tw-ic"><i class="fab fa-twitter"></i></a>
+          <a class="px-2 fa-lg tw-ic h3 m-2 "><i class="fa fa-3x fa-map-marker"></i></a>
           <!-- Dribbble -->
-          <a class="px-2 fa-lg fb-ic"><i class="fab fa-facebook-f"></i></a>
+          <a class="px-2 fa-lg fb-ic h3 m-2"><i class="fa fa-3x fa-comment"></i></a>
       
         </div>
       
@@ -42,31 +42,28 @@
  {% for idea in object_list %}
         <!-- Card -->
         <div class="card mb-4">
-      
           <!-- Card image -->
           <div class="view overlay">
-            <img class="card-img-top" src="{{ idea }}" alt="Card image cap">
+          {% with imagePath=idea.photo_set.all.first.Image.url%}
+            <img class="card-img-top" src="{{imagePath}}" alt="Card image cap">
+          {% endwith %}
+ 
             <a href="#!">
               <div class="mask rgba-white-slight"></div>
             </a>
           </div>
-      
           <!-- Card content -->
           <div class="card-body">
-      
             <!-- Title -->
             <h4 class="card-title">{{ idea.Title }}</h4>
             <!-- Text -->
             <p class="card-text">{{ idea.Description}}</p>
             <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
             <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
-      
           </div>
           <!-- Card content -->
-      
         </div>
         <!-- Card -->
-      
       {% endfor %}
       </div>
       <!-- Card group -->

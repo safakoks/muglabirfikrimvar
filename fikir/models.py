@@ -80,7 +80,7 @@ class Idea(models.Model):
     IsActive    = models.BooleanField(default=True,verbose_name='Aktiflik Durumu')
     Status      = models.ForeignKey(Status,null=True,on_delete=models.PROTECT,verbose_name='Durum')
     AddedUser   = models.ForeignKey(UserProfile,null=True,on_delete=models.PROTECT,verbose_name='Ekleyen Kullanıcı')
-  
+
     class Meta:
         verbose_name = "Fikir"
         verbose_name_plural = "Fikirler"

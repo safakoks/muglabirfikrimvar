@@ -54,9 +54,9 @@ class NewIdeaForm(forms.ModelForm):
         label='Bölüm',
         help_text='Lütfen birini seçiniz',)
     description     = forms.CharField(widget=forms.Textarea,
-        max_length=300,
+        max_length=250,
         label='Açıklama',
-        help_text='En fazla 300 karekter girebilirsiniz')
+        help_text='En fazla 250 karekter girebilirsiniz')
     district        = forms.CharField(
         max_length=50,
         label='İlçe ',
