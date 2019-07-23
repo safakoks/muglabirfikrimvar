@@ -3,25 +3,30 @@
 
 
 {% block bestideas %}
-<div class="container-fluid w-75 mt-4">
-<!--Carousel Wrapper-->
-<div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">
+
+        {% if slideIdeas %}
+        <div class="container-fluid w-75 mt-4">
+      <!--Carousel Wrapper-->
+      <div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">
         <!--Indicators-->
         <ol class="carousel-indicators">
-          <li data-target="#carousel-example-2" data-slide-to="0" class="active"></li>
-          <li data-target="#carousel-example-2" data-slide-to="1"></li>
-          <li data-target="#carousel-example-2" data-slide-to="2"></li>
+ {% for slideIdea in slideIdeas %}
+
+          <li data-target="#carousel-example-2" data-slide-to="{{ forloop.counter }}"  {% if forloop.counter > 1 %}  class="active"  {% endif %}></li>
+        
+{% endfor %}
         </ol>
         <!--/.Indicators-->
         <!--Slides-->
           <div class="carousel-inner" role="listbox">
 
-        {% if slideIdeas %}
           {% for slideIdea in slideIdeas %}
-          <div class="carousel-item active">
+
+          
+          <div class="carousel-item {% if forloop.counter > 1 %}  active  {% endif %}">
             <div class="view">
             {% with imagePath=slideIdea.photo_set.all.first.Image.url%}
-            <img class="d-block img-fluid responsive w-100" height="300px" src="{{ imagePath }}" alt="">
+            <img class="d-block responsive w-100" height="350px"  src="{{ imagePath }}" alt="">
             {% endwith %}
               <div class="mask rgba-black-light"></div>
             </div>
@@ -29,6 +34,9 @@
               <h3 class="h3-responsive">{{ slideIdea.Title }}</h3>
             </div>
           </div>
+          
+
+          
           {% endfor %}
           <!--/.Slides-->
         <!--Controls-->
@@ -72,11 +80,15 @@
         <a class="dropdown-item btn btn-info" href="#">Zamana Göre İlk</a>    
       </div>   
     </li>
+    <li> 
+    <form class="form-inline col-md-4 container-fluid">
+    <input class="form-control" type="text" placeholder="Arama" aria-label="Search">
+      </form>
+    
+    </li>
    <!-- Links -->
 <!-- Search form -->
-<form class="form-inline col-md-3">
-<input class="form-control" type="text" placeholder="Arama" aria-label="Search">
-</form>
+
   </ul>
     
   </div>

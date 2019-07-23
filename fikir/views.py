@@ -33,9 +33,7 @@ def IndexView(request):
 # Kullanıcı ana ekranı
 def TimelineView(request):
     template_name = 'fikir/timeline.html'
-
     slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True)[:5]
-
     ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True)
     paginator = Paginator(ideas_list, 10) 
     page = request.GET.get('s')
@@ -46,7 +44,6 @@ def TimelineView(request):
 # Giriş sayfası
 def DetailView(request):
     template_name = 'fikir/detail.html'
-
     return render(request, template_name)
 
 # Profil sayfası
