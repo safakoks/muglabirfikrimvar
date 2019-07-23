@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponse
+from django.core.paginator import Paginator
 from enum import Enum
 
 # Mesaj tipleri kullanım -> MessageType.danger.name
@@ -32,7 +33,11 @@ def IndexView(request):
 # Kullanıcı ana ekranı
 def TimelineView(request):
     template_name = 'fikir/timeline.html'
-    return render(request, template_name, {})
+    ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True)
+    paginator = Paginator(ideas_list, 10) 
+    page = request.GET.get('s')
+    ideas = paginator.get_page(page)
+    return render(request, template_name, {'ideas':ideas})
 
 # Profil sayfası
 def ProfileView(request):
@@ -170,11 +175,11 @@ class NewIdeaView(View):
             newIdea = Idea()
             newIdea.Title = form.cleaned_data['title']
             newIdea.Description = form.cleaned_data['description']
-            newIdea.ideatype = form.cleaned_data['ideatype']
-            newIdea.department = form.cleaned_data['department']
+            newIdea.Ideatype = form.cleaned_data['ideatype']
+            newIdea.Department = form.cleaned_data['department']
             newIdea.CreatedDate = datetime.datetime.now()
             newIdea.AddedUser = UserProfile.objects.filter(UserT = currentUser).first()
-            newIdea.UserAddress = newAddress            
+            newIdea.UserAddress = newAddress
             newIdea.IsApproved = False            
             newIdea.save()
 

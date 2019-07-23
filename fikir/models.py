@@ -69,13 +69,13 @@ class UserProfile(models.Model):
 
 
 class Idea(models.Model):
-    Title       = models.CharField(null=True,max_length=100,verbose_name='Başlık')
-    Ideatype    = models.ForeignKey(IdeaType,null=True,on_delete=models.PROTECT,verbose_name='Fikir Tipi')
+    Title       = models.CharField(max_length=100,verbose_name='Başlık')
+    Ideatype    = models.ForeignKey(IdeaType,default='1',on_delete=models.PROTECT,verbose_name='Fikir Tipi')
     Description = models.CharField(max_length=250,verbose_name='Açıklama')
     UserAddress = models.ForeignKey(Address,null=True,on_delete=models.PROTECT,verbose_name='Adres')
-    department  = models.ForeignKey(Department,on_delete=models.PROTECT,verbose_name='Departman')
+    Department  = models.ForeignKey(Department,on_delete=models.PROTECT,verbose_name='Departman')
     CreatedDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Yaratılış Tarihi')
-    IgnoreDesc  = models.CharField(max_length=500,verbose_name='Red Açıklaması')
+    IgnoreDesc  = models.CharField(max_length=500,null=True,blank=True,verbose_name='Red Açıklaması')
     IsApproved  = models.BooleanField(default=False,verbose_name='Onaylandı mı?')
     IsActive    = models.BooleanField(default=True,verbose_name='Aktiflik Durumu')
     Status      = models.ForeignKey(Status,null=True,on_delete=models.PROTECT,verbose_name='Durum')

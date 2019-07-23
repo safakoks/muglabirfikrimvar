@@ -55,9 +55,22 @@
           <!-- Card content -->
           <div class="card-body">
             <!-- Title -->
-            <h4 class="card-title">{{ idea.Title }}</h4>
+
+            {% if idea.Title|length > 50 %}
+              <h4 class="font-weight-bold mb-3">{{ idea.Title|slice:"0:40" }}...</h4>
+                  {% else %}
+              <h4 class="font-weight-bold mb-3">{{ idea.Title }}</h4>
+                {% endif %}    
+
             <!-- Text -->
+             {% if idea.Description|length > 100 %}
+            <p class="card-text">{{ idea.Description|slice:"0:95"}}...</p>
+
+                  {% else %}
             <p class="card-text">{{ idea.Description}}</p>
+
+                {% endif %} 
+
             <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
             <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
           </div>

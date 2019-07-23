@@ -72,21 +72,21 @@
 <div class="container-fluid w-75 mt-4">
   <ul class="nav nav-pills">
     <li class="nav-item col-md-3">
-      <a class="nav-link" href="#">Haftanın En İyileri</a>
+      <a class="nav-link btn btn-info" href="#">Haftanın En İyileri</a>
     </li>
     
     <li class="nav-item col-md-2">
-      <a class="nav-link" href="#">Ayın En İyileri</a>
+      <a class="nav-link btn btn-info" href="#">Ayın En İyileri</a>
     </li>
     <li class="nav-item col-md-2">
-      <a class="nav-link" href="#">Gerçekleştirilenler</a>
+      <a class="nav-link btn btn-info" href="#">Gerçekleştirilenler</a>
     </li>
     <li class="nav-item dropdown col-md-2">
-      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Listele</a>
+      <a class="nav-link dropdown-toggle btn btn-info" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Listele</a>
       <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">En Poülerler</a>
-        <a class="dropdown-item" href="#">Zamana Göre En Son</a>
-        <a class="dropdown-item" href="#">Zamana Göre İlk</a>    
+        <a class="dropdown-item btn btn-info" href="#">En Beğenilenler</a>
+        <a class="dropdown-item btn btn-info" href="#">Zamana Göre En Son</a>
+        <a class="dropdown-item btn btn-info" href="#">Zamana Göre İlk</a>    
       </div>   
     </li>
    <!-- Links -->
@@ -109,7 +109,7 @@
         <h2 class="h1 w-responsive text-info text-center font-weight-bold my-3">FİKİRLERİNİZ</h2>
         <!-- Section description -->
         <div class="mt-0 float-right col-md-2 text-center">
-                <a href="#" class="btn btn-info btn-block">
+                <a href="{% url 'fikir:NewIdeaView' %}" class="btn btn-info btn-block">
                   <i class="fa fa-plus"></i> YENİ FİKİR
                 </a>
                  
@@ -123,6 +123,7 @@
         <!-- Grid row -->
         <div class="row d-flex justify-content-center">
         
+        {% for idea in ideas %}
           <!-- Grid column -->
           <div class="col-md-4 col-xl-4 mb-4">
             <!--Featured image-->
@@ -140,175 +141,55 @@
                     <span class="fa fa-star"></span>
                     <span class="fa fa-star"></span>
               <a href="" class="green-text">
-                <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-chart-line pr-2"></i>Yol Yapım</h5>
-              </a>             
-              <h4 class="font-weight-bold mb-3">Yaya Yolu Fikrim</h4>
-              <p>Yayaların zorlanmadan yürüyebilecekleri engelli vatandaşlarımızın da yaya yolunda her türlü olanağa sahip olacağı bir yaya yolu fikrim var.</p>
-              <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
+                <h5 class="font-weight-bold mt-2 mb-3"><i class="fa fa-1x {{ idea.Ideatype.Icon }}"></i> {{ idea.Ideatype.IdeaName }}</h5>
+              </a>
+              {% if idea.Title|length > 50 %}
+              <h4 class="font-weight-bold mb-3">{{ idea.Title|slice:"0:40" }}...</h4>
+                  {% else %}
+              <h4 class="font-weight-bold mb-3">{{ idea.Title }}</h4>
+                {% endif %}     
+
+                {% if idea.Description|length > 100 %}     
+              <p>{{ idea.Description|slice:"0:95" }}...</p>
+
+                  {% else %}
+              <p>{{ idea.Description }}</p>
+
+                {% endif %}     
+
+              <a class="btn btn-outline-primary btn-block "> Daha Fazlasını Görüntüle</a>
               <div class="card-body">
                     <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
                     </div>
             </div>
           </div>
           <!-- Grid column -->
+        {% endfor %}
 
-           <!-- Grid column -->
-           <div class="col-md-4 col-xl-4 mb-4">
-                <!--Featured image-->
-                <div class="view overlay rounded z-depth-2">
-                  <img src="https://mdbootstrap.com/img/Photos/Others/laptop-sm.jpg" class="img-fluid" alt="Sample project image">
-                  <a>
-                    <div class="mask rgba-white-slight"></div>
-                  </a>
-                </div>
-                <!--Excerpt-->
-                <div class="card-body">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        
-                  <a href="" class="green-text">
-                    <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-chart-line pr-2"></i>Marketing</h5>
-                  </a>
-                  <h4 class="font-weight-bold mb-3">Title of the news</h4>
-                  <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit cupidatat
-                    proident voluptatem quia numquam.</p>
-                    <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
-                    <div class="card-body">
-                          <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
-                          </div>
-                </div>
-              </div>
-              <!-- Grid column -->
-        
-          <!-- Grid column -->
-          <div class="col-md-4 col-xl-4 mb-4">
-            <!--Featured image-->
-            <div class="view overlay rounded z-depth-2">
-              <img src="https://mdbootstrap.com/img/Photos/Others/images/19.jpg" class="img-fluid" alt="Sample project image">
-              <a>
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-            
-            <!--Excerpt-->
-            <div class="card-body">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                   
-              <a href="" class="blue-text">
-                <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-eye pr-2"></i>Entertainment</h5>
-              </a>
-              <h4 class="font-weight-bold mb-3">Title of the news</h4>
-              <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam nisi ut
-                aliquid, aspernatur aut odit aut fugit.</p>
-                <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
-                <div class="card-body">
-                      <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
-                      </div>
-            </div>
-          </div>
-          <!-- Grid column -->
+         
         
         </div>
         <!-- Grid row -->
         
-        <!-- Grid row -->
-        <div class="row d-flex justify-content-center">
-        
-          <!-- Grid column -->
-          <div class="col-md-4 col-xl-4 mb-md-0 mb-4">
-            <!--Featured image-->
-            <div class="view overlay rounded z-depth-2">
-              <img src="https://mdbootstrap.com/img/Photos/Others/images/48.jpg" class="img-fluid" alt="Sample project image">
-              <a>
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-            <!--Excerpt-->
-            <div class="card-body pb-md-0">
-              <a href="" class="brown-text">
-                <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-camera pr-2"></i>Travel</h5>
-              </a>
-              <h4 class="font-weight-bold mb-3">Title of the news</h4>
-              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-                totam rem aperiam, eaque ipsa.
-              </p>
-              <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
-              <div class="card-body">
-                    <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
-                    </div>
-            </div>
-          </div>
-          <!-- Grid column -->
-
-           <!-- Grid column -->
-           <div class="col-md-4 col-xl-4 mb-md-0 mb-4">
-                <!--Featured image-->
-                <div class="view overlay rounded z-depth-2">
-                  <img src="https://mdbootstrap.com/img/Photos/Others/images/48.jpg" class="img-fluid" alt="Sample project image">
-                  <a>
-                    <div class="mask rgba-white-slight"></div>
-                  </a>
-                </div>
-                <!--Excerpt-->
-                <div class="card-body pb-md-0">
-                  <a href="" class="brown-text">
-                    <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-camera pr-2"></i>Travel</h5>
-                  </a>
-                  <h4 class="font-weight-bold mb-3">Title of the news</h4>
-                  <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-                    totam rem aperiam, eaque ipsa.
-                  </p>
-                  <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
-              <div class="card-body">
-                    <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
-                    </div>
-                </div>
-              </div>
-              <!-- Grid column -->
-        
-          <!-- Grid column -->
-          <div class="col-md-4 col-xl-4">
-            <!--Featured image-->
-            <div class="view overlay rounded z-depth-2">
-              <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/img (56).jpg" class="img-fluid"
-                alt="Sample project image">
-              <a>
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-            <!--Excerpt-->
-            <div class="card-body pb-0">
-              <a href="" class="cyan-text">
-                <h5 class="font-weight-bold mt-2 mb-3"><i class="fas fa-phone pr-2"></i>Technology</h5>
-              </a>
-              <h4 class="font-weight-bold mb-3">Title of the news</h4>
-              <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur,
-                illum qui dolorem eum fugiat quo voluptas.</p>
-                <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
-                <div class="card-body">
-                      <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
-                      </div>
-            </div>
-          </div>
-          <!-- Grid column -->
-        
-        </div>
-        <!-- Grid row -->
+     
         <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1">Geri</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+          {% if ideas.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="#">İleri</a>
+              <a class="page-link" href="?s={{ ideas.previous_page_number }}" tabindex="-1">Geri</a>
+              <li class="page-item"><a class="page-link" href="?s=1">İlk</a></li>
             </li>
+            {% endif %}
+
+              <li class="page-item disabled"><a class="page-link" href="#">{{ ideas.number }}</a></li>
+              
+              {% if ideas.has_next %}
+              <li class="s-item">
+                  <li class="page-item"><a class="page-link" href="?s={{ ideas.next_page_number }}">İleri</a></li>
+                  <li class="page-item"><a class="page-link" href="?s={{ ideas.paginator.num_pages }}">Son</a></li>
+              </li>
+             {% endif %}
           </ul>
         </nav>
     </div>
