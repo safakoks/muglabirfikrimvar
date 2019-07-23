@@ -70,53 +70,34 @@
 
 {% block filter %}
 <div class="container-fluid w-75 mt-4">
-      <!--Navbar-->
-      <nav class="navbar navbar-expand-lg navbar-light blue-grey lighten-5 mb-4">
-      
-            <!-- Navbar brand -->
-            
-          
-            <!-- Collapse button -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
-                class="navbar-toggler-icon"></span></button>
-          
-            <!-- Collapsible content -->
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          
-              <!-- Links -->
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#">Haftanın En İyileri <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Ayın En İyileri</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Gerçekleştirilenler</a>
-                </li>
-          
-                <!-- Dropdown -->
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Listele</a>
-                  <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">En Popülerler</a>
-                    <a class="dropdown-item" href="#">Zamana Göre En Son</a>
-                    <a class="dropdown-item" href="#">Zamana Göre İlk</a>
-                  </div>
-                </li>
-          
-              </ul>
-              <!-- Links -->
-          
-              <!-- Search form -->
-              <form class="form-inline">
-                <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-              </form>
-            </div>
-            <!-- Collapsible content -->
-        </div>
+  <ul class="nav nav-pills">
+    <li class="nav-item col-md-3">
+      <a class="nav-link" href="#">Haftanın En İyileri</a>
+    </li>
+    
+    <li class="nav-item col-md-2">
+      <a class="nav-link" href="#">Ayın En İyileri</a>
+    </li>
+    <li class="nav-item col-md-2">
+      <a class="nav-link" href="#">Gerçekleştirilenler</a>
+    </li>
+    <li class="nav-item dropdown col-md-2">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Listele</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">En Poülerler</a>
+        <a class="dropdown-item" href="#">Zamana Göre En Son</a>
+        <a class="dropdown-item" href="#">Zamana Göre İlk</a>    
+      </div>   
+    </li>
+   <!-- Links -->
+<!-- Search form -->
+<form class="form-inline col-md-3">
+<input class="form-control" type="text" placeholder="Arama" aria-label="Search">
+</form>
+  </ul>
+    
+  </div>
+ 
       
        
 {% endblock %}
@@ -125,7 +106,7 @@
 
 <div class="container-fluid w-75 mt-4">
         <!-- Section heading -->
-        <h2 class="h1-responsive font-weight-bold my-5">FİKİRLERİNİZ</h2>
+        <h2 class="h1 w-responsive text-info text-center font-weight-bold my-3">FİKİRLERİNİZ</h2>
         <!-- Section description -->
         <div class="mt-0 float-right col-md-2 text-center">
                 <a href="#" class="btn btn-info btn-block">
@@ -317,6 +298,19 @@
         
         </div>
         <!-- Grid row -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Geri</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">İleri</a>
+            </li>
+          </ul>
+        </nav>
     </div>
    
 {% endblock %}
