@@ -1,9 +1,8 @@
   
-{% load custom_filters %} 
   
   
 <div class="row d-flex justify-content-center">
-        {% for idea in ideas %}
+        {% for idea in idealist %}
           <!-- Grid column -->
           <div class="col-md-4 col-xl-4 mb-4">
             <!--Featured image-->
@@ -47,25 +46,22 @@
         {% endfor %}
         </div>
         <!-- Grid row -->
-        
-     </div>
-        <nav aria-label="Page navigation example">
+          <nav aria-label="Page navigation">
           <ul class="pagination justify-content-center">
-
-          {% if ideas.has_previous %}
+          {% if idealist.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="?s={{ ideas.previous_page_number }}" tabindex="-1">Geri</a>
+              <a class="page-link" href="?s={{ idealist.previous_page_number }}" tabindex="-1">Geri</a>
               <li class="page-item"><a class="page-link" href="?s=1">İlk</a></li>
             </li>
             {% endif %}
-
-              <li class="page-item disabled"><a class="page-link" href="#">{{ ideas.number }}</a></li>
-              
-              {% if ideas.has_next %}
+              <li class="page-item disabled"><a class="page-link" href="#">{{ idealist.number }}</a></li>
+              {% if idealist.has_next %}
               <li class="s-item">
-                  <li class="page-item"><a class="page-link" href="?s={{ ideas.next_page_number }}">İleri</a></li>
-                  <li class="page-item"><a class="page-link" href="?s={{ ideas.paginator.num_pages }}">Son</a></li>
+                  <li class="page-item"><a class="page-link" href="?s={{ idealist.next_page_number }}">İleri</a></li>
+                  <li class="page-item"><a class="page-link" href="?s={{ idealist.paginator.num_pages }}">Son</a></li>
               </li>
              {% endif %}
           </ul>
         </nav>
+     </div>
+      
