@@ -1,5 +1,6 @@
   
   
+{% load custom_filters %} 
   
 <div class="row d-flex justify-content-center">
         {% for idea in idealist %}
@@ -14,11 +15,7 @@
             </div>
             <!--Excerpt-->           
             <div class="card-body">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
+             
               <a href="" class="green-text">
                 <h5 class="font-weight-bold mt-2 mb-3"><i class="fa fa-1x {{ idea.Ideatype.Icon }}"></i> {{ idea.Ideatype.IdeaName }}</h5>
               </a>
@@ -27,18 +24,15 @@
                   {% else %}
               <h4 class="font-weight-bold mb-3">{{ idea.Title }}</h4>
                 {% endif %}     
-
                 {% if idea.Description|length > 100 %}     
               <p>{{ idea.Description|slice:"0:95" }}...</p>
-
                   {% else %}
               <p>{{ idea.Description }}</p>
-
                 {% endif %}     
 
               <a class="btn btn-outline-primary btn-block "> Daha Fazlasını Görüntüle</a>
               <div class="card-body">
-                    <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
+                    <button class="btn btn-block btn-outline-primary like-btn" value="{{ idea.id}}"><i class="fa fa-thumbs-up"></i> Beğen (<span class="like-count">{{ idea|get_like_count}}</span>) </button>
                     </div>
             </div>
           </div>

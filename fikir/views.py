@@ -14,6 +14,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from enum import Enum
+from django.http import JsonResponse
 
 # Mesaj tipleri kullanım -> MessageType.danger.name
 class MessageType(Enum):
@@ -241,3 +242,33 @@ def activate(request, uidb64, token):
         return redirect('fikir:IndexView')
     else:
         return HttpResponse('Aktivasyon maili geçersiz')
+
+def likeAnIdea(request):
+    ideaID = request.GET.get('ideaID', None)
+    currentUser = request.user
+    currentIdea = Idea.objects.get(pk=int(ideaID))
+    if currentIdea.IsApproved and currentIdea.IsActive :
+        currentUserProfile = UserProfile.objects.filter(UserT = currentUser).first()
+
+        currentUserLike = UserLike.objects.filter(User=currentUserProfile).filter(Idea=currentIdea).first()
+        if  currentUserLike:
+            currentUserLike.delete()
+        else:
+            currentLike = UserLike()
+            currentLike.Idea = currentIdea
+            currentLike.User = currentUserProfile
+            currentLike.LikeDate = datetime.datetime.now()
+            currentLike.save() 
+            
+        currentcount = currentIdea.likes_list.all().count()
+        data = {
+            'likecount': currentcount,
+            'status' : True
+        }
+        return JsonResponse(data)
+
+    data = {
+        'likecount': 0,
+        'status' : False
+    }
+    return JsonResponse(data)
