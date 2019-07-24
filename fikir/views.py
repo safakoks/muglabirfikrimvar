@@ -194,10 +194,18 @@ class NewIdeaView(View):
             Photo1 = Photo()
             Photo2 = Photo()
             Photo3 = Photo()
-
+            
+            # Slider Photo
             Photo1.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto1']
+            Photo1.ImageType = 1
+            
+            # Thumbnail
             Photo2.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto2']
+            Photo2.ImageType = 2
+
+            # Detail View
             Photo3.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto3']
+            Photo3.ImageType = 3
 
             Photo1.Idea = newIdea
             Photo2.Idea = newIdea
@@ -216,6 +224,8 @@ class NewIdeaView(View):
         self.formVariables["messagetype"] = MessageType.danger.name
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
+
+
 
 def activate(request, uidb64, token):
     try:

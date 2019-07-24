@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from PIL import Image
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 class Department(models.Model):
     DepartmentName = models.CharField(max_length=100,verbose_name='Departman Adı')
@@ -63,7 +63,7 @@ class UserProfile(models.Model):
         super(UserProfile, self).save()
         image = Image.open(self.ProfilePhoto)
         (width, height) = image.size     
-        size = ( 250, 250)
+        size = ( 400, 400)
         image = image.resize(size, Image.ANTIALIAS)
         image.save(self.ProfilePhoto.path)
 
@@ -100,18 +100,32 @@ class Keyword(models.Model):
 
 class Photo(models.Model):
     Image = models.ImageField(verbose_name='Fotoğraf')
+    ImageType = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(3)],verbose_name='Fotoğraf Tipi',default=0)
     Idea= models.ForeignKey(Idea,verbose_name='Fikir',null=True,on_delete=models.CASCADE,)
     class Meta:
         verbose_name = "Fotoğraf"
         verbose_name_plural = "Fotoğraflar"
-    
+
+    def __str__(self):
+        if self.Idea is not None:
+            return self.Idea.Title
+        
+
     def save(self):
         if not self.Image:
             return            
         super(Photo, self).save()
         image = Image.open(self.Image)
-        (width, height) = image.size     
-        size = ( 780, 520)
+        (width, height) = image.size
+        # Slider
+        if self.ImageType==1: 
+            size = ( 1321, 583)
+        # Detail Banner
+        if self.ImageType==2:
+            size = ( 1200, 583)
+        # Thumbnail
+        if self.ImageType==3:
+            size = ( 781, 521)
         image = image.resize(size, Image.ANTIALIAS)
         image.save(self.Image.path)
 
