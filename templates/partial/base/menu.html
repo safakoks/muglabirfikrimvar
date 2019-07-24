@@ -16,24 +16,24 @@
             <a class="nav-link" href="{% url "fikir:TimelineView" %}"> <i class="fa fa-home"></i> Anasayfa</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url "fikir:ProfileView" %}">{{ user.get_username }}</a>
+            <a class="nav-link" href="{% url "fikir:ProfileView" %}"><i class="fa fa-address-book"></i> {{ user.get_username }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Hesap Ayarları</a>
+            <a class="nav-link" href="#"><i class="fa fa-cog"></i> Hesap Ayarları</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url "fikir:Logout" %}">Çıkış</a>
+            <a class="nav-link" href="{% url "fikir:Logout" %}"><i class="fa fa-sign-out"></i> Çıkış</a>
         </li>
         {% else %}
         <!-- Else  -->
         <li class="nav-item">
-            <a class="nav-link" href="#">Fikrin mi var?</a>
+            <a class="nav-link" href="#"><i class="fa fa-podcast"></i> Fikrin mi var?</a>
         </li>
         <li class="nav-item">
-              <a class="nav-link" href="{% url "fikir:LoginView" %}">Giriş Yap</a>
+              <a class="nav-link" href="{% url "fikir:LoginView" %}"><i class="fa fa-user"></i> Giriş Yap</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url "fikir:SignupView" %}">Üye Ol</a>
+            <a class="nav-link" href="{% url "fikir:SignupView" %}"><i class="fa fa-user-plus"></i> Üye Ol</a>
         </li>
         <!-- End If  -->
         {% endif %}
