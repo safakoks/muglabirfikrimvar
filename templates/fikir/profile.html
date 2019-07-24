@@ -36,17 +36,17 @@
 
 
 {% block ideas %}
-<div class="container mt-5">    
+<div class="container-fluid mt-5 w-75">    
       
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="fikirlerim-tab" data-toggle="pill" href="#fikirlerim" role="tab" aria-controls="fikirlerim" aria-selected="true">Fikirlerimim</a>
+          <li class="nav-item w-25 mr-3">
+            <a class="btn nav-link active" id="fikirlerim-tab" data-toggle="pill" href="#fikirlerim" role="tab" aria-controls="fikirlerim" aria-selected="true">Fikirlerim</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" id="begendigimfikir-tab" data-toggle="pill" href="#begendigimfikir" role="tab" aria-controls="begendigimfikir" aria-selected="false">Beğendiğim Fikirler</a>
+          <li class="nav-item w-25 mr-3" >
+            <a class="btn nav-link" id="begendigimfikir-tab" data-toggle="pill" href="#begendigimfikir" role="tab" aria-controls="begendigimfikir" aria-selected="false">Beğendiğim Fikirler</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" id="yenifikir-tab" data-toggle="pill" href="#yenifikir" role="tab" aria-controls="yenifikir" aria-selected="false">Yeni Fikir</a>
+          <li class="nav-item w-25">
+            <a class="nav-link btn btn-block btn-info" href="{% url 'fikir:NewIdeaView' %}"> <i class="fa fa-plus"></i> Yeni Fikir</a>
           </li>
         </ul>
         
@@ -54,8 +54,10 @@
           <div class="tab-pane fade show active" id="fikirlerim" role="tabpanel" aria-labelledby="fikirlerim-tab">
               {% include 'partial/timeline/idea_list.html' with idealist=myideas  %}
           </div>
-          <div class="tab-pane fade" id="begendigimfikir" role="tabpanel" aria-labelledby="begendigimfikir-tab">..dd.</div>
-          <div class="tab-pane fade" id="yenifikir" role="tabpanel" aria-labelledby="yenifikir-tab">...</div>
+             
+          <div class="tab-pane fade" id="begendigimfikir" role="tabpanel" aria-labelledby="begendigimfikir-tab">
+           {% include 'partial/timeline/idea_list.html' with idealist=mylikeideas  %}
+          </div>
         </div>
      
 

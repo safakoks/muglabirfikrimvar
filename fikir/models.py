@@ -130,7 +130,7 @@ class Photo(models.Model):
         image.save(self.Image.path)
 
 class UserLike(models.Model):
-    User = models.ForeignKey(UserProfile,on_delete=models.PROTECT,verbose_name='Kullanıcı')
+    User = models.ForeignKey(UserProfile,on_delete=models.PROTECT,related_name='userliked_list',verbose_name='Kullanıcı')
     Idea = models.ForeignKey(Idea,null=True,on_delete=models.CASCADE,related_name='likes_list',verbose_name='Fikir')
     LikeDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Beğenme Tarihi')
     class Meta:

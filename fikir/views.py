@@ -51,7 +51,9 @@ def DetailView(request):
 def ProfileView(request):
     template_name = 'fikir/profile.html'
     myideas = Idea.objects.all().filter(AddedUser__UserT=request.user)
-    return render(request, template_name, {"myideas":myideas})
+    currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
+    mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
+    return render(request, template_name, {"myideas":myideas,"mylikeideas":mylikeideas})
 
 # Giriş ekranı
 class LoginView(View):
