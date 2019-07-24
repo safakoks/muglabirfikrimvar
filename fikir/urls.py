@@ -11,6 +11,7 @@ urlpatterns = [
      path('yenifikir/',  views.NewIdeaView.as_view(), name='NewIdeaView'),     
      path('detay/',  views.DetailView, name='DetailView'),     
      path('cikis/', auth_views.logout,  {'next_page': "fikir:IndexView"},  name='Logout'),
+     path('begen/', views.likeAnIdea,  name='LikeAnIdea'),
 #      path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
 #         views.activate, name='activate'),
 ]

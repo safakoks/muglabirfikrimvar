@@ -131,13 +131,13 @@ class Photo(models.Model):
 
 class UserLike(models.Model):
     User = models.ForeignKey(UserProfile,on_delete=models.PROTECT,verbose_name='Kullanıcı')
-    Idea = models.ForeignKey(Idea,null=True,on_delete=models.PROTECT,verbose_name='Fikir')
+    Idea = models.ForeignKey(Idea,null=True,on_delete=models.CASCADE,related_name='likes_list',verbose_name='Fikir')
     LikeDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Beğenme Tarihi')
     class Meta:
         verbose_name = "Beğeni"
         verbose_name_plural = "Beğeniler"
     def __str__(self):
-        return self.User
+        return self.User.UserT.username + ", '"+ self.Idea.Title + "' başlıklı fikri beğendi "
 
 
 
