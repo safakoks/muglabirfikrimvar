@@ -1,100 +1,22 @@
 {% extends 'fikir/index.html' %}
 {% load staticfiles %}
-{% load custom_filters %} 
 
 {% block bestideas %}
 
-        {% if slideIdeas %}
-        <div class="container-fluid w-75 mt-4">
-      <!--Carousel Wrapper-->
-      <div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">
-        <!--Indicators-->
-        <ol class="carousel-indicators">
 
-        {% for slideIdea in slideIdeas %}
-          <li data-target="#carousel-example-2" data-slide-to="{{ forloop.counter }}"  {% if forloop.counter < 2 %}  class="active"  {% endif %}></li>
-        {% endfor %}
 
-        </ol>
-        <!--/.Indicators-->
-        <!--Slides-->
-          <div class="carousel-inner" role="listbox">
-
-          {% for slideIdea in slideIdeas %}
-          <div class="carousel-item {% if forloop.counter < 2 %}  active  {% endif %}">
-            <div class="view">
-
-            {% comment %} {% with imagePath=slideIdea.photo_set|cast_image_type:1 %} {% endcomment %}
-            <img class="d-block responsive w-100" height="350px"  src="{{ slideIdea|cast_image_type:1 }}" alt="">
-            {% comment %} {% endwith %} {% endcomment %}
-
-              <div class="mask rgba-black-light"></div>
-            </div>
-            <div class="carousel-caption">
-              <h3 class="h3-responsive">{{ slideIdea.Title }}</h3>
-            </div>
-          </div>
-          
-
-          
-          {% endfor %}
-          <!--/.Slides-->
-        <!--Controls-->
-        <a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-        <!--/.Controls-->
-      </div>
-      <!--/.Carousel Wrapper-->
-        </div>
-          {% endif %}
-
-        </div>
+    {% include 'partial/timeline/slider.html' %}
+     
+       
         
          
 {% endblock %}
 
 {% block filter %}
-<div class="container-fluid w-75 mt-4">
-  <ul class="nav nav-pills">
-    <li class="nav-item col-md-3">
-      <a class="nav-link btn btn-info" href="#">Haftanın En İyileri</a>
-    </li>
-    
-    <li class="nav-item col-md-2">
-      <a class="nav-link btn btn-info" href="#">Ayın En İyileri</a>
-    </li>
-    <li class="nav-item col-md-2">
-      <a class="nav-link btn btn-info" href="#">Gerçekleştirilenler</a>
-    </li>
-    <li class="nav-item dropdown col-md-2">
-      <a class="nav-link dropdown-toggle btn btn-info" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Listele</a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item btn btn-info" href="#">En Beğenilenler</a>
-        <a class="dropdown-item btn btn-info" href="#">Zamana Göre En Son</a>
-        <a class="dropdown-item btn btn-info" href="#">Zamana Göre İlk</a>    
-      </div>   
-    </li>
-    <li> 
-    <form class="form-inline col-md-4 container-fluid">
-    <input class="form-control" type="text" placeholder="Arama" aria-label="Search">
-      </form>
-    
-    </li>
-   <!-- Links -->
-<!-- Search form -->
 
-  </ul>
-    
-  </div>
+{% include 'partial/timeline/filter.html' %}
+
  
-      
-       
 {% endblock %}
 
 {% block latestideas %} 
@@ -114,81 +36,9 @@
           cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
           officia deserunt mollit est laborum.</p>
         </div>
-        
+        {% include 'partial/timeline/idea_list.html' %}
         <!-- Grid row -->
-        <div class="row d-flex justify-content-center">
-        
-        {% for idea in ideas %}
-          <!-- Grid column -->
-          <div class="col-md-4 col-xl-4 mb-4">
-            <!--Featured image-->
-            <div class="view overlay rounded z-depth-2">
-              <img src="https://mdbootstrap.com/img/Photos/Others/laptop-sm.jpg" class="img-fluid" alt="Sample project image">
-              <a>
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-            <!--Excerpt-->           
-            <div class="card-body">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-              <a href="" class="green-text">
-                <h5 class="font-weight-bold mt-2 mb-3"><i class="fa fa-1x {{ idea.Ideatype.Icon }}"></i> {{ idea.Ideatype.IdeaName }}</h5>
-              </a>
-              {% if idea.Title|length > 50 %}
-              <h4 class="font-weight-bold mb-3">{{ idea.Title|slice:"0:40" }}...</h4>
-                  {% else %}
-              <h4 class="font-weight-bold mb-3">{{ idea.Title }}</h4>
-                {% endif %}     
-
-                {% if idea.Description|length > 100 %}     
-              <p>{{ idea.Description|slice:"0:95" }}...</p>
-
-                  {% else %}
-              <p>{{ idea.Description }}</p>
-
-                {% endif %}     
-
-              <a class="btn btn-outline-primary btn-block "> Daha Fazlasını Görüntüle</a>
-              <div class="card-body">
-                    <button class="btn btn-block btn-outline-primary"><i class="fa fa-thumbs-up"></i> Beğen</button>
-                    </div>
-            </div>
-          </div>
-          <!-- Grid column -->
-        {% endfor %}
-
-         
-        
-        </div>
-        <!-- Grid row -->
-        
-     
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-
-          {% if ideas.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?s={{ ideas.previous_page_number }}" tabindex="-1">Geri</a>
-              <li class="page-item"><a class="page-link" href="?s=1">İlk</a></li>
-            </li>
-            {% endif %}
-
-              <li class="page-item disabled"><a class="page-link" href="#">{{ ideas.number }}</a></li>
-              
-              {% if ideas.has_next %}
-              <li class="s-item">
-                  <li class="page-item"><a class="page-link" href="?s={{ ideas.next_page_number }}">İleri</a></li>
-                  <li class="page-item"><a class="page-link" href="?s={{ ideas.paginator.num_pages }}">Son</a></li>
-              </li>
-             {% endif %}
-          </ul>
-        </nav>
     </div>
-   
 {% endblock %}
 
  
