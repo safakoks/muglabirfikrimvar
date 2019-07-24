@@ -50,7 +50,8 @@ def DetailView(request):
 # Profil sayfası
 def ProfileView(request):
     template_name = 'fikir/profile.html'
-    return render(request, template_name, {})
+    myideas = Idea.objects.all().filter(AddedUser__UserT=request.user)
+    return render(request, template_name, {"myideas":myideas})
 
 # Giriş ekranı
 class LoginView(View):
