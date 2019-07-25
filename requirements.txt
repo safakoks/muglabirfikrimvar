@@ -3,3 +3,4 @@ Django~=2.0.7
 mysqlclient
 Pillow
 django-recaptcha
+gunicorn==19.9.0
