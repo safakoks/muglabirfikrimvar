@@ -25,7 +25,7 @@ SECRET_KEY = 'ii_py-z67)qnm=iwn1h#9%h1thz77bg5bcm=3m&#)dk@gv@990'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','10.100.3.136']
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','10.100.3.136']
 
 
 # Application definition
