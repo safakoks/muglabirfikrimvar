@@ -1,0 +1,44 @@
+{% extends 'fikir/index.html' %}
+{% load staticfiles %}
+
+{% block bestideas %}
+
+
+
+    {% include 'partial/timeline/slider.html' %}
+     
+       
+        
+         
+{% endblock %}
+
+{% block filter %}
+
+{% include 'partial/timeline/filter.html' %}
+
+ 
+{% endblock %}
+
+{% block latestideas %} 
+
+<div class="container-fluid w-75 mt-5">
+        <!-- Section heading -->
+        <h2 class="h1 w-responsive text-info text-center font-weight-bold my-3">FİKİRLERİNİZ</h2>
+        <!-- Section description -->
+        <div class="mt-0 float-right col-md-2 text-center">
+                <a href="{% url 'fikir:NewIdeaView' %}" class="btn btn-info btn-block">
+                  <i class="fa fa-plus"></i> YENİ FİKİR
+                </a>
+                 
+        </div>
+        <div class="col-md-9">
+        <p class="grey-text w-responsive mx-auto mb-5">Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+          officia deserunt mollit est laborum.</p>
+        </div>
+        {% include 'partial/timeline/idea_list.html' with idealist=ideas  %}
+        <!-- Grid row -->
+    </div>
+{% endblock %}
+
+ 

@@ -15,7 +15,7 @@
 
   <!-- Bootstrap core CSS -->
   <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="/static/css/heroic-features.css" rel="stylesheet">
 
@@ -23,54 +23,14 @@
 
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="/">Bir Fikrim Var</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-        
-            <!-- If Start -->
-            {% if user.is_authenticated %}
+    {% comment %} Menu partial {% endcomment %}
+    {% include "partial/base/menu.html" %}
 
-            <li class="nav-item">
-                <span class="nav-link" href="#"> Kullanici Adi</span>
-            </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Profil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Hesap Ayarları</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url "fikir:Logout" %}">Çıkış</a>
-          </li>
-        {% else %}
-        <!-- Else  -->
-
-        <li class="nav-item">
-            <a class="nav-link" href="#">Fikrin mi var?</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url "fikir:LoginView" %}">Giriş Yap</a>
-            </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url "fikir:SignupView" %}">Üye Ol</a>
-          </li>
-
-       
-
-        <!-- End If  -->
-        {% endif %}
-        </ul>
-      </div>
-    </div>
-  </nav>
-
+  {% if messagetext %}
+ <div class="container-fluid  mt-2 badge badge-{{ messagetype }} block w-100">
+    <label class="h3 mt-2"> {{ messagetext }}</label>
+ </div>
+{% endif %}
   <div class="container-fluid mb-5">
   <!-- Page Content -->
     {% block main %}
@@ -89,6 +49,7 @@
   <!-- Bootstrap core JavaScript -->
   <script src="/static/vendor/jquery/jquery.min.js"></script>
   <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/custom/custom.js"></script>
 
 </body>
 

@@ -4,7 +4,7 @@ from .models import *
 admin.site.register(Department)
 admin.site.register(IdeaType)
 admin.site.register(Status)
-admin.site.register(Adress)
+admin.site.register(Address)
 admin.site.register(Keyword)
 admin.site.register(Photo)
 admin.site.register(Idea)

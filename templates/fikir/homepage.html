@@ -9,7 +9,7 @@
 
         <!-- Card image -->
         <div class="view view-cascade overlay">
-          <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Slides/img%20(70).jpg" alt="Card image cap">
+          <img class="card-img-top" src="http://i.hurimg.com/i/hurriyet/75/750x422/5c0926610f25442cb8aac1fb.jpg" alt="Card image cap">
           <a href="#!">
             <div class="mask rgba-white-slight"></div>
           </a>
@@ -27,11 +27,11 @@
           </p>
       
           <!-- Linkedin -->
-          <a class="px-2 fa-lg li-ic"><i class="fab fa-linkedin-in"></i></a>
+          <a class="px-2 fa-lg li-ic h3 m-2"><i class="fa fa-3x fa-pencil"></i></a>
           <!-- Twitter -->
-          <a class="px-2 fa-lg tw-ic"><i class="fab fa-twitter"></i></a>
+          <a class="px-2 fa-lg tw-ic h3 m-2 "><i class="fa fa-3x fa-map-marker"></i></a>
           <!-- Dribbble -->
-          <a class="px-2 fa-lg fb-ic"><i class="fab fa-facebook-f"></i></a>
+          <a class="px-2 fa-lg fb-ic h3 m-2"><i class="fa fa-3x fa-comment"></i></a>
       
         </div>
       
@@ -39,88 +39,45 @@
       <!-- Card -->
 <!-- Card group -->
 <div class="card-group">
+ {% for idea in object_list %}
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card image -->
+          <div class="view overlay">
+          {% with imagePath=idea.photo_set.all.first.Image.url%}
+            <img class="card-img-top" src="{{imagePath}}" alt="Card image cap">
+          {% endwith %}
+ 
+            <a href="#!">
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+          <!-- Card content -->
+          <div class="card-body">
+            <!-- Title -->
 
-        <!-- Card -->
-        <div class="card mb-4">
-      
-          <!-- Card image -->
-          <div class="view overlay">
-            <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/49.jpg" alt="Card image cap">
-            <a href="#!">
-              <div class="mask rgba-white-slight"></div>
-            </a>
-          </div>
-      
-          <!-- Card content -->
-          <div class="card-body">
-      
-            <!-- Title -->
-            <h4 class="card-title">Fikir Başlığı</h4>
+            {% if idea.Title|length > 50 %}
+              <h4 class="font-weight-bold mb-3">{{ idea.Title|slice:"0:40" }}...</h4>
+                  {% else %}
+              <h4 class="font-weight-bold mb-3">{{ idea.Title }}</h4>
+                {% endif %}    
+
             <!-- Text -->
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+             {% if idea.Description|length > 100 %}
+            <p class="card-text">{{ idea.Description|slice:"0:95"}}...</p>
+
+                  {% else %}
+            <p class="card-text">{{ idea.Description}}</p>
+
+                {% endif %} 
+
             <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-            <button type="button" class="btn btn-primary btn-md">Read more</button>
-      
+            <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
           </div>
           <!-- Card content -->
-      
         </div>
         <!-- Card -->
-      
-        <!-- Card -->
-        <div class="card mb-4">
-      
-          <!-- Card image -->
-          <div class="view overlay">
-            <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/48.jpg" alt="Card image cap">
-            <a href="#!">
-              <div class="mask rgba-white-slight"></div>
-            </a>
-          </div>
-      
-          <!-- Card content -->
-          <div class="card-body">
-            <!-- Title -->
-            <h4 class="card-title">Fikir Başlığı</h4>
-            <!-- Text -->
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-            <button type="button" class="btn btn-primary btn-md">Read more</button>
-      
-          </div>
-          <!-- Card content -->
-          
-      
-        </div>
-        <!-- Card -->
-      
-        <!-- Card -->
-        <div class="card mb-4">
-      
-          <!-- Card image -->
-          <div class="view overlay">
-            <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/77.jpg" alt="Card image cap">
-            <a href="#!">
-              <div class="mask rgba-white-slight"></div>
-            </a>
-          </div>
-      
-          <!-- Card content -->
-          <div class="card-body">
-      
-            <!-- Title -->
-            <h4 class="card-title">Fikir Başlığı</h4>
-            <!-- Text -->
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-            <button type="button" class="btn btn-primary btn-md">Read more</button>
-      
-          </div>
-          <!-- Card content -->
-      
-        </div>
-        <!-- Card -->
-      
+      {% endfor %}
       </div>
       <!-- Card group -->
                   

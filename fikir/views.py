@@ -5,18 +5,57 @@ from .forms import *
 from django.views.generic.base import View
 from django.contrib.auth.forms import *
 from .models import *
+from django.db.models import Prefetch
 from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponse
-# Create your views here
+from django.core.paginator import Paginator
+from enum import Enum
+from django.http import JsonResponse
 
+# Mesaj tipleri kullanım -> MessageType.danger.name
+class MessageType(Enum):
+    danger = 1
+    warning = 2
+    success = 3
+    info = 4
+
+# Giriş sayfası
 def IndexView(request):
     template_name = 'fikir/homepage.html'
-    return render(request, template_name, {})
+    # threeIdeas = Idea.objects.all().order_by('?')[0:3]
+    ideas = Idea.objects.all().order_by('-id')[:3]
+    # print(ideas[2].photo_set.first().Image.url)
+    return render(request, template_name, {'object_list':ideas})
 
+# Kullanıcı ana ekranı
+def TimelineView(request):
+    template_name = 'fikir/timeline.html'
+    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True)[:5]
+    ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True)
+    paginator = Paginator(ideas_list, 10) 
+    page = request.GET.get('s')
+    ideas = paginator.get_page(page)
+    return render(request, template_name, {'ideas':ideas, 'slideIdeas':slideIdeas})
+
+
+# Giriş sayfası
+def DetailView(request):
+    template_name = 'fikir/detail.html'
+    return render(request, template_name)
+
+# Profil sayfası
+def ProfileView(request):
+    template_name = 'fikir/profile.html'
+    myideas = Idea.objects.all().filter(AddedUser__UserT=request.user)
+    currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
+    mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
+    return render(request, template_name, {"myideas":myideas,"mylikeideas":mylikeideas})
+
+# Giriş ekranı
 class LoginView(View):
     form_class = LoginForm
     template_name = "fikir/login.html"
@@ -25,8 +64,11 @@ class LoginView(View):
     'pagetitle':'Giriş',
     'formtitle':'Giriş',
     'buttontext' : 'Giriş',
-    'warningmessage':''}
+    'messagetext':'',
+    'messagetype':''}
     def get(self, request):
+        self.formVariables["messagetype"] = ""
+        self.formVariables["messagetext"] = ""
         return render(request, self.template_name, self.formVariables)
 
     def post(self, request):
@@ -40,10 +82,16 @@ class LoginView(View):
                     if not form.cleaned_data.get('remember_me'):
                         request.session.set_expiry(0)
                     login(request, user)
-                    return redirect('fikir:IndexView')
-        self.formVariables["warningmessage"] = form.errors
+                    return redirect('fikir:TimelineView')
+            self.formVariables["messagetype"] = MessageType.warning.name
+            self.formVariables["messagetext"] = "Kullanıcı Adı veya Parola Yanlış"
+            return render(request, self.template_name, self.formVariables)
+        
+        self.formVariables["messagetext"] = "Değerler geçersiz"
+        self.formVariables["messagetype"] = MessageType.warning.name
         return render(request, self.template_name, self.formVariables)
 
+# Üye olma
 class UserFormView(View):
     form_class = UserForm
     template_name = "fikir/signup.html"
@@ -51,7 +99,8 @@ class UserFormView(View):
     'pagetitle':'Üye Ol',
     'formtitle':'Fikirlerini Paylaşmak İçin Üye Ol',
     'buttontext' : "Üye Ol",
-    'warningmessage':''}
+    'messagetext':'',
+    'messagetype':''}
     def get(self, request):
             return render(request, self.template_name,self.formVariables)
 
@@ -92,7 +141,6 @@ class UserFormView(View):
             #             mail_subject, message, to=[to_email]
             # )
             # email.send()
-            print(form.errors)
             # Oluşturulan Kullanıcıyla giriş yapma
             user = authenticate(username = username,password= password)
             if  user is not None:
@@ -100,8 +148,88 @@ class UserFormView(View):
                     login(request,user)
                     return redirect('fikir:IndexView')
 
-        self.formVariables["warningmessage"] = form.errors
+        self.formVariables["messagetype"] = MessageType.danger.name
+        self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
+
+# Yeni fikir ekleme
+class NewIdeaView(View):
+    form_class = NewIdeaForm
+    template_name = "fikir/addingform.html"
+    formVariables = {
+    'form': form_class,
+    'pagetitle':'Yeni Fikir',
+    'formtitle':'Yeni Fikir',
+    'buttontext' : 'Ekle',
+    'messagetext':'',
+    'messagetype':''}
+    def get(self, request):
+        self.formVariables["messagetype"] = ""
+        self.formVariables["messagetext"] = ""
+        return render(request, self.template_name, self.formVariables)
+
+    def post(self, request):
+        form = self.form_class(request.POST,request.FILES)
+        if form.is_valid():
+            # Giriş yapan kullanıcıyı alma
+            currentUser = request.user
+
+            # Yeni Adres oluşturma
+            newAddress = Address()
+            newAddress.AdressDesc = form.cleaned_data['adressDesc']
+            newAddress.District = form.cleaned_data['district']
+            newAddress.Neighborhood = form.cleaned_data['neighborhood']
+            newAddress.Street = form.cleaned_data['street']
+            newAddress.save()
+
+            # Yeni fikir oluşturma
+            newIdea = Idea()
+            newIdea.Title = form.cleaned_data['title']
+            newIdea.Description = form.cleaned_data['description']
+            newIdea.Ideatype = form.cleaned_data['ideatype']
+            newIdea.Department = form.cleaned_data['department']
+            newIdea.CreatedDate = datetime.datetime.now()
+            newIdea.AddedUser = UserProfile.objects.filter(UserT = currentUser).first()
+            newIdea.UserAddress = newAddress
+            newIdea.IsApproved = False            
+            newIdea.save()
+
+            # Fikir fotoğrafları ekleme
+            Photo1 = Photo()
+            Photo2 = Photo()
+            Photo3 = Photo()
+            
+            # Slider Photo
+            Photo1.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto1']
+            Photo1.ImageType = 1
+            
+            # Thumbnail
+            Photo2.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto2']
+            Photo2.ImageType = 2
+
+            # Detail View
+            Photo3.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto3']
+            Photo3.ImageType = 3
+
+            Photo1.Idea = newIdea
+            Photo2.Idea = newIdea
+            Photo3.Idea = newIdea
+
+            Photo1.save()
+            Photo2.save()
+            Photo3.save()
+
+            self.formVariables["messagetype"] = MessageType.success.name
+            self.formVariables["messagetext"] = "Yeni fikriniz başarıyla oluşturuldu"
+            return render(request,self.template_name,self.formVariables)
+
+        # Başarısız form girdisi durumunda
+        print(form.errors)
+        self.formVariables["messagetype"] = MessageType.danger.name
+        self.formVariables["messagetext"] = form.errors.values
+        return render(request,self.template_name,self.formVariables)
+
+
 
 def activate(request, uidb64, token):
     try:
@@ -117,3 +245,33 @@ def activate(request, uidb64, token):
         return redirect('fikir:IndexView')
     else:
         return HttpResponse('Aktivasyon maili geçersiz')
+
+def likeAnIdea(request):
+    ideaID = request.GET.get('ideaID', None)
+    currentUser = request.user
+    currentIdea = Idea.objects.get(pk=int(ideaID))
+    if currentIdea.IsApproved and currentIdea.IsActive :
+        currentUserProfile = UserProfile.objects.filter(UserT = currentUser).first()
+
+        currentUserLike = UserLike.objects.filter(User=currentUserProfile).filter(Idea=currentIdea).first()
+        if  currentUserLike:
+            currentUserLike.delete()
+        else:
+            currentLike = UserLike()
+            currentLike.Idea = currentIdea
+            currentLike.User = currentUserProfile
+            currentLike.LikeDate = datetime.datetime.now()
+            currentLike.save() 
+            
+        currentcount = currentIdea.likes_list.all().count()
+        data = {
+            'likecount': currentcount,
+            'status' : True
+        }
+        return JsonResponse(data)
+
+    data = {
+        'likecount': 0,
+        'status' : False
+    }
+    return JsonResponse(data)

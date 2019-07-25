@@ -1,8 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-
-
+from PIL import Image
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 class Department(models.Model):
     DepartmentName = models.CharField(max_length=100,verbose_name='Departman Adı')
@@ -31,51 +31,18 @@ class Status(models.Model):
     def __str__(self):
         return self.StatusName
 
-class Adress(models.Model):
-    District = models.CharField(max_length=100,verbose_name='İlçe')
-    Neighborhood = models.CharField(max_length=250,verbose_name='Semt')
-    Street = models.CharField(max_length=100,verbose_name='Sokak')
-    AdressDesc = models.CharField(max_length=250,verbose_name='Adres Açıklaması')
+class Address(models.Model):
+    District        = models.CharField(max_length=100,verbose_name='İlçe')
+    Neighborhood    = models.CharField(max_length=250,verbose_name='Semt')
+    Street          = models.CharField(max_length=100,verbose_name='Sokak')
+    AdressDesc      = models.CharField(max_length=250,verbose_name='Adres Açıklaması')
     class Meta:
         verbose_name = "Adres"
         verbose_name_plural = "Adresler"
     def __str__(self):
         return self.District
 
-class Keyword(models.Model):
-    Word = models.CharField(max_length=100,verbose_name='Anahtar Kelime')
-    Idea= models.CharField(max_length=250,verbose_name='Fikir')
-    class Meta:
-        verbose_name = "Anahtar Kelime"
-        verbose_name_plural = "Anahtar Kelimeler"
-    def __str__(self):
-        return self.Word
 
-class Photo(models.Model):
-    Image = models.ImageField(verbose_name='Fotoğraf')
-    class Meta:
-        verbose_name = "Fotoğraf"
-        verbose_name_plural = "Fotoğraflar"
-    def __str__(self):
-        return self.Image
-
-
-class Idea(models.Model):
-    Title = models.CharField(primary_key=True,max_length=100,verbose_name='Başlık')
-    ideatype = models.ForeignKey(IdeaType,null=True,on_delete=models.PROTECT,verbose_name='Fikir Tipi')
-    Description = models.CharField(max_length=250,verbose_name='Açıklama')
-    adress = models.ForeignKey(Adress,null=True,on_delete=models.PROTECT,verbose_name='Adres')
-    department = models.ForeignKey(Department,on_delete=models.PROTECT,verbose_name='Departman')
-    CreatedDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Yaratılış Tarihi')
-    IgnoreDesc = models.CharField(max_length=500,verbose_name='Red Açıklaması')
-    IsApproved = models.BooleanField(default=True,verbose_name='Onaylandı mı?')
-    IsActive = models.BooleanField(default=True,verbose_name='Aktiflik Durumu')
-    status = models.ForeignKey(Status,null=True,on_delete=models.PROTECT,verbose_name='Durum')
-    class Meta:
-        verbose_name = "Fikir"
-        verbose_name_plural = "Fikirler"
-    def __str__(self):
-        return self.Title
 
 class UserProfile(models.Model):
     Name = models.CharField(max_length=100,verbose_name='Ad')
@@ -90,16 +57,87 @@ class UserProfile(models.Model):
         verbose_name_plural = "Kullanıcı Profilleri"
     def __str__(self):
         return self.Name + " " + self.Surname
-  
+    def save(self):
+        if not self.ProfilePhoto:
+            return            
+        super(UserProfile, self).save()
+        image = Image.open(self.ProfilePhoto)
+        (width, height) = image.size     
+        size = ( 400, 400)
+        image = image.resize(size, Image.ANTIALIAS)
+        image.save(self.ProfilePhoto.path)
+
+
+class Idea(models.Model):
+    Title       = models.CharField(max_length=100,verbose_name='Başlık')
+    Ideatype    = models.ForeignKey(IdeaType,default='1',on_delete=models.PROTECT,verbose_name='Fikir Tipi')
+    Description = models.CharField(max_length=250,verbose_name='Açıklama')
+    UserAddress = models.ForeignKey(Address,null=True,on_delete=models.PROTECT,verbose_name='Adres')
+    Department  = models.ForeignKey(Department,on_delete=models.PROTECT,verbose_name='Departman')
+    CreatedDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Yaratılış Tarihi')
+    IgnoreDesc  = models.CharField(max_length=500,null=True,blank=True,verbose_name='Red Açıklaması')
+    IsApproved  = models.BooleanField(default=False,verbose_name='Onaylandı mı?')
+    IsOnHomePage  = models.BooleanField(default=False,verbose_name='Anasayfada görünsün mü?')
+    IsActive    = models.BooleanField(default=True,verbose_name='Aktiflik Durumu')
+    Status      = models.ForeignKey(Status,null=True,on_delete=models.PROTECT,verbose_name='Durum')
+    AddedUser   = models.ForeignKey(UserProfile,null=True,on_delete=models.PROTECT,verbose_name='Ekleyen Kullanıcı')
+
+    class Meta:
+        verbose_name = "Fikir"
+        verbose_name_plural = "Fikirler"
+    def __str__(self):
+        return self.Title
+
+
+class Keyword(models.Model):
+    Word = models.CharField(max_length=100,verbose_name='Anahtar Kelime')
+    Idea= models.ForeignKey(Idea,verbose_name='Fikir',null=True,on_delete=models.CASCADE,)
+    class Meta:
+        verbose_name = "Anahtar Kelime"
+        verbose_name_plural = "Anahtar Kelimeler"
+    def __str__(self):
+        return self.Word
+
+class Photo(models.Model):
+    Image = models.ImageField(verbose_name='Fotoğraf')
+    ImageType = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(3)],verbose_name='Fotoğraf Tipi',default=0)
+    Idea= models.ForeignKey(Idea,verbose_name='Fikir',null=True,on_delete=models.CASCADE,)
+    class Meta:
+        verbose_name = "Fotoğraf"
+        verbose_name_plural = "Fotoğraflar"
+
+    def __str__(self):
+        if self.Idea is not None:
+            return self.Idea.Title
+        
+
+    def save(self):
+        if not self.Image:
+            return            
+        super(Photo, self).save()
+        image = Image.open(self.Image)
+        (width, height) = image.size
+        # Slider
+        if self.ImageType==1: 
+            size = ( 1321, 583)
+        # Detail Banner
+        if self.ImageType==2:
+            size = ( 1200, 583)
+        # Thumbnail
+        if self.ImageType==3:
+            size = ( 781, 521)
+        image = image.resize(size, Image.ANTIALIAS)
+        image.save(self.Image.path)
+
 class UserLike(models.Model):
-    User = models.ForeignKey(UserProfile,on_delete=models.PROTECT,verbose_name='Kullanıcı')
-    Idea = models.ForeignKey(Idea,null=True,on_delete=models.PROTECT,verbose_name='Fikir')
+    User = models.ForeignKey(UserProfile,on_delete=models.PROTECT,related_name='userliked_list',verbose_name='Kullanıcı')
+    Idea = models.ForeignKey(Idea,null=True,on_delete=models.CASCADE,related_name='likes_list',verbose_name='Fikir')
     LikeDate = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Beğenme Tarihi')
     class Meta:
         verbose_name = "Beğeni"
         verbose_name_plural = "Beğeniler"
     def __str__(self):
-        return self.User
+        return self.User.UserT.username + ", '"+ self.Idea.Title + "' başlıklı fikri beğendi "
 
 
 
