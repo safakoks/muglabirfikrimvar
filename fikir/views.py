@@ -55,6 +55,11 @@ def ProfileView(request):
     mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
     return render(request, template_name, {"myideas":myideas,"mylikeideas":mylikeideas,'currentprofile':currentUserProfile})
 
+# Profil Ayarları sayfası
+def ProfileSettingsView(request):
+    template_name = 'fikir/profilesettings.html'
+    return render(request, template_name, {})
+
 # Giriş ekranı
 class LoginView(View):
     form_class = LoginForm
