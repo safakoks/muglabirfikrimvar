@@ -1,19 +1,19 @@
 
 <div class="row">
-    <div class="mx-auto col-md-8 col-sm-12">
-      <div class=" card card-signin my-5">
-        <div class="card-body">
-          <div class="row text-center">
-              <div class="col-md-6 text-center "> 
-              <h3 class="card-title mt-3">{{ formtitle }}</h3>
+    <div class="mx-auto mt-3 w-100">
+      <div class=" card card-signin">
+          <div class="card-header w-100 text-center">
+              Profilini Güncelle
             </div>
+        <div class="card-body">
+          <div class="row text-center">        
           </div>
           <br/>
           <span class="label label-warning">{% if form.errors %} {%endif%} </span>
           <form class="form-signin" method="post" enctype='multipart/form-data' >
                 {% csrf_token %}
                 {% include "fikir/form_template.html" %}
-                <button class="btn btn-md btn-primary btn-block text-uppercase" type="submit">{{buttontext}}</button>
+                <button class="btn btn-md btn-outline-primary btn-block text-uppercase btn-lg" type="submit">{{buttontext}}</button>
           </form>
         </div>
       </div>
