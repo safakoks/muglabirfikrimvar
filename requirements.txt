@@ -4,3 +4,6 @@ mysqlclient
 Pillow
 django-recaptcha
 gunicorn==19.9.0
+djangorestframework
+django-filter
+markdown

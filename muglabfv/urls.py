@@ -18,7 +18,11 @@ from django.urls import path, include
 from django.conf.urls import url
 from django.conf.urls.static import static
 from django.conf import settings
+from .api_router import router
+from rest_framework.authtoken import views as api_auth_views
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import login
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('fikir.urls')),
@@ -27,6 +31,12 @@ urlpatterns = [
     url(r'^sifirla/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         auth_views.password_reset_confirm, name='password_reset_confirm'),
     url(r'^sifirla/basarili/$', auth_views.password_reset_complete, name='password_reset_complete'),
+
+    # api
+    path('api/', include(router.urls), name='api'),
+    path('api-token-auth/', api_auth_views.obtain_auth_token, name='api_token_auth'),
+
 ]
+
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
