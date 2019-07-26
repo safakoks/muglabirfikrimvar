@@ -74,9 +74,7 @@ class NewIdeaForm(forms.ModelForm):
         label='Adres',
         help_text='En fazla 200 karekter girebilirsiniz')
  
-    ideaPhoto1      = forms.ImageField(label='Kapak Fotoğrafı (1320x580)')
-    ideaPhoto2      = forms.ImageField(label='Tanıtım Fotoğrafı (1320x580)')
-    ideaPhoto3      = forms.ImageField(label='Küçük Tanıtım Fotoğrafı (780x520)')
+    ideaPhoto      = forms.ImageField(label='Fikrinizin Görseli')
       
          
     class Meta:
@@ -90,9 +88,8 @@ class NewIdeaForm(forms.ModelForm):
             'neighborhood',
             'street',
             'adressDesc',
-            'ideaPhoto1',
-            'ideaPhoto2',
-            'ideaPhoto3']
+            'ideaPhoto',
+         ]
 
     def __init__(self, *args, **kwargs):
         super(NewIdeaForm, self).__init__(*args, **kwargs)
