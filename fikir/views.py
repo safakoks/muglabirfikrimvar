@@ -200,31 +200,21 @@ class NewIdeaView(View):
             newIdea.save()
 
             # Fikir fotoğrafları ekleme
-            Photo1 = Photo()
-            Photo2 = Photo()
-            Photo3 = Photo()
-            
-            formPhoto = form.cleaned_data['ideaPhoto']
+            CurrentPhoto = Photo()
+            CurrentPhoto.Image =  form.cleaned_data['ideaPhoto']
+            CurrentPhoto.Idea = newIdea
 
             # Slider Photo
-            Photo1.Image =  formPhoto
-            Photo1.ImageType = 1
+            CurrentPhoto.ImageType = 1
+            CurrentPhoto.save()
             
             # Thumbnail
-            Photo2.Image =  formPhoto
-            Photo2.ImageType = 2
+            CurrentPhoto.ImageType = 2
+            CurrentPhoto.save()
 
             # Detail View
-            Photo3.Image =  formPhoto
-            Photo3.ImageType = 3
-
-            Photo1.Idea = newIdea
-            Photo2.Idea = newIdea
-            Photo3.Idea = newIdea
-
-            Photo1.save()
-            Photo2.save()
-            Photo3.save()
+            CurrentPhoto.ImageType = 3
+            CurrentPhoto.save()
 
             self.formVariables["messagetype"] = MessageType.success.name
             self.formVariables["messagetext"] = "Yeni fikriniz başarıyla oluşturuldu"
