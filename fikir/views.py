@@ -34,7 +34,7 @@ def IndexView(request):
 # Kullanıcı ana ekranı
 def TimelineView(request):
     template_name = 'fikir/timeline.html'
-    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True)[:5]
+    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
     ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True)
     paginator = Paginator(ideas_list, 10) 
     page = request.GET.get('s')
@@ -209,10 +209,12 @@ class NewIdeaView(View):
             CurrentPhoto.save()
             
             # Thumbnail
+            CurrentPhoto.id = None
             CurrentPhoto.ImageType = 2
             CurrentPhoto.save()
 
             # Detail View
+            CurrentPhoto.id = None
             CurrentPhoto.ImageType = 3
             CurrentPhoto.save()
 
