@@ -27,7 +27,7 @@ class MessageType(Enum):
 def IndexView(request):
     template_name = 'fikir/homepage.html'
     # threeIdeas = Idea.objects.all().order_by('?')[0:3]
-    ideas = Idea.objects.all().order_by('-id')[:3]
+    ideas = Idea.objects.all().order_by('-id').filter(IsApproved=True).filter(IsActive=True)[:3]
     # print(ideas[2].photo_set.first().Image.url)
     return render(request, template_name, {'object_list':ideas})
 
@@ -53,7 +53,7 @@ def ProfileView(request):
     myideas = Idea.objects.all().filter(AddedUser__UserT=request.user)
     currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
     mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
-    return render(request, template_name, {"myideas":myideas,"mylikeideas":mylikeideas})
+    return render(request, template_name, {"myideas":myideas,"mylikeideas":mylikeideas,'currentprofile':currentUserProfile})
 
 # Giriş ekranı
 class LoginView(View):
@@ -199,16 +199,18 @@ class NewIdeaView(View):
             Photo2 = Photo()
             Photo3 = Photo()
             
+            formPhoto = form.cleaned_data['ideaPhoto']
+
             # Slider Photo
-            Photo1.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto1']
+            Photo1.Image =  formPhoto
             Photo1.ImageType = 1
             
             # Thumbnail
-            Photo2.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto2']
+            Photo2.Image =  formPhoto
             Photo2.ImageType = 2
 
             # Detail View
-            Photo3.Image =  newAddress.AdressDesc = form.cleaned_data['ideaPhoto3']
+            Photo3.Image =  formPhoto
             Photo3.ImageType = 3
 
             Photo1.Idea = newIdea
@@ -228,8 +230,6 @@ class NewIdeaView(View):
         self.formVariables["messagetype"] = MessageType.danger.name
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
-
-
 
 def activate(request, uidb64, token):
     try:
