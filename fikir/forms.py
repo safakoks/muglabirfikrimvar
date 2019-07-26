@@ -19,7 +19,6 @@ class LoginForm(forms.Form):
 
 
 class UserForm(forms.ModelForm):
-    
     name        = forms.CharField(max_length=100,label='Ad',help_text='Lütfen adınızı giriniz')
     surname     = forms.CharField(max_length=100,label='Soyad',help_text='Lütfen soyadınızı giriniz')
     phoneNumber = forms.CharField(max_length=100,label='Telefon Numarası')
@@ -39,6 +38,22 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'password', 'name','surname','phoneNumber','birthday','email','profilePhoto']
+
+
+class UserEditForm(forms.ModelForm):
+    Name        = forms.CharField(max_length=100,label='Ad',help_text='Lütfen adınızı giriniz')
+    Surname     = forms.CharField(max_length=100,label='Soyad',help_text='Lütfen soyadınızı giriniz')
+    PhoneNumber = forms.CharField(max_length=100,label='Telefon Numarası')
+    Birthday    = forms.DateField(label="Doğum Günü",initial=datetime.date.today)
+    Email       = forms.EmailField(label='Email',help_text='*gerekli')
+    ProfilePhoto= forms.ImageField(label='Profil Fotoğrafı',help_text='Lütfen profil fotoğrafınızı giriniz')
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+    class Meta:
+        model = UserProfile
+        fields = ['Name', 'Surname','PhoneNumber','Birthday','Email','ProfilePhoto']
 
 
 class NewIdeaForm(forms.ModelForm):

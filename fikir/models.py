@@ -48,7 +48,7 @@ class UserProfile(models.Model):
     Name = models.CharField(max_length=100,verbose_name='Ad')
     Surname = models.CharField(max_length=100,verbose_name='Soyad')
     PhoneNumber = models.CharField(max_length=100,verbose_name='Telefon Numarası')
-    Birthday = models.DateTimeField(auto_now_add=True,blank=True,verbose_name='Doğum Tarihi')
+    Birthday = models.DateTimeField(blank=True,verbose_name='Doğum Tarihi')
     Email = models.EmailField(verbose_name='Email')
     ProfilePhoto =models.ImageField(verbose_name='Profil Fotoğrafı')
     UserT = models.OneToOneField(User,on_delete=models.CASCADE,verbose_name='Kullanıcı')

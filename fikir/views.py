@@ -56,9 +56,34 @@ def ProfileView(request):
     return render(request, template_name, {"myideas":myideas,"mylikeideas":mylikeideas,'currentprofile':currentUserProfile})
 
 # Profil Ayarları sayfası
-def ProfileSettingsView(request):
-    template_name = 'fikir/profilesettings.html'
-    return render(request, template_name, {})
+class ProfileSettingsView(View):
+    form_class = UserEditForm
+    template_name = "fikir/profilesettings.html"
+    formVariables = {'form': form_class,
+    'pagetitle':'Profil Güncelleme',
+    'formtitle':'Profilini Güncelle',
+    'buttontext' : "Güncelle",
+    'messagetext':'',
+    'messagetype':''}
+    def get(self, request):
+        self.formVariables["messagetype"] = ""
+        currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
+        self.formVariables["form"] = UserEditForm( instance=currentUserProfile)
+        self.formVariables["messagetext"] = ""
+        return render(request, self.template_name, self.formVariables)
+    def post(self, request):
+        form = self.form_class(request.POST,request.FILES)
+        if form.is_valid():
+            Name = form.cleaned_data['Name']
+            Surname = form.cleaned_data['Surname']
+            PhoneNumber = form.cleaned_data['PhoneNumber']
+            Birthday = form.cleaned_data['Birthday']
+            Email = form.cleaned_data['Email']
+            ProfilePhoto = form.cleaned_data['ProfilePhoto']
+            
+
+
+        return render(request, self.template_name, self.formVariables)
 
 # Giriş ekranı
 class LoginView(View):

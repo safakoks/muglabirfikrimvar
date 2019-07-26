@@ -12,7 +12,7 @@ urlpatterns = [
      path('detay/',  views.DetailView, name='DetailView'),     
      path('cikis/', auth_views.logout,  {'next_page': "fikir:IndexView"},  name='Logout'),
      path('begen/', views.likeAnIdea,  name='LikeAnIdea'),
-     path('hesapayarlari/', views.ProfileSettingsView, name='ProfileSettings')
+     path('hesapayarlari/', views.ProfileSettingsView.as_view(), name='ProfileSettings')
 #      path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
 #         views.activate, name='activate'),
 ]
