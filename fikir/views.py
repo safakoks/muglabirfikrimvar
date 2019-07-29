@@ -43,9 +43,10 @@ def TimelineView(request):
 
 
 # Giriş sayfası
-def DetailView(request):
+def DetailView(request, pk):
     template_name = 'fikir/detail.html'
-    return render(request, template_name)
+    current_idea = Idea.objects.get(pk=pk)
+    return render(request, template_name, {"current_idea":current_idea})
 
 # Profil sayfası
 def ProfileView(request):
@@ -53,7 +54,12 @@ def ProfileView(request):
     myideas = Idea.objects.all().filter(AddedUser__UserT=request.user)
     currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
     mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
-    return render(request, template_name, {"myideas":myideas,"mylikeideas":mylikeideas,'current_profile':currentUserProfile})
+
+    return render(request, template_name, {
+        "myideas":myideas,
+        "is_settings_menu_display":True,
+        "mylikeideas":mylikeideas,
+        'current_profile':currentUserProfile})
 
 # Profil Ayarları sayfası
 class ProfileSettingsView(View):
@@ -68,9 +74,10 @@ class ProfileSettingsView(View):
     def get(self, request):
         self.formVariables["messagetype"] = ""
         current_user_profile = UserProfile.objects.all().filter(UserT=request.user).first()
-        self.formVariables["form"] = UserEditForm( instance=current_user_profile)
-        self.formVariables["form_password"] = PasswordChangeForm(user=request.user)
+        self.formVariables["form"] = UserEditForm(instance=current_user_profile)
+        self.formVariables["form_password"] = CustomPasswordChangeForm(user=request.user)
         self.formVariables["form_password_action"] = reverse('fikir:ChangePassword', kwargs={})
+        self.formVariables["form_profile_action"] = reverse('fikir:ProfileSettings', kwargs={})
         self.formVariables["messagetext"] = ""
         return render(request, self.template_name, self.formVariables)
     def post(self, request):
@@ -82,7 +89,9 @@ class ProfileSettingsView(View):
             current_user_profile.PhoneNumber = form.cleaned_data['PhoneNumber']
             current_user_profile.Birthday = form.cleaned_data['Birthday']
             current_user_profile.Email = form.cleaned_data['Email']
-            current_user_profile.ProfilePhoto = form.cleaned_data['ProfilePhoto']
+            new_profile_photo = form.cleaned_data['ProfilePhoto']
+            if new_profile_photo is not None :
+                current_user_profile.ProfilePhoto = form.cleaned_data['ProfilePhoto']
             current_user_profile.save()
             self.formVariables["messagetype"] = MessageType.success.name
             self.formVariables["messagetext"] = "Profil başarıyla güncellendi"
@@ -191,6 +200,68 @@ class UserFormView(View):
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
 
+def likeAnIdea(request):
+    ideaID = request.GET.get('ideaID', None)
+    currentUser = request.user
+    currentIdea = Idea.objects.get(pk=int(ideaID))
+    if currentIdea.IsApproved and currentIdea.IsActive :
+        currentUserProfile = UserProfile.objects.filter(UserT = currentUser).first()
+
+        currentUserLike = UserLike.objects.filter(User=currentUserProfile).filter(Idea=currentIdea).first()
+        if  currentUserLike:
+            currentUserLike.delete()
+        else:
+            currentLike = UserLike()
+            currentLike.Idea = currentIdea
+            currentLike.User = currentUserProfile
+            currentLike.LikeDate = datetime.datetime.now()
+            currentLike.save() 
+            
+        currentcount = currentIdea.likes_list.all().count()
+        data = {
+            'likecount': currentcount,
+            'status' : True
+        }
+        return JsonResponse(data)
+
+    data = {
+        'likecount': 0,
+        'status' : False
+    }
+    return JsonResponse(data)
+
+def change_password(request):
+    form = CustomPasswordChangeForm(request.user, request.POST)
+    if form.is_valid():
+        old_password = form.cleaned_data['old_password']
+        new_password1 = form.cleaned_data['new_password1']
+        new_password2 = form.cleaned_data['new_password2']
+        user = form.save()
+        update_session_auth_hash(request, user)
+        messages.success(request, 'Your password was successfully updated!')
+        return redirect('fikir:ProfileSettings')
+    else:
+        messages.error(request, 'Please correct the error below.')
+    return redirect('fikir:ProfileSettings')
+
+class UpdateIdeaView(View):
+    template_name = "fikir/addingform.html"
+    formVariables = {
+    'form': "",
+    'pagetitle':'Fikir Güncelle',
+    'formtitle':'Fikir Güncelleme',
+    'buttontext' : 'Güncelle',
+    'messagetext':'',
+    'messagetype':''}
+    def get(self, request, pk):
+        current_idea = Idea.objects.filter(id=pk).filter(AddedUser__UserT_id=request.user.id).first()
+        if current_idea is not None:
+            self.formVariables["form"] = NewIdeaForm(instance=current_idea)
+            self.formVariables["messagetype"] = ""
+            self.formVariables["messagetext"] = ""
+            return render(request, self.template_name, self.formVariables)
+        redirect("fikir:ProfileView")
+
 # Yeni fikir ekleme
 class NewIdeaView(View):
     form_class = NewIdeaForm
@@ -275,47 +346,3 @@ def activate(request, uidb64, token):
         return redirect('fikir:IndexView')
     else:
         return HttpResponse('Aktivasyon maili geçersiz')
-
-def likeAnIdea(request):
-    ideaID = request.GET.get('ideaID', None)
-    currentUser = request.user
-    currentIdea = Idea.objects.get(pk=int(ideaID))
-    if currentIdea.IsApproved and currentIdea.IsActive :
-        currentUserProfile = UserProfile.objects.filter(UserT = currentUser).first()
-
-        currentUserLike = UserLike.objects.filter(User=currentUserProfile).filter(Idea=currentIdea).first()
-        if  currentUserLike:
-            currentUserLike.delete()
-        else:
-            currentLike = UserLike()
-            currentLike.Idea = currentIdea
-            currentLike.User = currentUserProfile
-            currentLike.LikeDate = datetime.datetime.now()
-            currentLike.save() 
-            
-        currentcount = currentIdea.likes_list.all().count()
-        data = {
-            'likecount': currentcount,
-            'status' : True
-        }
-        return JsonResponse(data)
-
-    data = {
-        'likecount': 0,
-        'status' : False
-    }
-    return JsonResponse(data)
-
-def change_password(request):
-    form = PasswordChangeForm(request.user, request.POST)
-    if form.is_valid():
-        old_password = form.cleaned_data['old_password']
-        new_password1 = form.cleaned_data['new_password1']
-        new_password2 = form.cleaned_data['new_password2']
-        user = form.save()
-        update_session_auth_hash(request, user)
-        messages.success(request, 'Your password was successfully updated!')
-        return redirect('fikir:ProfileSettings')
-    else:
-        messages.error(request, 'Please correct the error below.')
-    return redirect('fikir:ProfileSettings')

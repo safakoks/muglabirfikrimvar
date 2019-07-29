@@ -3,7 +3,7 @@ from .models import UserProfile, Idea,IdeaType,Address,Department
 from django import  forms
 from captcha.fields import ReCaptchaField
 import datetime
-
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 class LoginForm(forms.Form):
@@ -55,6 +55,15 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['Name', 'Surname','PhoneNumber','Birthday','Email','ProfilePhoto']
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label=("Old password"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autofocus': False}),
+    )
+    def __init__(self, *args, **kwargs):
+        return super().__init__(*args, **kwargs)
 
 
 class NewIdeaForm(forms.ModelForm):

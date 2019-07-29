@@ -5,7 +5,7 @@
 
 {% block profileudate %}
 <div class="container-fluid mt-5 w-75">
-{% include "partial/profilesetting/editprofile.html" %}
+{% include "partial/profilesetting/editprofile.html" with form=form form_title='Hesap Bilgileri Güncelleme' form_action=form_profile_action   %}
 </div>
 {% endblock %}
 {% block passwordupdate %}

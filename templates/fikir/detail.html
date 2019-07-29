@@ -1,33 +1,31 @@
 {% extends 'fikir/base.html' %}
 {% load staticfiles %}
-
+{% load custom_filters %} 
 {% block main %}
 <div class="container-fluid mt-5 w-75">   
 <div class="row mt-3">
 <div class="row mx-auto">
   <div>
-<img  class="img-fluid " alt="Responsive image" src="/media/red-car-min12.jpg" > 
+<img  class="img-fluid " alt="Responsive image" src="{{ current_idea|cast_image_type:2 }}" > 
 </div>
 </div>
 </div>
-<div class="card text-center mt-3">
-    <div class="card-body">
-      Fikir Tipi <i class="fa fa-map-marker" aria-hidden="true"></i>
+<div class=" text-center m-2">
+    <div class="card-body h5">
+      {{ current_idea.Ideatype }} <i class="fa {{ current_idea.Ideatype.Icon }}" aria-hidden="true"></i>
     </div>
   </div>
-
-   
     <div class="card text-center">
       <div class="card-header">
-          <h2 class="card-title my-2">Fikir Başlığı</h2>
+          <h2 class="card-title my-2">{{ current_idea.Title }}</h2>
       </div>
       <div class="card-body">
   
-        <p class="card-text">Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir. Lorem Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı oluşturmak üzere bir yazı galerisini alarak karıştırdığı 1500'lerden beri endüstri standardı sahte metinler olarak kullanılmıştır. Beşyüz yıl boyunca varlığını sürdürmekle kalmamış, aynı zamanda pek değişmeden elektronik dizgiye de sıçramıştır. 1960'larda Lorem Ipsum pasajları da içeren Letraset yapraklarının yayınlanması ile ve yakın zamanda Aldus PageMaker gibi Lorem Ipsum sürümleri içeren masaüstü yayıncılık yazılımları ile popüler olmuştur.</p>
+        <p class="card-text">{{ current_idea.Description }}</p>
       </div>
       <div class="card-footer text-muted">
-          <h5 class="card-title mt-1">Status:</h5>
-          <p class="card-text">Onaylandı.</p>
+          <h5 class="card-title mt-1">Durum</h5>
+          <p class="card-text">{{ current_idea.Status }}</p>
       </div>
     </div>
   
@@ -36,9 +34,9 @@
         <div class="card w-100" style="width: 18rem;">
             <div class="card-body">
                 
-              <h4 class="card-title"><i class="fa fa-map-marker" aria-hidden="true"></i>  Adres:</h4>
+              <h4 class="card-title"><i class="fa fa-map-marker" aria-hidden="true"></i>  Adres </h4>
               
-              <p class="card-text">	Emirbeyazıt Mah. Uğur Mumcu Blv. 14 Menteşe, Muğla</p>
+              <p class="card-text">	{{ current_idea.UserAddress }}</p>
              </div>
           </div>
     </div>
@@ -47,14 +45,14 @@
             <div class="card w-100" style="width: 18rem;">
                 <div class="card-body">
                     
-                  <h4 class="card-title"><i class="fa fa-map-marker" aria-hidden="true"></i> Departman:</h4>
+                  <h4 class="card-title"><i class="fa fa-building" aria-hidden="true"></i> {{ current_idea.Department }}</h4>
                   
-                  <p class="card-text">	Emirbeyazıt Mah. Uğur Mumcu Blv. 14 Menteşe, Muğla</p>
+                  <p class="card-text">	{{ current_idea.Department.Description }}</p>
                  </div>
               </div>
 </div> 
 <div class="col-md-4 offset-md-4">
-<button class="btn btn-outline-primary btn-lg btn-block mt-4" value="{{ idea.id}}"><i class="fa fa-thumbs-up"></i> Beğen (<span class="like-count"></span>) </button>
+<button class="btn btn-outline-primary btn-lg btn-block mt-4 like-btn" value="{{ current_idea.id}}"><i class="fa fa-thumbs-up"></i> Beğen (<span class="like-count">{{ current_idea|get_like_count}}</span>) </button>
 </div>   
 </div>
   

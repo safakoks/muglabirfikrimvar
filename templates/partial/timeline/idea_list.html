@@ -22,7 +22,8 @@
               {% endif %}
             </h4>
               <a href="" class="green-text">
-                <h5 class="font-weight-bold mt-2 mb-3"><i class="fa fa-1x {{ idea.Ideatype.Icon }}"></i> {{ idea.Ideatype.IdeaName }}</h5>
+                <h5 class="font-weight-bold mt-2 mb-3"><i class="fa fa-1x {{ idea.Ideatype.Icon }}"></i> {{ idea.Ideatype.IdeaName }}</h5> 
+                
               </a>
                 <div class="container" style="height:100px"> 
                 <p>    
@@ -34,9 +35,22 @@
                 </p>
                </div>
               <div class="row">
-                  <button class="col-md-6 offset-md-1 btn btn-info "> Daha Fazlasını Görüntüle</button>
+                  <a class="btn col-md-6 offset-md-1  btn-info " href="{% url 'fikir:DetailView' idea.id %}"> Daha Fazlasını Görüntüle</a>
                   <button class="col-md-4 offset-md-1  btn btn-md like-btn " value="{{ idea.id}}"><i class="fa fa-thumbs-up"></i> Beğen (<span class="like-count">{{ idea|get_like_count}}</span>) </button>
               </div>
+
+              {% if settings_menu_display %}
+              <div class="dropdown mt-2 w-100 ">
+                  <button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown">
+                    Ayarlar
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item " href="{% url "fikir:UpdateIdeaView" idea.id %}">Güncelle</a>
+                    <a class="dropdown-item" href="#">Sil</a>
+                  </div>
+                </div>
+              {% endif %}
+
             </div>
           </div>
           <!-- Grid column -->
@@ -61,3 +75,5 @@
           </ul>
         </nav>
       {% endif %}
+
+

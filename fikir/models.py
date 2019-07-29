@@ -40,7 +40,7 @@ class Address(models.Model):
         verbose_name = "Adres"
         verbose_name_plural = "Adresler"
     def __str__(self):
-        return self.District
+        return self.AdressDesc + ", " + self.Street  +"/" + self.Neighborhood   +"/" +  self.District
 
 
 

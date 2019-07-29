@@ -10,7 +10,9 @@
           </div>
           <br/>
           <span class="label label-warning">{% if form.errors %} {%endif%} </span>
-          <form class="form-signin" action="{{form_action}}" method="post" enctype='multipart/form-data' >
+
+         
+          <form class="form-signin"  {% if form_action %} action="{{form_action}}"   {% endif%} method="post" enctype='multipart/form-data' >
                 {% csrf_token %}
                 {% include "fikir/form_template.html" %}
                 <button class="btn btn-md btn-outline-primary btn-block text-uppercase btn-lg" type="submit">{{buttontext}}</button>
