@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404,redirect,reverse
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate,login,logout, update_session_auth_hash
 from .forms import *
 from django.views.generic.base import View
 from django.contrib.auth.forms import *
@@ -15,7 +15,7 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator
 from enum import Enum
 from django.http import JsonResponse
-
+from django.contrib import messages
 # Mesaj tipleri kullanım -> MessageType.danger.name
 class MessageType(Enum):
     danger = 1
@@ -53,7 +53,7 @@ def ProfileView(request):
     myideas = Idea.objects.all().filter(AddedUser__UserT=request.user)
     currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
     mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
-    return render(request, template_name, {"myideas":myideas,"mylikeideas":mylikeideas,'currentprofile':currentUserProfile})
+    return render(request, template_name, {"myideas":myideas,"mylikeideas":mylikeideas,'current_profile':currentUserProfile})
 
 # Profil Ayarları sayfası
 class ProfileSettingsView(View):
@@ -61,28 +61,37 @@ class ProfileSettingsView(View):
     template_name = "fikir/profilesettings.html"
     formVariables = {'form': form_class,
     'pagetitle':'Profil Güncelleme',
-    'formtitle':'Profilini Güncelle',
+    'form_title':'Profilini Güncelle',
     'buttontext' : "Güncelle",
     'messagetext':'',
     'messagetype':''}
     def get(self, request):
         self.formVariables["messagetype"] = ""
-        currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
-        self.formVariables["form"] = UserEditForm( instance=currentUserProfile)
+        current_user_profile = UserProfile.objects.all().filter(UserT=request.user).first()
+        self.formVariables["form"] = UserEditForm( instance=current_user_profile)
+        self.formVariables["form_password"] = PasswordChangeForm(user=request.user)
+        self.formVariables["form_password_action"] = reverse('fikir:ChangePassword', kwargs={})
         self.formVariables["messagetext"] = ""
         return render(request, self.template_name, self.formVariables)
     def post(self, request):
         form = self.form_class(request.POST,request.FILES)
         if form.is_valid():
-            Name = form.cleaned_data['Name']
-            Surname = form.cleaned_data['Surname']
-            PhoneNumber = form.cleaned_data['PhoneNumber']
-            Birthday = form.cleaned_data['Birthday']
-            Email = form.cleaned_data['Email']
-            ProfilePhoto = form.cleaned_data['ProfilePhoto']
-            
+            current_user_profile= UserProfile.objects.filter(UserT = request.user).first()
+            current_user_profile.Name = form.cleaned_data['Name']
+            current_user_profile.Surname = form.cleaned_data['Surname']
+            current_user_profile.PhoneNumber = form.cleaned_data['PhoneNumber']
+            current_user_profile.Birthday = form.cleaned_data['Birthday']
+            current_user_profile.Email = form.cleaned_data['Email']
+            current_user_profile.ProfilePhoto = form.cleaned_data['ProfilePhoto']
+            current_user_profile.save()
+            self.formVariables["messagetype"] = MessageType.success.name
+            self.formVariables["messagetext"] = "Profil başarıyla güncellendi"
+            self.formVariables["form"] = UserEditForm(instance=current_user_profile)
+            return render(request, self.template_name, self.formVariables)
 
 
+        self.formVariables["messagetype"] = MessageType.danger.name
+        self.formVariables["messagetext"] = form.errors.values
         return render(request, self.template_name, self.formVariables)
 
 # Giriş ekranı
@@ -203,7 +212,6 @@ class NewIdeaView(View):
         if form.is_valid():
             # Giriş yapan kullanıcıyı alma
             currentUser = request.user
-
             # Yeni Adres oluşturma
             newAddress = Address()
             newAddress.AdressDesc = form.cleaned_data['adressDesc']
@@ -297,3 +305,17 @@ def likeAnIdea(request):
         'status' : False
     }
     return JsonResponse(data)
+
+def change_password(request):
+    form = PasswordChangeForm(request.user, request.POST)
+    if form.is_valid():
+        old_password = form.cleaned_data['old_password']
+        new_password1 = form.cleaned_data['new_password1']
+        new_password2 = form.cleaned_data['new_password2']
+        user = form.save()
+        update_session_auth_hash(request, user)
+        messages.success(request, 'Your password was successfully updated!')
+        return redirect('fikir:ProfileSettings')
+    else:
+        messages.error(request, 'Please correct the error below.')
+    return redirect('fikir:ProfileSettings')

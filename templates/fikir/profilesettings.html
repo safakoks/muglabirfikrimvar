@@ -4,50 +4,13 @@
 {% block main %}
 
 {% block profileudate %}
-
 <div class="container-fluid mt-5 w-75">
-
 {% include "partial/profilesetting/editprofile.html" %}
-
-
 </div>
-
-
 {% endblock %}
 {% block passwordupdate %}
-
 <div class="container-fluid mt-5 w-75">
-  <div class="row">
-   <div class="card w-100">
-       <div class="card-header text-center">
-         Parola Güncelleme
-       </div>
-     <div class="card-body">
-	  <div class="col-sm-4 mx-auto">
-		    
-            <div class="form-group mt-4 w-100 text-center">
-                <label for="exampleInputPassword1">Mevcut Parolanızı Giriniz</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Mevcut Parola">
-            </div>
-             <div class="form-group mt-4 text-center">
-                <label for="exampleInputPassword1">Yeni Parolanızı Giriniz</label>
-                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Yeni Parola">
-             </div> 
-             <div class="form-group mt-4 text-center">
-                <label for="exampleInputPassword1">Yeni Parolanızı Doğrulayınız</label>
-                <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Yeni Parola">
-            </div>
-     
-    </div>
-  </div>
-<button type="button" class="btn btn-outline-primary btn-lg mt-2">GÜNCELLE</button>
- </div>  
+ {% include "partial/profilesetting/editprofile.html" with form=form_password form_title='Parola Güncelleme' form_action=form_password_action  %}
 </div>
-</div>
-
-
 {% endblock %}
-
-
-
 {% endblock %}

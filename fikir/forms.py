@@ -49,6 +49,7 @@ class UserEditForm(forms.ModelForm):
     ProfilePhoto= forms.ImageField(label='Profil Fotoğrafı',help_text='Lütfen profil fotoğrafınızı giriniz')
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
+        self.fields['ProfilePhoto'].required = False
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
     class Meta:
@@ -113,4 +114,4 @@ class NewIdeaForm(forms.ModelForm):
         self.request = kwargs.pop('request', None)
         # companyid = self.request.user.get_profile().main_contactnum.clientid.idflcustomernum
         # self.fields['adress'].queryset = Adress.objects.filter(clientid__exact=companyid)
-       
+ 

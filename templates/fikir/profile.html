@@ -11,22 +11,19 @@
         <div class="row">
             <div class="col-md-6">
       <div class="panel-body">   
-      <img alt="User Pic" src="/media/download.png" id="profile-image1" class="rounded-circle mx-auto d-block"> 
+      <img alt="User Pic" src="{% if current_profile.ProfilePhoto %}{{current_profile.ProfilePhoto.url}}{% else %}{% static 'default/profile_photo.png' %}{% endif %}" id="profile-image1" class="rounded-circle mx-auto d-block"> 
      </div> 
       </div>
       <div class="col-md-6" >
           <div class="container mt-4" >
-           <h1>Şafak Öksüzer</h1>
-            <p><b>Stajyer</b></p>                       
+           <h1>{{current_profile.Name}} {{current_profile.Surname}}  </h1>
            </div>
+           <h2> @{{current_profile.UserT.username}} </h2>
+           <br/>
         <hr>
         <div class="h4">
-          <ul>
-          <li><p><span class="fa fa-1x fa-user one" ></span> &nbsp; &nbsp; safakoksuzer</p></li>
-          <li><p><span class="fa fa-1x fa-envelope one" ></span> &nbsp; &nbsp; safakoksuzer@email.com</p></li>
-          </ul>
-        <hr>
-            <div class="tital mt-5 " >Katılım Tarihi: 15 Temmuz 2016</div>
+         
+            <div class="tital mt-5 " >Katılım Tarihi: {{current_profile.UserT.date_joined}}</div>
           </div>
         </div>
     </div>  
