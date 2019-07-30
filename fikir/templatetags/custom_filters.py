@@ -4,8 +4,8 @@ register = template.Library()
 
 # ImageType'a göre verilen ideanın fotoğrafının urli
 @register.filter(name='cast_image_type')
-def cast_image_type(SelectedIdea, type):
-    return SelectedIdea.photo_set.all().filter(ImageType=1).first().Image.url
+def cast_image_type(SelectedIdea, Phototype):
+    return SelectedIdea.photo_set.all().filter(ImageType=Phototype).first().Image.url
 
 @register.filter(name='get_like_count')
 def get_like_count(SelectedIdea):

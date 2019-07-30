@@ -16,6 +16,7 @@ from django.core.paginator import Paginator
 from enum import Enum
 from django.http import JsonResponse
 from django.contrib import messages
+from django.core.files.base import File
 # Mesaj tipleri kullanım -> MessageType.danger.name
 class MessageType(Enum):
     danger = 1
@@ -51,7 +52,7 @@ def DetailView(request, pk):
 # Profil sayfası
 def ProfileView(request):
     template_name = 'fikir/profile.html'
-    myideas = Idea.objects.all().filter(AddedUser__UserT=request.user)
+    myideas = Idea.objects.all().filter(IsActive=True).filter(IsApproved=True).filter(AddedUser__UserT=request.user)
     currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
     mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
 
@@ -175,7 +176,6 @@ class UserFormView(View):
             userprofile.District = form.cleaned_data['district']
             userprofile.save()
 
-
             # Aktivasyon maili gönderme
             # current_site = get_current_site(request)
             # mail_subject = 'Activate your blog account.'
@@ -288,37 +288,42 @@ class NewIdeaView(View):
 
             # Yeni fikir oluşturma
             newIdea = Idea()
-            newIdea.Title = form.cleaned_data['title']
-            newIdea.Description = form.cleaned_data['description']
-            newIdea.Ideatype = form.cleaned_data['ideatype']
-            newIdea.Department = form.cleaned_data['department']
+            newIdea.Title       = form.cleaned_data['Title']
+            newIdea.Description = form.cleaned_data['Description']
+            newIdea.Ideatype    = form.cleaned_data['Ideatype']
+            newIdea.Department  = form.cleaned_data['Department']
             newIdea.CreatedDate = datetime.datetime.now()
-            newIdea.AddedUser = UserProfile.objects.filter(UserT = currentUser).first()
-            newIdea.AdressDesc = form.cleaned_data['adressDesc']
-            newIdea.District = form.cleaned_data['district']
-            newIdea.Neighborhood = form.cleaned_data['neighborhood']
-            newIdea.Street = form.cleaned_data['street']
+            newIdea.AddedUser   = UserProfile.objects.filter(UserT = currentUser).first()
+            newIdea.AdressDesc  = form.cleaned_data['AdressDesc']
+            newIdea.District    = form.cleaned_data['District']
+            newIdea.Neighborhood= form.cleaned_data['Neighborhood']
+            newIdea.Street      = form.cleaned_data['Street']
             newIdea.IsApproved = False            
             newIdea.save()
 
             # Fikir fotoğrafları ekleme
-            CurrentPhoto = Photo()
-            CurrentPhoto.Image =  form.cleaned_data['ideaPhoto']
-            CurrentPhoto.Idea = newIdea
+            IdeaPhoto = File(form['ideaPhoto'].value())
 
             # Slider Photo
-            CurrentPhoto.ImageType = 1
-            CurrentPhoto.save()
+            CurrentPhoto1 = Photo()
+            CurrentPhoto1.Idea = newIdea
+            CurrentPhoto1.Image = IdeaPhoto
+            CurrentPhoto1.ImageType = 1
+            CurrentPhoto1.save()
             
             # Thumbnail
-            CurrentPhoto.id = None
-            CurrentPhoto.ImageType = 2
-            CurrentPhoto.save()
+            CurrentPhoto2 = Photo()
+            CurrentPhoto2.Idea = newIdea
+            CurrentPhoto2.Image = IdeaPhoto
+            CurrentPhoto2.ImageType = 2
+            CurrentPhoto2.save()
 
             # Detail View
-            CurrentPhoto.id = None
-            CurrentPhoto.ImageType = 3
-            CurrentPhoto.save()
+            CurrentPhoto3 = Photo()
+            CurrentPhoto3.Idea = newIdea
+            CurrentPhoto3.Image = IdeaPhoto
+            CurrentPhoto3.ImageType = 3
+            CurrentPhoto3.save()
 
             self.formVariables["messagetype"] = MessageType.success.name
             self.formVariables["messagetext"] = "Yeni fikriniz başarıyla oluşturuldu"

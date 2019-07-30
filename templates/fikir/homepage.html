@@ -1,6 +1,6 @@
 {% extends 'fikir/index.html' %}
 {% load staticfiles %}
-
+{% load custom_filters %} 
 
 {% block bestideas %}
 <div class="container-fluid w-75 mt-4">
@@ -39,10 +39,7 @@
         <div class="card mb-4">
           <!-- Card image -->
           <div class="view overlay">
-          {% with imagePath=idea.photo_set.all.first.Image.url%}
-            <img class="card-img-top" src="{{imagePath}}" alt="Card image cap">
-          {% endwith %}
- 
+            <img class="card-img-top" src="{{ idea|cast_image_type:3 }}" alt="Card image cap">
             <a href="#!">
               <div class="mask rgba-white-slight"></div>
             </a>
@@ -67,7 +64,7 @@
                 {% endif %} 
 
             <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-            <a class="btn btn-outline-primary btn-block"> Daha Fazlasını Görüntüle</a>
+                  <a class="btn col-md-6 offset-md-1  btn-info " href="{% url 'fikir:DetailView' idea.id %}"> Daha Fazlasını Görüntüle</a>
           </div>
           <!-- Card content -->
         </div>

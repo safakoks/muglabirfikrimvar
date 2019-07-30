@@ -33,5 +33,9 @@ class IdeaSerializer(serializers.ModelSerializer):
             "Description",
             "Department",
             "photo_set",
+            "Neighborhood",
+            "Street",
+            "AdressDesc",
+            "District",
             "CreatedDate"]
 

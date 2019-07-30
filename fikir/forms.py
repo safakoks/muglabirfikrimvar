@@ -58,7 +58,7 @@ class UserEditForm(forms.ModelForm):
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(
-        label=("Old password"),
+        label=("Eski Parola"),
         strip=False,
         widget=forms.PasswordInput(attrs={'autofocus': False}),
     )
@@ -67,36 +67,36 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 
 
 class NewIdeaForm(forms.ModelForm):
-    title           = forms.CharField(
+    Title           = forms.CharField(
         max_length=100,
         label='Fikir Başlığı',
         help_text='Fikir başlığı en fazla 100 karakter içerebilir',
         error_messages={'required': 'Lütfen fikir başlığı giriniz'})
-    ideatype = forms.ModelChoiceField(queryset=IdeaType.objects.all(),
+    Ideatype = forms.ModelChoiceField(queryset=IdeaType.objects.all(),
         label='Fikir Tipi',
         help_text='Fikir tipi en fazla 100 karakter içerebilir')
-    department =forms.ModelChoiceField(queryset=Department.objects.all(),
+    Department =forms.ModelChoiceField(queryset=Department.objects.all(),
         label='Bölüm',
         help_text='Lütfen birini seçiniz',)
-    description     = forms.CharField(widget=forms.Textarea,
-        max_length=250,
+    Description     = forms.CharField(widget=forms.Textarea,
+        max_length=500,
         label='Açıklama',
-        help_text='En fazla 250 karekter girebilirsiniz')
-    district        = forms.CharField(
+        help_text='En fazla 500 karekter girebilirsiniz')
+    District        = forms.CharField(
         max_length=50,
         label='İlçe ',
         help_text='En fazla 50 karekter içerir')
-    neighborhood    = forms.CharField(
+    Neighborhood    = forms.CharField(
         max_length=50,
         label='Mahalle',
         help_text='En fazla 50 karekter içerir')
-    street  = forms.CharField(
+    Street  = forms.CharField(
         max_length=50,
         label='Cadde',
         help_text='En fazla 50 karekter içerir')
-    adressDesc      = forms.CharField(widget=forms.Textarea,
+    AdressDesc      = forms.CharField(widget=forms.Textarea,
         max_length=200,
-        label='Adres',
+        label='Adres Açıklaması',
         help_text='En fazla 200 karekter girebilirsiniz')
     ideaPhoto      = forms.ImageField(label='Fikrinizin Görseli')
       

@@ -58,7 +58,7 @@ class UserProfile(models.Model):
 class Idea(models.Model):
     Title       = models.CharField(max_length=100,verbose_name='Başlık')
     Ideatype    = models.ForeignKey(IdeaType,default='1',on_delete=models.PROTECT,verbose_name='Fikir Tipi')
-    Description = models.CharField(max_length=250,verbose_name='Açıklama')
+    Description = models.CharField(max_length=500,verbose_name='Açıklama')
     District        = models.CharField(blank=True,max_length=100,verbose_name='İlçe')
     Neighborhood    = models.CharField(blank=True,max_length=250,verbose_name='Semt')
     Street          = models.CharField(blank=True,max_length=100,verbose_name='Sokak')
@@ -98,23 +98,24 @@ class Photo(models.Model):
     def __str__(self):
         if self.Idea is not None:
             return self.Idea.Title
-        
 
     def save(self):
         if not self.Image:
             return            
         super(Photo, self).save()
         image = Image.open(self.Image)
-        (width, height) = image.size
         # Slider
-        if self.ImageType==1: 
-            size = ( 1321, 583)
+        if self.ImageType==1:
+            (width, height) = image.size 
+            size = (1321, 583)
         # Detail Banner
         if self.ImageType==2:
-            size = ( 1200, 583)
+            (width, height) = image.size 
+            size = (1200, 583)
         # Thumbnail
         if self.ImageType==3:
-            size = ( 781, 521)
+            (width, height) = image.size 
+            size = (781, 521)
         image = image.resize(size, Image.ANTIALIAS)
         image.save(self.Image.path)
 
