@@ -49,11 +49,11 @@
         
         <div class="tab-content" id="pills-tabContent">
           <div class="tab-pane fade show active" id="fikirlerim" role="tabpanel" aria-labelledby="fikirlerim-tab">
-              {% include 'partial/timeline/idea_list.html' with idealist=myideas  settings_menu_display=is_settings_menu_display  %}
+              {% include 'partial/timeline/idea_list.html' with idealist=myideas speacial_page="myideas_page" settings_menu_display=is_settings_menu_display  %}
           </div>
              
           <div class="tab-pane fade" id="begendigimfikir" role="tabpanel" aria-labelledby="begendigimfikir-tab">
-           {% include 'partial/timeline/idea_list.html' with idealist=mylikeideas  %}
+           {% include 'partial/timeline/idea_list.html' with idealist=mylikeideas  speacial_page="mylikeideas_page" %}
           </div>
         </div>
      

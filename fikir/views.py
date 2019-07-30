@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponse
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from enum import Enum
 from django.http import JsonResponse
 from django.contrib import messages
@@ -37,9 +37,16 @@ def TimelineView(request):
     template_name = 'fikir/timeline.html'
     slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
     ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True)
-    paginator = Paginator(ideas_list, 10) 
-    page = request.GET.get('s')
-    ideas = paginator.get_page(page)
+    paginator = Paginator(ideas_list, 6) 
+    page = request.GET.get('page')
+
+    try:
+        ideas = paginator.page(page)
+    except PageNotAnInteger:
+        ideas = paginator.page(1)
+    except EmptyPage:
+        ideas = paginator.page(paginator.num_pages)
+
     return render(request, template_name, {'ideas':ideas, 'slideIdeas':slideIdeas})
 
 
@@ -52,9 +59,30 @@ def DetailView(request, pk):
 # Profil sayfası
 def ProfileView(request):
     template_name = 'fikir/profile.html'
-    myideas = Idea.objects.all().filter(IsActive=True).filter(IsApproved=True).filter(AddedUser__UserT=request.user)
     currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
+    
+    # Fikirlerim
+    myideas = Idea.objects.all().filter(IsActive=True).filter(IsApproved=True).filter(AddedUser__UserT=request.user)
+    myideas_paginator = Paginator(myideas, 6) 
+    myideas_page = request.GET.get('myideas_page')
+    try:
+        myideas = myideas_paginator.page(myideas_page)
+    except PageNotAnInteger:
+        myideas = myideas_paginator.page(1)
+    except EmptyPage:
+        myideas = myideas_paginator.page(myideas_paginator.num_pages)
+
+    # Beğendiğim Fikirler
     mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
+    
+    mylikeideas_paginator = Paginator(mylikeideas, 6) 
+    mylikeideas_page = request.GET.get('mylikeideas_page')
+    try:
+        mylikeideas = mylikeideas_paginator.page(mylikeideas_page)
+    except PageNotAnInteger:
+        mylikeideas = mylikeideas_paginator.page(1)
+    except EmptyPage:
+        mylikeideas = mylikeideas_paginator.page(mylikeideas_paginator.num_pages)
 
     return render(request, template_name, {
         "myideas":myideas,
@@ -200,6 +228,21 @@ class UserFormView(View):
         self.formVariables["messagetype"] = MessageType.danger.name
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
+
+
+
+# Listelemeler
+
+def Timeline(request):
+    ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True)
+    paginator = Paginator(ideas_list, 10) 
+    page = request.GET.get('page')
+    ideas = paginator.get_page(page)
+
+
+
+
+
 
 # Fikir beğenme AJAX
 def likeAnIdea(request):
@@ -393,6 +436,8 @@ class NewIdeaView(View):
         self.formVariables["messagetype"] = MessageType.danger.name
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
+
+
 
 # Üyelik Aktive Etme
 def activate(request, uidb64, token):
