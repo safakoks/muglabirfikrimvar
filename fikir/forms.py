@@ -123,3 +123,6 @@ class NewIdeaForm(forms.ModelForm):
         # companyid = self.request.user.get_profile().main_contactnum.clientid.idflcustomernum
         # self.fields['adress'].queryset = Adress.objects.filter(clientid__exact=companyid)
  
+
+class UpdateIdeaForm(NewIdeaForm):
+      ideaPhoto      = forms.ImageField(required=False,label='Fikrinizin Görseli')

@@ -201,6 +201,7 @@ class UserFormView(View):
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
 
+# Fikir beğenme AJAX
 def likeAnIdea(request):
     ideaID = request.GET.get('ideaID', None)
     currentUser = request.user
@@ -231,6 +232,7 @@ def likeAnIdea(request):
     }
     return JsonResponse(data)
 
+# Parola Değiştirme
 def change_password(request):
     form = CustomPasswordChangeForm(request.user, request.POST)
     if form.is_valid():
@@ -245,6 +247,7 @@ def change_password(request):
         messages.error(request, 'Please correct the error below.')
     return redirect('fikir:ProfileSettings')
 
+# Fikir güncelleme
 class UpdateIdeaView(View):
     template_name = "fikir/addingform.html"
     formVariables = {
@@ -257,11 +260,67 @@ class UpdateIdeaView(View):
     def get(self, request, pk):
         current_idea = Idea.objects.filter(id=pk).filter(AddedUser__UserT_id=request.user.id).first()
         if current_idea is not None:
-            self.formVariables["form"] = NewIdeaForm(instance=current_idea)
+            self.formVariables["form"] = UpdateIdeaForm(instance=current_idea)
             self.formVariables["messagetype"] = ""
             self.formVariables["messagetext"] = ""
             return render(request, self.template_name, self.formVariables)
         redirect("fikir:ProfileView")
+
+    def post(self, request, pk):
+        form = UpdateIdeaForm(request.POST,request.FILES)
+        self.formVariables["pk"] = pk
+        if form.is_valid():
+            current_idea = Idea.objects.get(pk=pk)
+            current_idea.Title       = form.cleaned_data['Title']
+            current_idea.Description = form.cleaned_data['Description']
+            current_idea.Ideatype    = form.cleaned_data['Ideatype']
+            current_idea.Department  = form.cleaned_data['Department']
+            current_idea.AdressDesc  = form.cleaned_data['AdressDesc']
+            current_idea.District    = form.cleaned_data['District']
+            current_idea.Neighborhood= form.cleaned_data['Neighborhood']
+            current_idea.Street      = form.cleaned_data['Street']
+
+            # Idea Photo Kontrol
+
+            new_idea_photo = form.cleaned_data['ideaPhoto']
+            if new_idea_photo is not None :
+                Photo.objects.filter(Idea=current_idea).delete()
+
+                # Fikir fotoğrafları güncelleme
+                new_idea_photo = File(form['ideaPhoto'].value())
+
+                # Slider Photo
+                CurrentPhoto1 = Photo()
+                CurrentPhoto1.Idea = current_idea
+                CurrentPhoto1.Image = new_idea_photo
+                CurrentPhoto1.ImageType = 1
+                CurrentPhoto1.save()
+                
+                # Thumbnail
+                CurrentPhoto2 = Photo()
+                CurrentPhoto2.Idea = current_idea
+                CurrentPhoto2.Image = new_idea_photo
+                CurrentPhoto2.ImageType = 2
+                CurrentPhoto2.save()
+
+                # Detail View
+                CurrentPhoto3 = Photo()
+                CurrentPhoto3.Idea = current_idea
+                CurrentPhoto3.Image = new_idea_photo
+                CurrentPhoto3.ImageType = 3
+                CurrentPhoto3.save()
+
+
+            current_idea.save()
+            self.formVariables["form"] = UpdateIdeaForm(instance=current_idea)
+            self.formVariables["messagetype"] = MessageType.success.name
+            self.formVariables["messagetext"] = "Fikir başarıyla güncellendi"
+            return render(request,self.template_name,self.formVariables)
+        
+        
+        self.formVariables["messagetype"] = MessageType.danger.name
+        self.formVariables["messagetext"] = form.errors.values
+        return render(request,self.template_name,self.formVariables)
 
 # Yeni fikir ekleme
 class NewIdeaView(View):
@@ -335,6 +394,7 @@ class NewIdeaView(View):
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
 
+# Üyelik Aktive Etme
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
