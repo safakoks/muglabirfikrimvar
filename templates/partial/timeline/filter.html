@@ -1,29 +1,31 @@
 <div class="container-fluid w-75 mt-4">
-  <ul class="nav nav-pills">
-    <li class="nav-item col-md-3">
-      <a class="nav-link btn btn-info" href="#">Haftanın En İyileri</a>
-    </li>
-    
-    <li class="nav-item col-md-2">
-      <a class="nav-link btn btn-info" href="#">Ayın En İyileri</a>
-    </li>
-    <li class="nav-item col-md-2">
-      <a class="nav-link btn btn-info" href="#">Gerçekleştirilenler</a>
-    </li>
-    <li class="nav-item dropdown col-md-2">
-      <a class="nav-link dropdown-toggle btn btn-info" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Listele</a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item btn btn-info" href="#">En Beğenilenler</a>
-        <a class="dropdown-item btn btn-info" href="#">Zamana Göre En Son</a>
-        <a class="dropdown-item btn btn-info" href="#">Zamana Göre İlk</a>    
-      </div>   
-    </li>
-    <li> 
-    <form class="form-inline col-md-4">
-    <input class="form-control text-center" type="text" placeholder="Arama" aria-label="Search">
-      </form>
-    </li>
-   <!-- Links -->
-<!-- Search form -->
-  </ul>
+    <nav class="nav nav-pills nav-justified">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Haftanın En İyileri <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Ayın En İyileri</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" tabindex="-1">Gerçekleştirilenler</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Listele
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Zamana Göre En İlk Eklenenler</a>
+                  <a class="dropdown-item" href="#">Zamana Göre En Son Eklenenler</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">En Beğenilenler</a>
+                  
+                </div>
+              </li>
+          
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Arama" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Ara</button>
+          </form>
+        
+        </>
   </div>
