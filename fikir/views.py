@@ -172,8 +172,8 @@ class UserFormView(View):
             userprofile.Birthday        = form.cleaned_data['birthday']
             userprofile.Email           = userEmail
             userprofile.ProfilePhoto    = form.cleaned_data['profilePhoto']
+            userprofile.District      = form.cleaned_data['district']
             userprofile.UserT           = user
-            userprofile.District = form.cleaned_data['district']
             userprofile.save()
 
             # Aktivasyon maili gönderme

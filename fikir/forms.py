@@ -25,8 +25,9 @@ class UserForm(forms.ModelForm):
     birthday    = forms.DateField(label="Doğum Günü",initial=datetime.date.today)
     email       = forms.EmailField(label='Email',help_text='*gerekli')
     profilePhoto= forms.ImageField(label='Profil Fotoğrafı',help_text='Lütfen profil fotoğrafınızı giriniz')
+    district    = forms.CharField(label='İlçe',help_text='Lütfen yaşadığınız ilçeyi giriniz')
     username    = forms.CharField(max_length=50,label='Kullanıcı Adı')
-    password    = forms.CharField(widget=forms.PasswordInput,label='Parola',help_text='*gerekli')
+    password    = forms.CharField(widget=forms.PasswordInput,label='Parola',help_text='Kurallara uygun girdiğinizden emin olunuz')
     captcha      = ReCaptchaField(label='')
 
     
@@ -37,7 +38,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'password', 'name','surname','phoneNumber','birthday','email','profilePhoto']
+        fields = ['username', 'password', 'name','surname','phoneNumber','birthday','email','profilePhoto', 'district']
 
 
 class UserEditForm(forms.ModelForm):

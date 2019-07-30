@@ -36,7 +36,7 @@ class UserProfile(models.Model):
     Surname = models.CharField(max_length=100,verbose_name='Soyad')
     PhoneNumber = models.CharField(max_length=100,verbose_name='Telefon Numarası')
     Birthday = models.DateTimeField(blank=True,verbose_name='Doğum Tarihi')
-    District        = models.CharField(null=True, max_length=100,blank=True,verbose_name='İlçe')
+    District = models.CharField(null=True,max_length=100,blank=True,verbose_name='İlçe')
     Email = models.EmailField(verbose_name='Email')
     ProfilePhoto =models.ImageField(verbose_name='Profil Fotoğrafı', null=True, blank=True)
     UserT = models.OneToOneField(User,on_delete=models.CASCADE,verbose_name='Kullanıcı')
