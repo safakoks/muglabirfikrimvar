@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from .models import UserProfile, Idea,IdeaType,Address,Department
+from .models import UserProfile, Idea,IdeaType,Department
 from django import  forms
 from captcha.fields import ReCaptchaField
 import datetime
@@ -98,21 +98,19 @@ class NewIdeaForm(forms.ModelForm):
         max_length=200,
         label='Adres',
         help_text='En fazla 200 karekter girebilirsiniz')
- 
     ideaPhoto      = forms.ImageField(label='Fikrinizin Görseli')
       
-         
     class Meta:
         model = Idea
         fields = [
-            'title',
-            'ideatype',
-            'department',
-            'description',
-            'district',
-            'neighborhood',
-            'street',
-            'adressDesc',
+            'Title',
+            'Ideatype',
+            'Department',
+            'Description',
+            'District',
+            'Neighborhood',
+            'Street',
+            'AdressDesc',
             'ideaPhoto',
          ]
 

@@ -172,6 +172,7 @@ class UserFormView(View):
             userprofile.Email           = userEmail
             userprofile.ProfilePhoto    = form.cleaned_data['profilePhoto']
             userprofile.UserT           = user
+            userprofile.District = form.cleaned_data['district']
             userprofile.save()
 
 
@@ -284,12 +285,6 @@ class NewIdeaView(View):
             # Giriş yapan kullanıcıyı alma
             currentUser = request.user
             # Yeni Adres oluşturma
-            newAddress = Address()
-            newAddress.AdressDesc = form.cleaned_data['adressDesc']
-            newAddress.District = form.cleaned_data['district']
-            newAddress.Neighborhood = form.cleaned_data['neighborhood']
-            newAddress.Street = form.cleaned_data['street']
-            newAddress.save()
 
             # Yeni fikir oluşturma
             newIdea = Idea()
@@ -299,7 +294,10 @@ class NewIdeaView(View):
             newIdea.Department = form.cleaned_data['department']
             newIdea.CreatedDate = datetime.datetime.now()
             newIdea.AddedUser = UserProfile.objects.filter(UserT = currentUser).first()
-            newIdea.UserAddress = newAddress
+            newIdea.AdressDesc = form.cleaned_data['adressDesc']
+            newIdea.District = form.cleaned_data['district']
+            newIdea.Neighborhood = form.cleaned_data['neighborhood']
+            newIdea.Street = form.cleaned_data['street']
             newIdea.IsApproved = False            
             newIdea.save()
 
