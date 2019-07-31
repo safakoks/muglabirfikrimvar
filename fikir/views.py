@@ -87,8 +87,6 @@ def ProfileView(request):
         except EmptyPage:
             mylikeideas = mylikeideas_paginator.page(mylikeideas_paginator.num_pages)
 
-    print("mylikeideas_page",mylikeideas_page)
-    print("myideas_page",myideas_page)
 
     if mylikeideas_page is None and myideas_page is None:
         return render(request, template_name, {
