@@ -4,12 +4,12 @@
 {% block main %}
 
 {% block profileudate %}
-<div class="container-fluid mt-5 w-75">
+<div class="container-fluid mt-3 w-100">
 {% include "partial/profilesetting/editprofile.html" with form=form form_title='Hesap Bilgileri Güncelleme' form_action=form_profile_action   %}
 </div>
 {% endblock %}
 {% block passwordupdate %}
-<div class="container-fluid mt-5 w-75">
+<div class="container-fluid mt-3 w-100">
  {% include "partial/profilesetting/editprofile.html" with form=form_password form_title='Parola Güncelleme' form_action=form_password_action  %}
 </div>
 {% endblock %}
