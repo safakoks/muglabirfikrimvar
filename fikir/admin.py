@@ -6,6 +6,11 @@ admin.site.register(IdeaType)
 admin.site.register(Status)
 admin.site.register(Keyword)
 admin.site.register(Photo)
-admin.site.register(Idea)
+
+class IdeaAdmin(admin.ModelAdmin):
+    readonly_fields = ('CreatedDate',)
+
+admin.site.register(Idea,IdeaAdmin)
+
 admin.site.register(UserProfile)
 admin.site.register(UserLike)

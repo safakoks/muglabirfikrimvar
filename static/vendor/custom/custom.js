@@ -18,7 +18,6 @@ $('body').on('click', ".idea-card button.like-btn", function() {
       });
 });
 
-
 var infinite = new Waypoint.Infinite({
   element: $('.infinite-container')[0],
 

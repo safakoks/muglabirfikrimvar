@@ -5,7 +5,7 @@ from .forms import *
 from django.views.generic.base import View
 from django.contrib.auth.forms import *
 from .models import *
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 from django.template.loader import render_to_string
@@ -17,6 +17,10 @@ from enum import Enum
 from django.http import JsonResponse
 from django.contrib import messages
 from django.core.files.base import File
+from django.db.models import Count
+from django.utils import timezone
+from datetime import timedelta
+
 # Mesaj tipleri kullanım -> MessageType.danger.name
 class MessageType(Enum):
     danger = 1
@@ -39,7 +43,6 @@ def TimelineView(request):
     ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True)
     paginator = Paginator(ideas_list, 6) 
     page = request.GET.get('page')
-
     try:
         ideas = paginator.page(page)
     except PageNotAnInteger:
@@ -64,7 +67,7 @@ def ProfileView(request):
     myideas_page = request.GET.get('myideas_page')
     if myideas_page is not -1 :
         myideas = Idea.objects.all().filter(IsActive=True).filter(IsApproved=True).filter(AddedUser__UserT=request.user)
-        myideas_paginator = Paginator(myideas, 3) 
+        myideas_paginator = Paginator(myideas, 6) 
         try:
             myideas = myideas_paginator.page(myideas_page)
         except PageNotAnInteger:
@@ -76,7 +79,7 @@ def ProfileView(request):
     mylikeideas_page = request.GET.get('mylikeideas_page')
     if mylikeideas_page is not -1 :
         mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
-        mylikeideas_paginator = Paginator(mylikeideas, 3) 
+        mylikeideas_paginator = Paginator(mylikeideas, 6) 
         try:
             mylikeideas = mylikeideas_paginator.page(mylikeideas_page)
         except PageNotAnInteger:
@@ -249,11 +252,148 @@ class UserFormView(View):
 # -------------------
 # Listelemeler
 
-def Timeline(request):
-    ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True)
-    paginator = Paginator(ideas_list, 10) 
+
+def best_ideas(request):
+    template_name = 'fikir/timeline.html'
+    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
+    
+    # Haftanın en iyileri
+    some_day_last_week = timezone.now().date() - timedelta(days=7)
+    monday_of_last_week = some_day_last_week - timedelta(days=(some_day_last_week.isocalendar()[2] - 1))
+    monday_of_this_week = monday_of_last_week + timedelta(days=7)
+    ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True).annotate(likecount=Count('likes_list')).order_by('-likecount')
+    
+    # Sayfalama
+    paginator = Paginator(ideas_list, 6) 
     page = request.GET.get('page')
-    ideas = paginator.get_page(page)
+    try:
+        ideas = paginator.page(page)
+    except PageNotAnInteger:
+        ideas = paginator.page(1)
+    except EmptyPage:
+        ideas = paginator.page(paginator.num_pages)
+    return render(request, template_name, {'best_ideas':"active" ,'ideas':ideas, 'slideIdeas':slideIdeas})
+
+
+def best_of_week(request):
+    template_name = 'fikir/timeline.html'
+    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
+    
+    # Haftanın en iyileri
+    some_day_last_week = timezone.now().date() - timedelta(days=7)
+    monday_of_last_week = some_day_last_week - timedelta(days=(some_day_last_week.isocalendar()[2] - 1))
+    monday_of_this_week = monday_of_last_week + timedelta(days=7)
+    ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True).filter(CreatedDate__gte=monday_of_last_week, CreatedDate__lt=monday_of_this_week).annotate(likecount=Count('likes_list')).order_by('-likecount')
+    
+    # Sayfalama
+    paginator = Paginator(ideas_list, 6) 
+    page = request.GET.get('page')
+    try:
+        ideas = paginator.page(page)
+    except PageNotAnInteger:
+        ideas = paginator.page(1)
+    except EmptyPage:
+        ideas = paginator.page(paginator.num_pages)
+    return render(request, template_name, {'best_of_week':"active" ,'ideas':ideas, 'slideIdeas':slideIdeas})
+
+def best_of_month(request):
+    template_name = 'fikir/timeline.html'
+    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
+    
+    # Haftanın en iyileri
+    some_day_last_month = timezone.now().date() - timedelta(days=30)
+    monday_of_last_month = some_day_last_month - timedelta(days=(some_day_last_month.isocalendar()[2] - 1))
+    monday_of_this_month = monday_of_last_month + timedelta(days=30)
+    ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True).filter(CreatedDate__gte=monday_of_last_month, CreatedDate__lt=monday_of_this_month).annotate(likecount=Count('likes_list')).order_by('-likecount')
+    
+    # Sayfalama
+    paginator = Paginator(ideas_list, 6) 
+    page = request.GET.get('page')
+    try:
+        ideas = paginator.page(page)
+    except PageNotAnInteger:
+        ideas = paginator.page(1)
+    except EmptyPage:
+        ideas = paginator.page(paginator.num_pages)
+    return render(request, template_name, {'best_of_month':"active" ,'ideas':ideas, 'slideIdeas':slideIdeas})
+
+def done_ideas(request):
+    template_name = 'fikir/timeline.html'
+    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
+    
+    # Haftanın en iyileri
+    ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True).filter(Status=3).order_by('-CreatedDate')
+    
+    # Sayfalama
+    paginator = Paginator(ideas_list, 6) 
+    page = request.GET.get('page')
+    try:
+        ideas = paginator.page(page)
+    except PageNotAnInteger:
+        ideas = paginator.page(1)
+    except EmptyPage:
+        ideas = paginator.page(paginator.num_pages)
+    return render(request, template_name, {'done_ideas':"active" , 'ideas':ideas, 'slideIdeas':slideIdeas})
+
+
+def ideas_by_time(request):
+    template_name = 'fikir/timeline.html'
+    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
+    
+    # Haftanın en iyileri
+    ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True).order_by('-CreatedDate')
+    
+    # Sayfalama
+    paginator = Paginator(ideas_list, 6) 
+    page = request.GET.get('page')
+    try:
+        ideas = paginator.page(page)
+    except PageNotAnInteger:
+        ideas = paginator.page(1)
+    except EmptyPage:
+        ideas = paginator.page(paginator.num_pages)
+    return render(request, template_name, {'ideas_by_time':"active" , 'ideas':ideas, 'slideIdeas':slideIdeas})
+
+def ideas_by_desc_time(request):
+    template_name = 'fikir/timeline.html'
+    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
+    
+    # Haftanın en iyileri
+    ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True).order_by('CreatedDate')
+    
+    # Sayfalama
+    paginator = Paginator(ideas_list, 6) 
+    page = request.GET.get('page')
+    try:
+        ideas = paginator.page(page)
+    except PageNotAnInteger:
+        ideas = paginator.page(1)
+    except EmptyPage:
+        ideas = paginator.page(paginator.num_pages)
+    return render(request, template_name, {'ideas_by_desc_time':"active" , 'ideas':ideas, 'slideIdeas':slideIdeas})
+
+
+def search_idea(request):
+    template_name = 'fikir/timeline.html'
+    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
+    
+    search_text = request.GET.get('search_text')
+
+    # Haftanın en iyileri
+    ideas_list = Idea.objects.all().filter(Q(IsApproved=True) & Q(IsActive=True)).filter(Q()).filter(Q(Title__icontains=search_text)|Q(Description__icontains=search_text)).order_by('CreatedDate')
+    
+    # Sayfalama
+    paginator = Paginator(ideas_list, 6) 
+    page = request.GET.get('page')
+    try:
+        ideas = paginator.page(page)
+    except PageNotAnInteger:
+        ideas = paginator.page(1)
+    except EmptyPage:
+        ideas = paginator.page(paginator.num_pages)
+    return render(request, template_name, { 'ideas':ideas, 'slideIdeas':slideIdeas})
+
+
 
 
 # -------------------
