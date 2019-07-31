@@ -45,8 +45,8 @@
                       Ayarlar
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item " href="{% url "fikir:UpdateIdeaView" idea.id %}">Güncelle</a>
-                      <a class="dropdown-item" href="#">Sil</a>
+                      <a class="dropdown-item" href="{% url "fikir:UpdateIdeaView" idea.id %}"><i class="fa fa-refresh"></i> Güncelle</a>
+                      <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Sil</a>
                     </div>
                   </div>
                 {% endif %}
