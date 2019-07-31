@@ -49,7 +49,6 @@ def TimelineView(request):
 
     return render(request, template_name, {'ideas':ideas, 'slideIdeas':slideIdeas})
 
-
 # Giriş sayfası
 def DetailView(request, pk):
     template_name = 'fikir/detail.html'
@@ -62,33 +61,50 @@ def ProfileView(request):
     currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
     
     # Fikirlerim
-    myideas = Idea.objects.all().filter(IsActive=True).filter(IsApproved=True).filter(AddedUser__UserT=request.user)
-    myideas_paginator = Paginator(myideas, 6) 
     myideas_page = request.GET.get('myideas_page')
-    try:
-        myideas = myideas_paginator.page(myideas_page)
-    except PageNotAnInteger:
-        myideas = myideas_paginator.page(1)
-    except EmptyPage:
-        myideas = myideas_paginator.page(myideas_paginator.num_pages)
-
-    # Beğendiğim Fikirler
-    mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
+    if myideas_page is not -1 :
+        myideas = Idea.objects.all().filter(IsActive=True).filter(IsApproved=True).filter(AddedUser__UserT=request.user)
+        myideas_paginator = Paginator(myideas, 3) 
+        try:
+            myideas = myideas_paginator.page(myideas_page)
+        except PageNotAnInteger:
+            myideas = myideas_paginator.page(1)
+        except EmptyPage:
+            myideas = myideas_paginator.page(myideas_paginator.num_pages)
     
-    mylikeideas_paginator = Paginator(mylikeideas, 6) 
+    # Beğendiğim Fikirler
     mylikeideas_page = request.GET.get('mylikeideas_page')
-    try:
-        mylikeideas = mylikeideas_paginator.page(mylikeideas_page)
-    except PageNotAnInteger:
-        mylikeideas = mylikeideas_paginator.page(1)
-    except EmptyPage:
-        mylikeideas = mylikeideas_paginator.page(mylikeideas_paginator.num_pages)
+    if mylikeideas_page is not -1 :
+        mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
+        mylikeideas_paginator = Paginator(mylikeideas, 3) 
+        try:
+            mylikeideas = mylikeideas_paginator.page(mylikeideas_page)
+        except PageNotAnInteger:
+            mylikeideas = mylikeideas_paginator.page(1)
+        except EmptyPage:
+            mylikeideas = mylikeideas_paginator.page(mylikeideas_paginator.num_pages)
 
-    return render(request, template_name, {
-        "myideas":myideas,
-        "is_settings_menu_display":True,
-        "mylikeideas":mylikeideas,
-        'current_profile':currentUserProfile})
+    print("mylikeideas_page",mylikeideas_page)
+    print("myideas_page",myideas_page)
+
+    if mylikeideas_page is None and myideas_page is None:
+        return render(request, template_name, {
+            "myideas":myideas,
+            "is_settings_menu_display":True,
+            "mylikeideas":mylikeideas,
+            'current_profile':currentUserProfile})
+
+    if myideas_page is not -1:
+        return render(request, template_name, {
+            "myideas":myideas,
+            "is_settings_menu_display":True,
+            'current_profile':currentUserProfile})
+
+    if mylikeideas_page is not -1:
+        return render(request, template_name, {
+            "mylikeideas":mylikeideas,
+            'current_profile':currentUserProfile})
+
 
 # Profil Ayarları sayfası
 class ProfileSettingsView(View):
@@ -230,7 +246,7 @@ class UserFormView(View):
         return render(request,self.template_name,self.formVariables)
 
 
-
+# -------------------
 # Listelemeler
 
 def Timeline(request):
@@ -240,10 +256,7 @@ def Timeline(request):
     ideas = paginator.get_page(page)
 
 
-
-
-
-
+# -------------------
 # Fikir beğenme AJAX
 def likeAnIdea(request):
     ideaID = request.GET.get('ideaID', None)

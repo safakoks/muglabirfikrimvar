@@ -1,6 +1,7 @@
 
 // Beğenme
-$(".like-btn").click(function(){
+
+$('body').on('click', ".idea-card button.like-btn", function() {
     elem = $(this)
     var ideaID = elem.val()
     $.ajax({
@@ -15,12 +16,12 @@ $(".like-btn").click(function(){
           }
         }
       });
-})
-
+});
 
 
 var infinite = new Waypoint.Infinite({
   element: $('.infinite-container')[0],
+
   onBeforePageLoad: function () {
     $('.loading').show();
   },
@@ -28,4 +29,16 @@ var infinite = new Waypoint.Infinite({
     $('.loading').hide();
   }
 });
-// Sayfalama
+
+var infinite2 = new Waypoint.Infinite({
+  element: $('.infinite-container2')[0],
+  more: '.infinite-more-link2',
+  items: '.infinite-item2',
+  onBeforePageLoad: function () {
+    $('.loading2').show();
+  },
+  onAfterPageLoad: function ($items) {
+    $('.loading2').hide();
+  }
+});
+
