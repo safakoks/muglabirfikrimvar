@@ -29,15 +29,9 @@ var infinite = new Waypoint.Infinite({
   }
 });
 
-var infinite2 = new Waypoint.Infinite({
-  element: $('.infinite-container2')[0],
-  more: '.infinite-more-link2',
-  items: '.infinite-item2',
-  onBeforePageLoad: function () {
-    $('.loading2').show();
-  },
-  onAfterPageLoad: function ($items) {
-    $('.loading2').hide();
-  }
-});
+// Silme Onay formu
 
+$('#confirm-delete').on('show.bs.modal', function(e) {
+  // idea-title
+  $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+});

@@ -7,8 +7,14 @@ urlpatterns = [
      path('anasayfa/', views.TimelineView, name='TimelineView'),
      path('giris/',  views.LoginView.as_view(), name='LoginView'),
      path('uyeol/',  views.UserFormView.as_view(), name='SignupView'),     
-     path('yenifikir/',  views.NewIdeaView.as_view(), name='NewIdeaView'),     
-     path('fikirguncelle/<int:pk>',  views.UpdateIdeaView.as_view(), name='UpdateIdeaView'),     
+     path('yenifikir/',  views.NewIdeaView.as_view(), name='NewIdeaView'),  
+
+     path('fikirguncelle/<int:pk>',  views.UpdateIdeaView.as_view(), name='UpdateIdeaView'),
+     path('sil/<int:pk>',  views.IdeaDelete, name='DeleteIdea'),
+
+
+
+
      path('detay/<int:pk>',  views.DetailView, name='DetailView'),     
      path('cikis/', auth_views.logout,  {'next_page': "fikir:IndexView"},  name='Logout'),
      path('begen/', views.likeAnIdea,  name='LikeAnIdea'),

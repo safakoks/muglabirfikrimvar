@@ -81,14 +81,16 @@ def ProfileView(request):
             
             'current_profile':currentUserProfile})
 
+# Beğenilen fikirlerin listelenmesi
 def MyLikeProfileView(request):
     template_name = 'fikir/profile.html'
     currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
     
     # Beğendiğim Fikirler
     mylikeideas_page = request.GET.get('page')
-    mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
+    mylikeideas = Idea.objects.all().filter(Q(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True)) & Q(IsActive = True)& Q(IsApproved= True))
     mylikeideas_paginator = Paginator(mylikeideas, 6) 
+    
     try:
         mylikeideas = mylikeideas_paginator.page(mylikeideas_page)
     except PageNotAnInteger:
@@ -240,10 +242,8 @@ class UserFormView(View):
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
 
-
 # -------------------
 # Listelemeler
-
 
 def best_ideas(request):
     template_name = 'fikir/timeline.html'
@@ -265,7 +265,6 @@ def best_ideas(request):
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
     return render(request, template_name, {'best_ideas':"active" ,'ideas':ideas, 'slideIdeas':slideIdeas})
-
 
 def best_of_week(request):
     template_name = 'fikir/timeline.html'
@@ -327,7 +326,6 @@ def done_ideas(request):
         ideas = paginator.page(paginator.num_pages)
     return render(request, template_name, {'done_ideas':"active" , 'ideas':ideas, 'slideIdeas':slideIdeas})
 
-
 def ideas_by_time(request):
     template_name = 'fikir/timeline.html'
     slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
@@ -364,7 +362,6 @@ def ideas_by_desc_time(request):
         ideas = paginator.page(paginator.num_pages)
     return render(request, template_name, {'ideas_by_desc_time':"active" , 'ideas':ideas, 'slideIdeas':slideIdeas})
 
-
 def search_idea(request):
     template_name = 'fikir/timeline.html'
     slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
@@ -384,9 +381,6 @@ def search_idea(request):
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
     return render(request, template_name, { 'ideas':ideas, 'slideIdeas':slideIdeas})
-
-
-
 
 # -------------------
 # Fikir beğenme AJAX
@@ -582,6 +576,14 @@ class NewIdeaView(View):
         self.formVariables["messagetext"] = form.errors.values
         return render(request,self.template_name,self.formVariables)
 
+def IdeaDelete(request,pk):
+    
+    current_idea = Idea.objects.get(pk=pk)
+    if current_idea.AddedUser.UserT == request.user: 
+        current_idea.IsActive = False
+        current_idea.save()
+
+    return redirect("fikir:ProfileView")
 
 
 # Üyelik Aktive Etme

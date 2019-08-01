@@ -24,6 +24,9 @@
         <div class="h4">
          
             <div class="tital mt-5 " >Katılım Tarihi: {{current_profile.UserT.date_joined}}</div>
+          
+            {% comment %} <a class="btn btn-default" data-href="{% url "fikir:DeleteIdea" 47 %}"  data-toggle="modal" data-target="#confirm-delete"> Ornek Silme </a> {% endcomment %}
+          
           </div>
         </div>
     </div>  
@@ -33,6 +36,7 @@
 
 
 {% block ideas %}
+
 <div class="container-fluid mt-5 w-75">    
       
       <ul class="nav nav-pills mb-3 nav-justified" >
@@ -40,10 +44,10 @@
             <a class="btn nav-link {{my_ideas}}" href="{% url "fikir:ProfileView"%}">Fikirlerim</a>
           </li>
           <li class="nav-item w-25 mr-3 mt-4" >
-            <a class="btn nav-link {{my_like_ideas}}" href="{% url "fikir:MyLikeProfileView"%}"" >Beğendiğim Fikirler</a>
+            <a class="btn nav-link {{my_like_ideas}}" href="{% url "fikir:MyLikeProfileView"%}" >Beğendiğim Fikirler</a>
           </li>
           <li class="nav-item w-25 mt-4">
-            <a class="nav-link btn btn-block btn-info" href="{% url 'fikir:NewIdeaView' %}"> <i class="fa fa-plus"></i> Yeni Fikir</a>
+            <a class="nav-link btn btn-block btn-info" href="{% url 'fikir:NewIdeaView' %}" > <i class="fa fa-plus" ></i> Yeni Fikir</a>
           </li>
         </ul>
         
@@ -58,5 +62,27 @@
 
 
 {% endblock %}
+
+
+  <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+  
+        <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="idea-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+            <div class="modal-body">
+                Silme işlemini onaylıyor musunuz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">İptal</button>
+                <a class="btn btn-danger btn-ok">Onaylıyorum</a>
+            </div>
+        </div>
+      </div>
+</div>
 
 {% endblock %}
