@@ -12,6 +12,15 @@
               <div class="card view overlay rounded z-depth-2">
               <a href="{% url 'fikir:DetailView' idea.id %}"> 
                 <img src="{{ idea|cast_image_type:3 }}" class="img-fluid" alt="Sample project image"></a>
+                {% if settings_menu_display %}
+                <div class="dropdown mt-2 w-100 ">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog" aria-hidden="true"></i></button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="{% url "fikir:UpdateIdeaView" idea.id %}"><i class="fa fa-refresh"></i> Güncelle</a>
+                      <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Sil</a>
+                    </div>
+                </div>
+                {% endif %}
               </div>
               <!--Excerpt-->           
               <div class="container  card-body">
@@ -39,9 +48,7 @@
                 </div>
                 {% if settings_menu_display %}
                 <div class="dropdown mt-2 w-100 ">
-                    <button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown">
-                      Ayarlar
-                    </button>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog" aria-hidden="true"></i></button>
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="{% url "fikir:UpdateIdeaView" idea.id %}"><i class="fa fa-refresh"></i> Güncelle</a>
                       <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Sil</a>

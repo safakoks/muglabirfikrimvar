@@ -77,6 +77,8 @@ def ProfileView(request):
     return render(request, template_name, {
             "idea_list":myideas,
             "my_ideas":"active",
+            "settings_menu_display":True,
+            
             'current_profile':currentUserProfile})
 
 def MyLikeProfileView(request):
