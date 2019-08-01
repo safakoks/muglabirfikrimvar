@@ -266,6 +266,7 @@ def best_ideas(request):
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
     return render(request, template_name, {
+        'idea_type_list':IdeaType.objects.all(), 
         'best_ideas':"active" ,
         'ideas':ideas, 
         'slideIdeas':getSlides()})
