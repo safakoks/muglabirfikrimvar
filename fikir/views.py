@@ -64,48 +64,40 @@ def ProfileView(request):
     currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
     
     # Fikirlerim
-    myideas_page = request.GET.get('myideas_page')
-    if myideas_page is not -1 :
-        myideas = Idea.objects.all().filter(IsActive=True).filter(IsApproved=True).filter(AddedUser__UserT=request.user)
-        myideas_paginator = Paginator(myideas, 6) 
-        try:
-            myideas = myideas_paginator.page(myideas_page)
-        except PageNotAnInteger:
-            myideas = myideas_paginator.page(1)
-        except EmptyPage:
-            myideas = myideas_paginator.page(myideas_paginator.num_pages)
+    myideas_page = request.GET.get('page')
+    myideas = Idea.objects.all().filter(IsActive=True).filter(IsApproved=True).filter(AddedUser__UserT=request.user)
+    myideas_paginator = Paginator(myideas, 6) 
+    try:
+        myideas = myideas_paginator.page(myideas_page)
+    except PageNotAnInteger:
+        myideas = myideas_paginator.page(1)
+    except EmptyPage:
+        myideas = myideas_paginator.page(myideas_paginator.num_pages)
+
+    return render(request, template_name, {
+            "idea_list":myideas,
+            "my_ideas":"active",
+            'current_profile':currentUserProfile})
+
+def MyLikeProfileView(request):
+    template_name = 'fikir/profile.html'
+    currentUserProfile = UserProfile.objects.all().filter(UserT=request.user).first()
     
     # Beğendiğim Fikirler
-    mylikeideas_page = request.GET.get('mylikeideas_page')
-    if mylikeideas_page is not -1 :
-        mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
-        mylikeideas_paginator = Paginator(mylikeideas, 6) 
-        try:
-            mylikeideas = mylikeideas_paginator.page(mylikeideas_page)
-        except PageNotAnInteger:
-            mylikeideas = mylikeideas_paginator.page(1)
-        except EmptyPage:
-            mylikeideas = mylikeideas_paginator.page(mylikeideas_paginator.num_pages)
+    mylikeideas_page = request.GET.get('page')
+    mylikeideas = Idea.objects.all().filter(pk__in=currentUserProfile.userliked_list.values_list('Idea', flat=True))
+    mylikeideas_paginator = Paginator(mylikeideas, 6) 
+    try:
+        mylikeideas = mylikeideas_paginator.page(mylikeideas_page)
+    except PageNotAnInteger:
+        mylikeideas = mylikeideas_paginator.page(1)
+    except EmptyPage:
+        mylikeideas = mylikeideas_paginator.page(mylikeideas_paginator.num_pages)
 
-
-    if mylikeideas_page is None and myideas_page is None:
-        return render(request, template_name, {
-            "myideas":myideas,
-            "is_settings_menu_display":True,
-            "mylikeideas":mylikeideas,
+    return render(request, template_name, {
+            "idea_list":mylikeideas,
+            "my_like_ideas":"active",
             'current_profile':currentUserProfile})
-
-    if myideas_page is not -1:
-        return render(request, template_name, {
-            "myideas":myideas,
-            "is_settings_menu_display":True,
-            'current_profile':currentUserProfile})
-
-    if mylikeideas_page is not -1:
-        return render(request, template_name, {
-            "mylikeideas":mylikeideas,
-            'current_profile':currentUserProfile})
-
 
 # Profil Ayarları sayfası
 class ProfileSettingsView(View):

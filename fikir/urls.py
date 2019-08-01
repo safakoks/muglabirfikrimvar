@@ -17,6 +17,9 @@ urlpatterns = [
 
      # profile listeleme
      path('profil/',  views.ProfileView, name='ProfileView'),     
+     path('profil/begendigim',  views.MyLikeProfileView, name='MyLikeProfileView'),     
+
+
 
      # anasayfa filtreleme
      path('anasayfa/haftanınenleri',  views.best_of_week, name='best_of_week_view'),     

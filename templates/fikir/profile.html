@@ -35,25 +35,21 @@
 {% block ideas %}
 <div class="container-fluid mt-5 w-75">    
       
-      <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+      <ul class="nav nav-pills mb-3 nav-justified" >
           <li class="nav-item w-25 mr-3 mt-4">
-            <a class="btn nav-link btn-primary" id="fikirlerim-tab" data-toggle="pill" href="#fikirlerim" role="tab" aria-controls="fikirlerim" aria-selected="true">Fikirlerim</a>
+            <a class="btn nav-link {{my_ideas}}" href="{% url "fikir:ProfileView"%}">Fikirlerim</a>
           </li>
           <li class="nav-item w-25 mr-3 mt-4" >
-            <a class="btn nav-link btn-primary" id="begendigimfikir-tab" data-toggle="pill" href="#begendigimfikir" role="tab" aria-controls="begendigimfikir" aria-selected="false">Beğendiğim Fikirler</a>
+            <a class="btn nav-link {{my_like_ideas}}" href="{% url "fikir:MyLikeProfileView"%}"" >Beğendiğim Fikirler</a>
           </li>
           <li class="nav-item w-25 mt-4">
             <a class="nav-link btn btn-block btn-info" href="{% url 'fikir:NewIdeaView' %}"> <i class="fa fa-plus"></i> Yeni Fikir</a>
           </li>
         </ul>
         
-        <div class="tab-content" id="pills-tabContent">
-          <div class="tab-pane fade show active" id="fikirlerim" role="tabpanel" aria-labelledby="fikirlerim-tab">
-              {% include 'partial/timeline/idea_list.html' with idealist=myideas speacial_page="myideas_page"   speacial_ignore_page="mylikeideas_page"    settings_menu_display=is_settings_menu_display  %}
-          </div>
-             
-          <div class="tab-pane fade" id="begendigimfikir" role="tabpanel" aria-labelledby="begendigimfikir-tab">
-              {% include 'partial/timeline/idea_list.html' with idealist=mylikeideas  speacial_page="mylikeideas_page" infinite_index=2 speacial_ignore_page="myideas_page" %}
+        <div >
+          <div>
+              {% include 'partial/timeline/idea_list.html' with idealist=idea_list %}
           </div>
         </div>
      

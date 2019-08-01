@@ -10,7 +10,8 @@
             <div class="infinite-item{{infinite_index}} col-md-4 mb-5 py-2">
               <!--Featured image-->
               <div class="card view overlay rounded z-depth-2">
-                <img src="{{ idea|cast_image_type:3 }}" class="img-fluid" alt="Sample project image">
+              <a href="{% url 'fikir:DetailView' idea.id %}"> 
+                <img src="{{ idea|cast_image_type:3 }}" class="img-fluid" alt="Sample project image"></a>
               </div>
               <!--Excerpt-->           
               <div class="container  card-body">
@@ -21,10 +22,8 @@
               {{ idea.Title }}
                 {% endif %}
               </h4>
-                <a href="" class="green-text">
                   <h5 class="font-weight-bold mt-2 mb-3"><i class="fa fa-1x {{ idea.Ideatype.Icon }}"></i> {{ idea.Ideatype.IdeaName }}</h5> 
                   
-                </a>
                   <div class="container" style="height:100px"> 
                   <p>    
                   {% if idea.Description|length > 100 %}     
@@ -35,7 +34,7 @@
                   </p>
                   </div>
                 <div class="row">
-                    <a class="btn col-md-6 offset-md-1  btn-info " href="{% url 'fikir:DetailView' idea.id %}"> Daha Fazlasını Görüntüle</a>
+                    <a class="btn col-md-6 offset-md-1  btn-info " href="{% url 'fikir:DetailView' idea.id %}"> Detay</a>
                     <button class="col-md-4 offset-md-1  btn btn-md like-btn " value="{{ idea.id}}"><i class="fa fa-thumbs-up"></i> Beğen (<span class="like-count">{{ idea|get_like_count}}</span>) </button>
                 </div>
                 {% if settings_menu_display %}

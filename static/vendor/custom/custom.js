@@ -1,7 +1,7 @@
 
 // Beğenme
 
-$('body').on('click', ".idea-card button.like-btn", function() {
+$('body').on('click', "button.like-btn", function() {
     elem = $(this)
     var ideaID = elem.val()
     $.ajax({
