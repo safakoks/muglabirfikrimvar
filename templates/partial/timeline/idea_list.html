@@ -1,5 +1,4 @@
-  
-  
+{% load staticfiles %} 
 {% load custom_filters %} 
     
     {% if idealist %}
@@ -10,7 +9,7 @@
             <div class="infinite-item{{infinite_index}} col-md-4 mb-5 py-2">
               <!--Featured image-->
               <div class="card view overlay rounded z-depth-2 img-container">
-                <img src="{{ idea|cast_image_type:3 }}" class="img-fluid" alt="Sample project image">
+                <img src="{{ idea|cast_image_type:3 }}" class="img-fluid" onerror="this.src='{% static 'default_idea.jpg' %}'" alt="Sample project image">
 
               </div>
               <!--Excerpt-->           
@@ -21,7 +20,7 @@
                   
                     {% if settings_menu_display %}
                 <div class="dropdown mx-auto">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-cog" aria-hidden="true"></i></button>
+                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-cog" aria-hidden="true"></i></button>
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="{% url "fikir:UpdateIdeaView" idea.id %}"><i class="fa fa-refresh"></i> Güncelle</a>
                       <a class="dropdown-item btn btn-default" data-href="{% url "fikir:DeleteIdea" idea.id %}"  data-toggle="modal" data-target="#confirm-delete"> <i class="fa fa-trash"></i> Sil </a> 
