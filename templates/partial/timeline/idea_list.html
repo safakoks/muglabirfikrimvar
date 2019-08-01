@@ -9,29 +9,28 @@
             <!-- Grid column -->
             <div class="infinite-item{{infinite_index}} col-md-4 mb-5 py-2">
               <!--Featured image-->
-              <div class="card view overlay rounded z-depth-2">
-              <a href="{% url 'fikir:DetailView' idea.id %}"> 
-                <img src="{{ idea|cast_image_type:3 }}" class="img-fluid" alt="Sample project image"></a>
-                {% if settings_menu_display %}
-                <div class="dropdown mt-2 w-100 ">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog" aria-hidden="true"></i></button>
+              <div class="card view overlay rounded z-depth-2 img-container">
+                <img src="{{ idea|cast_image_type:3 }}" class="img-fluid" alt="Sample project image">
+
+              </div>
+              <!--Excerpt-->           
+              <div class="container  card-body">
+                  <h4 class="font-weight-bold mb-3">{% if idea.Title|length > 50 %}{{ idea.Title|slice:"0:40" }}...{% else %}{{ idea.Title }}{% endif %}</h4>
+              <div class="row mt-2">
+                  <div class="font-weight-bold mx-auto h5"><i class="fa fa-1x {{ idea.Ideatype.Icon }}"></i> {{ idea.Ideatype.IdeaName }}</div> 
+                  
+                    {% if settings_menu_display %}
+                <div class="dropdown mx-auto">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-cog" aria-hidden="true"></i></button>
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="{% url "fikir:UpdateIdeaView" idea.id %}"><i class="fa fa-refresh"></i> Güncelle</a>
-                      <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Sil</a>
+                      <a class="dropdown-item btn btn-default" data-href="{% url "fikir:DeleteIdea" idea.id %}"  data-toggle="modal" data-target="#confirm-delete"> <i class="fa fa-trash"></i> Sil </a> 
                     </div>
                 </div>
                 {% endif %}
               </div>
-              <!--Excerpt-->           
-              <div class="container  card-body">
-                  <h4 class="font-weight-bold mb-3">
-              {% if idea.Title|length > 50 %}
-              {{ idea.Title|slice:"0:40" }}...
-                  {% else %}
-              {{ idea.Title }}
-                {% endif %}
-              </h4>
-                  <h5 class="font-weight-bold mt-2 mb-3"><i class="fa fa-1x {{ idea.Ideatype.Icon }}"></i> {{ idea.Ideatype.IdeaName }}</h5> 
+                  
+                  
                   
                   <div class="container" style="height:100px"> 
                   <p>    
@@ -43,18 +42,9 @@
                   </p>
                   </div>
                 <div class="row">
-                    <a class="btn col-md-6 offset-md-1  btn-info " href="{% url 'fikir:DetailView' idea.id %}"> Detay</a>
-                    <button class="col-md-4 offset-md-1  btn btn-md like-btn " value="{{ idea.id}}"><i class="fa fa-thumbs-up"></i> Beğen (<span class="like-count">{{ idea|get_like_count}}</span>) </button>
+                    <a class="btn col-md-4 offset-md-1 btn-info " href="{% url 'fikir:DetailView' idea.id %}"> Detay</a>
+                    <button class="col-md-6 offset-md-1 btn btn-md like-btn " value="{{ idea.id}}"><i class="fa fa-thumbs-up"></i> Beğen (<span class="like-count">{{ idea|get_like_count}}</span>) </button>
                 </div>
-                {% if settings_menu_display %}
-                <div class="dropdown mt-2 w-100 ">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog" aria-hidden="true"></i></button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="{% url "fikir:UpdateIdeaView" idea.id %}"><i class="fa fa-refresh"></i> Güncelle</a>
-                      <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Sil</a>
-                    </div>
-                </div>
-                {% endif %}
               </div>
             </div>
             <!-- Grid column -->

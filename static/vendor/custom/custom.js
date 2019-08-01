@@ -33,5 +33,7 @@ var infinite = new Waypoint.Infinite({
 
 $('#confirm-delete').on('show.bs.modal', function(e) {
   // idea-title
+  var title = $(e.relatedTarget).parent().parent().parent().parent().children("h4").html()
+  $(this).find("#idea-title").html("'"+title + "' ")
   $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 });
