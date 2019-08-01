@@ -34,6 +34,9 @@ urlpatterns = [
      path('anasayfa/zamanagore-ilk',  views.ideas_by_time, name='ideas_by_time_view'),     
      path('anasayfa/zamanagore-son',  views.ideas_by_desc_time, name='ideas_by_desc_time_view'),     
      path('anasayfa/eniyiler',  views.best_ideas, name='best_ideas_view'),  
+     path('anasayfa/fikir-tipi/<int:pk>',  views.ideas_by_type, name='ideas_by_type_view'),  
+
+     
      # arama   
      path('anasayfa/arama',  views.search_idea, name='search_idea_view'),     
 

@@ -39,7 +39,6 @@ def IndexView(request):
 # Kullanıcı ana ekranı
 def TimelineView(request):
     template_name = 'fikir/timeline.html'
-    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
     ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True)
     paginator = Paginator(ideas_list, 6) 
     page = request.GET.get('page')
@@ -50,7 +49,10 @@ def TimelineView(request):
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
 
-    return render(request, template_name, {'ideas':ideas, 'slideIdeas':slideIdeas})
+    return render(request, template_name, {
+        'idea_type_list':IdeaType.objects.all(), 
+        'ideas':ideas, 
+        'slideIdeas':getSlides()})
 
 # Giriş sayfası
 def DetailView(request, pk):
@@ -247,7 +249,6 @@ class UserFormView(View):
 
 def best_ideas(request):
     template_name = 'fikir/timeline.html'
-    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
     
     # Haftanın en iyileri
     some_day_last_week = timezone.now().date() - timedelta(days=7)
@@ -264,11 +265,13 @@ def best_ideas(request):
         ideas = paginator.page(1)
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
-    return render(request, template_name, {'best_ideas':"active" ,'ideas':ideas, 'slideIdeas':slideIdeas})
+    return render(request, template_name, {
+        'best_ideas':"active" ,
+        'ideas':ideas, 
+        'slideIdeas':getSlides()})
 
 def best_of_week(request):
     template_name = 'fikir/timeline.html'
-    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
     
     # Haftanın en iyileri
     some_day_last_week = timezone.now().date() - timedelta(days=7)
@@ -285,11 +288,14 @@ def best_of_week(request):
         ideas = paginator.page(1)
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
-    return render(request, template_name, {'best_of_week':"active" ,'ideas':ideas, 'slideIdeas':slideIdeas})
+    return render(request, template_name, {
+        'idea_type_list':IdeaType.objects.all(), 
+        'best_of_week':"active" ,
+        'ideas':ideas, 
+        'slideIdeas':getSlides()})
 
 def best_of_month(request):
     template_name = 'fikir/timeline.html'
-    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
     
     # Haftanın en iyileri
     some_day_last_month = timezone.now().date() - timedelta(days=30)
@@ -306,11 +312,14 @@ def best_of_month(request):
         ideas = paginator.page(1)
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
-    return render(request, template_name, {'best_of_month':"active" ,'ideas':ideas, 'slideIdeas':slideIdeas})
+    return render(request, template_name, {
+        'idea_type_list':IdeaType.objects.all(), 
+        'best_of_month':"active" ,
+        'ideas':ideas, 
+        'slideIdeas':getSlides()})
 
 def done_ideas(request):
     template_name = 'fikir/timeline.html'
-    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
     
     # Haftanın en iyileri
     ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True).filter(Status=3).order_by('-CreatedDate')
@@ -324,11 +333,14 @@ def done_ideas(request):
         ideas = paginator.page(1)
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
-    return render(request, template_name, {'done_ideas':"active" , 'ideas':ideas, 'slideIdeas':slideIdeas})
+    return render(request, template_name, {
+        'idea_type_list':IdeaType.objects.all(), 
+        'done_ideas':"active" ,
+         'ideas':ideas, 
+         'slideIdeas':getSlides()})
 
 def ideas_by_time(request):
     template_name = 'fikir/timeline.html'
-    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
     
     # Haftanın en iyileri
     ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True).order_by('-CreatedDate')
@@ -342,11 +354,14 @@ def ideas_by_time(request):
         ideas = paginator.page(1)
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
-    return render(request, template_name, {'ideas_by_time':"active" , 'ideas':ideas, 'slideIdeas':slideIdeas})
+    return render(request, template_name, {
+        'ideas_by_time':"active" , 
+        'idea_type_list':IdeaType.objects.all(), 
+        'ideas':ideas, 
+        'slideIdeas':getSlides()})
 
 def ideas_by_desc_time(request):
     template_name = 'fikir/timeline.html'
-    slideIdeas = Idea.objects.order_by('?').all().filter(IsOnHomePage=True).filter(IsActive=True).filter(IsApproved=True)[:5]
     
     # Haftanın en iyileri
     ideas_list = Idea.objects.all().filter(IsApproved=True).filter(IsActive=True).order_by('CreatedDate')
@@ -360,7 +375,33 @@ def ideas_by_desc_time(request):
         ideas = paginator.page(1)
     except EmptyPage:
         ideas = paginator.page(paginator.num_pages)
-    return render(request, template_name, {'ideas_by_desc_time':"active" , 'ideas':ideas, 'slideIdeas':slideIdeas})
+    return render(request, template_name, {
+        'ideas_by_desc_time':"active" , 
+        'idea_type_list':IdeaType.objects.all(), 
+        'ideas':ideas, 
+        'slideIdeas':getSlides()})
+
+def ideas_by_type(request,pk):
+    template_name = 'fikir/timeline.html'
+    # Haftanın en iyileri
+    ideas_list = Idea.objects.all().filter(Q(IsApproved=True) & Q(IsActive=True) & Q(Ideatype = pk)).order_by('CreatedDate')
+        # Select * from idea_table where IsApproved = 1 and IsActive = True order by CreateDate
+
+    # Sayfalama
+    paginator = Paginator(ideas_list, 6) 
+    page = request.GET.get('page')
+    try:
+        ideas = paginator.page(page)
+    except PageNotAnInteger:
+        ideas = paginator.page(1)
+    except EmptyPage:
+        ideas = paginator.page(paginator.num_pages)
+    return render(request, template_name, 
+    {'ideas_by_type':"active" , 
+        'idea_type_list':IdeaType.objects.all(), 
+    'ideas':ideas, 
+    'slideIdeas':getSlides()})
+
 
 def search_idea(request):
     template_name = 'fikir/timeline.html'
@@ -601,3 +642,11 @@ def activate(request, uidb64, token):
         return redirect('fikir:IndexView')
     else:
         return HttpResponse('Aktivasyon maili geçersiz')
+
+
+
+# Yararlı methodlar
+
+def getSlides():
+    slide_list = Idea.objects.order_by('?').all().filter(Q(IsApproved=True) & Q(IsActive=True))[:5]
+    return slide_list
