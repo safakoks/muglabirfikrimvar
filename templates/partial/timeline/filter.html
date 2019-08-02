@@ -1,29 +1,43 @@
 <div class="container-fluid w-75 mt-4">
-  <ul class="nav nav-pills">
-    <li class="nav-item col-md-3">
-      <a class="nav-link btn btn-info" href="#">Haftanın En İyileri</a>
-    </li>
-    
-    <li class="nav-item col-md-2">
-      <a class="nav-link btn btn-info" href="#">Ayın En İyileri</a>
-    </li>
-    <li class="nav-item col-md-2">
-      <a class="nav-link btn btn-info" href="#">Gerçekleştirilenler</a>
-    </li>
-    <li class="nav-item dropdown col-md-2">
-      <a class="nav-link dropdown-toggle btn btn-info" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Listele</a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item btn btn-info" href="#">En Beğenilenler</a>
-        <a class="dropdown-item btn btn-info" href="#">Zamana Göre En Son</a>
-        <a class="dropdown-item btn btn-info" href="#">Zamana Göre İlk</a>    
-      </div>   
-    </li>
-    <li> 
-    <form class="form-inline col-md-4">
-    <input class="form-control text-center" type="text" placeholder="Arama" aria-label="Search">
-      </form>
-    </li>
-   <!-- Links -->
-<!-- Search form -->
-  </ul>
+    <nav class="nav nav-pills nav-justified">
+            <li class="nav-item">
+              <a class="nav-link {{best_of_week}}" href="{% url 'fikir:best_of_week_view'%}"><i class="fa fa-star"></i> Haftanın En İyileri <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{best_of_month}}" href="{% url 'fikir:best_of_month_view'%}"><i class="fa fa-star"></i> Ayın En İyileri</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{done_ideas}}" href="{% url 'fikir:done_ideas_view'%}" tabindex="-1"><i class="fa fa-check"></i> Gerçekleştirilenler</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle {{best_ideas}}{{ideas_by_time}}{{ideas_by_desc_time}}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-list-ul"></i> Sırala
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'fikir:ideas_by_time_view'%}">Zamana Göre İlk Eklenenler</a>
+                  <a class="dropdown-item" href="{% url 'fikir:ideas_by_desc_time_view'%}">Zamana Göre Son Eklenenler</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'fikir:best_ideas_view'%}">En Beğenilenler</a>
+                  
+                </div>
+              </li>
+
+                {% if idea_type_list %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle {{ideas_by_type}}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-th"></i> Fikir Tipleri
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% for idea_type in  idea_type_list %}
+                    <a class="dropdown-item" href="{% url 'fikir:ideas_by_type_view' idea_type.id %}"> {{idea_type.IdeaName}} </a>
+                    {% endfor %}
+               </div>
+              </li>
+                {% endif%}
+          <form class="form-inline  ml-2 my-lg-0" action="{% url 'fikir:search_idea_view'%}">
+            <input class="form-control mr-sm-2 " minlength=1 required name="search_text" type="search" placeholder="Arama" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0 search-btn" type="submit">Ara</button>
+          </form>
+        
+        </nav>
   </div>

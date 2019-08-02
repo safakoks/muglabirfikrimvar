@@ -19,7 +19,7 @@
             <a class="nav-link" href="{% url "fikir:ProfileView" %}"><i class="fa fa-address-book"></i> {{ user.get_username }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fa fa-cog"></i> Hesap Ayarları</a>
+            <a class="nav-link" href="{% url "fikir:ProfileSettings" %}"><i class="fa fa-cog"></i> Hesap Ayarları</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url "fikir:Logout" %}"><i class="fa fa-sign-out"></i> Çıkış</a>

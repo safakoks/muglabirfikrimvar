@@ -1,6 +1,7 @@
 
 // Beğenme
-$(".like-btn").click(function(){
+
+$('body').on('click', "button.like-btn", function() {
     elem = $(this)
     var ideaID = elem.val()
     $.ajax({
@@ -15,4 +16,24 @@ $(".like-btn").click(function(){
           }
         }
       });
-})
+});
+
+var infinite = new Waypoint.Infinite({
+  element: $('.infinite-container')[0],
+
+  onBeforePageLoad: function () {
+    $('.loading').show();
+  },
+  onAfterPageLoad: function ($items) {
+    $('.loading').hide();
+  }
+});
+
+// Silme Onay formu
+
+$('#confirm-delete').on('show.bs.modal', function(e) {
+  // idea-title
+  var title = $(e.relatedTarget).parent().parent().parent().parent().children("h4").html()
+  $(this).find("#idea-title").html("'"+title + "' ")
+  $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+});

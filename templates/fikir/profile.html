@@ -11,22 +11,18 @@
         <div class="row">
             <div class="col-md-6">
       <div class="panel-body">   
-      <img alt="User Pic" src="/media/download.png" id="profile-image1" class="rounded-circle mx-auto d-block"> 
+      <img alt="User Pic" src="{% if current_profile.ProfilePhoto %}{{current_profile.ProfilePhoto.url}}{% else %}{% static 'default/profile_photo.png' %}{% endif %}" id="profile-image1" onerror="this.src='{% static 'mbblogo.png' %}'" class="rounded-circle mx-auto d-block"> 
      </div> 
       </div>
       <div class="col-md-6" >
           <div class="container mt-4" >
-           <h1>Şafak Öksüzer</h1>
-            <p><b>Stajyer</b></p>                       
+           <h1>{{current_profile.Name}} {{current_profile.Surname}}  </h1>
            </div>
+           <h2> @{{current_profile.UserT.username}} </h2>
+           <br/>
         <hr>
-        <div class="h4">
-          <ul>
-          <li><p><span class="fa fa-1x fa-user one" ></span> &nbsp; &nbsp; safakoksuzer</p></li>
-          <li><p><span class="fa fa-1x fa-envelope one" ></span> &nbsp; &nbsp; safakoksuzer@email.com</p></li>
-          </ul>
-        <hr>
-            <div class="tital mt-5 " >Katılım Tarihi: 15 Temmuz 2016</div>
+          <div class="h4">
+            <div class="tital mt-5 " >Katılım Tarihi: {{current_profile.UserT.date_joined}}</div>
           </div>
         </div>
     </div>  
@@ -36,27 +32,24 @@
 
 
 {% block ideas %}
+
 <div class="container-fluid mt-5 w-75">    
       
-      <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+      <ul class="nav nav-pills mb-3 nav-justified" >
           <li class="nav-item w-25 mr-3 mt-4">
-            <a class="btn nav-link btn-primary" id="fikirlerim-tab" data-toggle="pill" href="#fikirlerim" role="tab" aria-controls="fikirlerim" aria-selected="true">Fikirlerim</a>
+            <a class="btn nav-link {{my_ideas}}" href="{% url "fikir:ProfileView"%}">Fikirlerim</a>
           </li>
           <li class="nav-item w-25 mr-3 mt-4" >
-            <a class="btn nav-link btn-primary" id="begendigimfikir-tab" data-toggle="pill" href="#begendigimfikir" role="tab" aria-controls="begendigimfikir" aria-selected="false">Beğendiğim Fikirler</a>
+            <a class="btn nav-link {{my_like_ideas}}" href="{% url "fikir:MyLikeProfileView"%}" >Beğendiğim Fikirler</a>
           </li>
           <li class="nav-item w-25 mt-4">
-            <a class="nav-link btn btn-block btn-info" href="{% url 'fikir:NewIdeaView' %}"> <i class="fa fa-plus"></i> Yeni Fikir</a>
+            <a class="nav-link btn btn-block btn-info" href="{% url 'fikir:NewIdeaView' %}" > <i class="fa fa-plus" ></i> Yeni Fikir</a>
           </li>
         </ul>
         
-        <div class="tab-content" id="pills-tabContent">
-          <div class="tab-pane fade show active" id="fikirlerim" role="tabpanel" aria-labelledby="fikirlerim-tab">
-              {% include 'partial/timeline/idea_list.html' with idealist=myideas  %}
-          </div>
-             
-          <div class="tab-pane fade" id="begendigimfikir" role="tabpanel" aria-labelledby="begendigimfikir-tab">
-           {% include 'partial/timeline/idea_list.html' with idealist=mylikeideas  %}
+        <div >
+          <div>
+              {% include 'partial/timeline/idea_list.html' with idealist=idea_list settings_menu_display=settings_menu_display %}
           </div>
         </div>
      
@@ -65,5 +58,27 @@
 
 
 {% endblock %}
+
+
+  <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+  
+        <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="idea-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+            <div class="modal-body">
+                Silme işlemini onaylıyor musunuz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">İptal</button>
+                <a class="btn btn-danger btn-ok">Onaylıyorum</a>
+            </div>
+        </div>
+      </div>
+</div>
 
 {% endblock %}

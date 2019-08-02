@@ -1,4 +1,5 @@
 {% load custom_filters %} 
+{% load staticfiles %} 
    
    {% if slideIdeas %}
         <div class="container-fluid w-75 mt-4">
@@ -21,7 +22,7 @@
             <div class="view">
 
             {% comment %} {% with imagePath=slideIdea.photo_set|cast_image_type:1 %} {% endcomment %}
-            <img class="d-block responsive w-100" height="350px"  src="{{ slideIdea|cast_image_type:1 }}" alt="">
+            <img class="d-block responsive w-100" height="350px" onerror="this.src='{% static 'login_header.png' %}'"  src="{{ slideIdea|cast_image_type:1 }}" alt="">
             {% comment %} {% endwith %} {% endcomment %}
 
               <div class="mask rgba-black-light"></div>
