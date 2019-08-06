@@ -29,7 +29,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     {% for idea_type in  idea_type_list %}
-                    <a class="dropdown-item" href="{% url 'fikir:ideas_by_type_view' idea_type.id %}"> {{idea_type.IdeaName}} </a>
+                    <a class="dropdown-item" href="{% url 'fikir:ideas_by_type_view' idea_type.id %}"> <i class="fa {{idea_type.Icon}} "> </i> {{idea_type.IdeaName}} </a>
                     {% endfor %}
                </div>
               </li>

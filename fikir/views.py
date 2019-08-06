@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404,redirect,reverse
 from django.contrib.auth import authenticate,login,logout, update_session_auth_hash
 from .forms import *
@@ -14,7 +13,6 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from enum import Enum
-from django.http import JsonResponse
 from django.contrib import messages
 from django.core.files.base import File
 from django.db.models import Count
@@ -424,37 +422,6 @@ def search_idea(request):
         ideas = paginator.page(paginator.num_pages)
     return render(request, template_name, { 'ideas':ideas, 'slideIdeas':slideIdeas})
 
-# -------------------
-# Fikir beğenme AJAX
-def likeAnIdea(request):
-    ideaID = request.GET.get('ideaID', None)
-    currentUser = request.user
-    currentIdea = Idea.objects.get(pk=int(ideaID))
-    if currentIdea.IsApproved and currentIdea.IsActive :
-        currentUserProfile = UserProfile.objects.filter(UserT = currentUser).first()
-
-        currentUserLike = UserLike.objects.filter(User=currentUserProfile).filter(Idea=currentIdea).first()
-        if  currentUserLike:
-            currentUserLike.delete()
-        else:
-            currentLike = UserLike()
-            currentLike.Idea = currentIdea
-            currentLike.User = currentUserProfile
-            currentLike.LikeDate = datetime.datetime.now()
-            currentLike.save() 
-            
-        currentcount = currentIdea.likes_list.all().count()
-        data = {
-            'likecount': currentcount,
-            'status' : True
-        }
-        return JsonResponse(data)
-
-    data = {
-        'likecount': 0,
-        'status' : False
-    }
-    return JsonResponse(data)
 
 # Parola Değiştirme
 def change_password(request):
@@ -495,14 +462,14 @@ class UpdateIdeaView(View):
         self.formVariables["pk"] = pk
         if form.is_valid():
             current_idea = Idea.objects.get(pk=pk)
-            current_idea.Title       = form.cleaned_data['Title']
-            current_idea.Description = form.cleaned_data['Description']
-            current_idea.Ideatype    = form.cleaned_data['Ideatype']
-            current_idea.Department  = form.cleaned_data['Department']
-            current_idea.AdressDesc  = form.cleaned_data['AdressDesc']
-            current_idea.District    = form.cleaned_data['District']
-            current_idea.Neighborhood= form.cleaned_data['Neighborhood']
-            current_idea.Street      = form.cleaned_data['Street']
+            current_idea.Title          = form.cleaned_data['Title']
+            current_idea.Description    = form.cleaned_data['Description']
+            current_idea.Ideatype       = form.cleaned_data['Ideatype']
+            current_idea.Department     = form.cleaned_data['Department']
+            current_idea.AdressDesc     = form.cleaned_data['AdressDesc']
+            current_idea.District       = form.cleaned_data['District']
+            # current_idea.Neighborhood   = form.cleaned_data['Neighborhood']
+            # current_idea.Street         = form.cleaned_data['Street']
 
             # Idea Photo Kontrol
 
@@ -615,7 +582,7 @@ class NewIdeaView(View):
         # Başarısız form girdisi durumunda
         print(form.errors)
         self.formVariables["messagetype"] = MessageType.danger.name
-        self.formVariables["messagetext"] = form.errors.values
+        self.formVariables["messagetext"] = form.errors
         return render(request,self.template_name,self.formVariables)
 
 def IdeaDelete(request,pk):
