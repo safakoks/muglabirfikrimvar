@@ -163,6 +163,19 @@ class UserLike(models.Model):
 class Slide(models.Model):
     Image        =  models.ImageField(verbose_name='Fotoğraf')
     Title        =  models.CharField(blank=True,max_length=100,verbose_name='Slide Başlığı')
+    Position        =  models.IntegerField(blank=True,verbose_name='Sıralama')
+    IsActive        = models.BooleanField(default=True,verbose_name='Aktiflik Durumu')
     Url          =  models.CharField(blank=True,max_length=250,verbose_name='Link')
+    
+    def save(self):
+        if not self.Image:
+            return            
+        super(Slide, self).save()
+        image = Image.open(self.Image)
+        (width, height) = image.size 
+        size = (1321, 583)
+        image = image.resize(size, Image.ANTIALIAS)
+        image.save(self.Image.path)
+
     def __str__(self):
-        return self.Name
+        return self.Title

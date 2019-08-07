@@ -616,5 +616,5 @@ def activate(request, uidb64, token):
 # Yararlı methodlar
 
 def getSlides():
-    slide_list = Idea.objects.order_by('?').all().filter(Q(IsApproved=True) & Q(IsActive=True))[:5]
+    slide_list = Slide.objects.order_by('Position').all().filter(Q(IsActive=True))[:5]
     return slide_list

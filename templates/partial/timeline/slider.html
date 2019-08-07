@@ -22,13 +22,14 @@
             <div class="view">
 
             {% comment %} {% with imagePath=slideIdea.photo_set|cast_image_type:1 %} {% endcomment %}
-            <img class="d-block responsive w-100" height="350px" onerror="this.src='{% static 'login_header.png' %}'"  src="{{ slideIdea|cast_image_type:1 }}" alt="">
+             <a href="http://{{ slideIdea.Url }}" > <img class="d-block responsive w-100" height="350px" onerror="this.src='{% static 'login_header.png' %}'"  src="{{ slideIdea.Image.url }}" alt="">
+            </a>
             {% comment %} {% endwith %} {% endcomment %}
 
               <div class="mask rgba-black-light"></div>
             </div>
             <div class="carousel-caption">
-              <h3 class="h3-responsive">{{ slideIdea.Title }}</h3>
+             <h3 class="h3-responsive">{{ slideIdea.Title }}</h3> 
             </div>
           </div>
           
