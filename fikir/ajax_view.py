@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta,datetime
 from .models import * 
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404,redirect,reverse
@@ -18,7 +18,7 @@ def likeAnIdea(request):
             currentLike = UserLike()
             currentLike.Idea = currentIdea
             currentLike.User = currentUserProfile
-            currentLike.LikeDate = datetime.datetime.now()
+            currentLike.LikeDate = datetime.now()
             currentLike.save() 
             
         currentcount = currentIdea.likes_list.all().count()
