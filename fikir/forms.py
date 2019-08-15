@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from .models import UserProfile, Idea,IdeaType,Department
+from .models import UserProfile, Idea,IdeaType,Department,District,Neighborhood,Street
 from django import  forms
 from captcha.fields import ReCaptchaField
 import datetime
@@ -19,16 +19,16 @@ class LoginForm(forms.Form):
 
 
 class UserForm(forms.ModelForm):
-    name        = forms.CharField(max_length=100,label='Ad',help_text='Lütfen adınızı giriniz')
-    surname     = forms.CharField(max_length=100,label='Soyad',help_text='Lütfen soyadınızı giriniz')
-    phoneNumber = forms.CharField(max_length=100,label='Telefon Numarası')
-    birthday    = forms.DateField(label="Doğum Günü",initial=datetime.date.today)
-    email       = forms.EmailField(label='Email',help_text='*gerekli')
-    profilePhoto= forms.ImageField(label='Profil Fotoğrafı',help_text='Lütfen profil fotoğrafınızı giriniz')
-    district    = forms.CharField(label='İlçe',help_text='Lütfen yaşadığınız ilçeyi giriniz')
-    username    = forms.CharField(max_length=50,label='Kullanıcı Adı')
-    password    = forms.CharField(widget=forms.PasswordInput,label='Parola',help_text='Kurallara uygun girdiğinizden emin olunuz')
-    captcha      = ReCaptchaField(label='')
+    name            = forms.CharField(max_length=100,label='Ad',help_text='Lütfen adınızı giriniz')
+    surname         = forms.CharField(max_length=100,label='Soyad',help_text='Lütfen soyadınızı giriniz')
+    phoneNumber     = forms.CharField(max_length=100,label='Telefon Numarası')
+    birthday        = forms.DateField(label="Doğum Günü",initial=datetime.date.today)
+    email           = forms.EmailField(label='Email',help_text='*gerekli')
+    profilePhoto    = forms.ImageField(label='Profil Fotoğrafı',help_text='Lütfen profil fotoğrafınızı giriniz')
+    district        = forms.ModelChoiceField(queryset=District.objects.all(), label='İlçe ')
+    username        = forms.CharField(max_length=50,label='Kullanıcı Adı')
+    password        = forms.CharField(widget=forms.PasswordInput,label='Parola',help_text='Kurallara uygun girdiğinizden emin olunuz')
+    captcha         = ReCaptchaField(label='')
 
     
     def __init__(self, *args, **kwargs):
@@ -83,16 +83,13 @@ class NewIdeaForm(forms.ModelForm):
         max_length=500,
         label='Açıklama',
         help_text='En fazla 500 karekter girebilirsiniz')
-    District        = forms.CharField(
-        max_length=50,
+    District        = forms.ModelChoiceField(queryset=District.objects.all(),
         label='İlçe ',
         help_text='En fazla 50 karekter içerir')
-    Neighborhood    = forms.CharField(
-        max_length=50,
+    Neighborhood    = forms.ModelChoiceField(queryset=Neighborhood.objects.none(),
         label='Mahalle',
         help_text='En fazla 50 karekter içerir')
-    Street  = forms.CharField(
-        max_length=50,
+    Street  = forms.ModelChoiceField(queryset=Street.objects.none(),
         label='Cadde',
         help_text='En fazla 50 karekter içerir')
     AdressDesc      = forms.CharField(widget=forms.Textarea,
@@ -122,7 +119,24 @@ class NewIdeaForm(forms.ModelForm):
         self.request = kwargs.pop('request', None)
         # companyid = self.request.user.get_profile().main_contactnum.clientid.idflcustomernum
         # self.fields['adress'].queryset = Adress.objects.filter(clientid__exact=companyid)
- 
+        if 'District' in self.data:
+            try:
+                district_id = int(self.data.get('District'))
+                self.fields['Neighborhood'].queryset = Neighborhood.objects.filter(District_id=district_id).order_by('Name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['Neighborhood'].queryset = self.instance.District.neighborhood_set.order_by('Name')
+
+        if 'Neighborhood' in self.data:
+            try:
+                neighborhood_id = int(self.data.get('Neighborhood'))
+                self.fields['Street'].queryset = Street.objects.filter(Neighborhood_id=neighborhood_id).order_by('Name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['Street'].queryset = self.instance.Neighborhood.street_set.order_by('Name')
+
 
 class UpdateIdeaForm(NewIdeaForm):
       ideaPhoto      = forms.ImageField(required=False,label='Fikrinizin Görseli')

@@ -19,7 +19,9 @@
           </div>
           <br/>
           <span class="label label-warning">{% if form.errors %} {%endif%} </span>
-          <form class="form-signin" method="post" enctype='multipart/form-data' >
+          <form id="newIdea" class="form-signin" method="post" enctype='multipart/form-data'
+           data-neighborhoods-url="{% url 'fikir:ajax_load_neighborhoods' %}"
+           data-streets-url="{% url 'fikir:ajax_load_streets' %}" >
                 {% csrf_token %}
                 {% include "fikir/form_template.html" %}
                 <button class="btn btn-md btn-primary btn-block text-uppercase" type="submit">{{buttontext}}</button>
@@ -29,6 +31,46 @@
     </div>
 </div>
 
+
 {% block extrabottom %}
 {% endblock %}
+{% endblock %}
+
+
+{% block custom_scripts %}
+  <script>
+    $("#id_District").change(function () {
+      var url = $("#newIdea").attr("data-neighborhoods-url");  // get the url of the `load_cities` view
+      var districtId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'district': districtId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_Neighborhood").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+   <script>
+    $("#id_Neighborhood").change(function () {
+      var url = $("#newIdea").attr("data-streets-url");  // get the url of the `load_cities` view
+      var streetId = $(this).val();  // get the selected country ID from the HTML input
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'neighborhood': streetId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_Street").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
 {% endblock %}

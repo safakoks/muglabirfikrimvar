@@ -6,6 +6,13 @@ admin.site.register(IdeaType)
 admin.site.register(Status)
 admin.site.register(Keyword)
 admin.site.register(Photo)
+admin.site.register(Slide)
+
+
+# Adres Tanımları
+admin.site.register(District)
+admin.site.register(Neighborhood)
+admin.site.register(Street)
 
 class IdeaAdmin(admin.ModelAdmin):
     readonly_fields = ('CreatedDate',)

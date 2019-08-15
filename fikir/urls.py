@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, ajax_view
 app_name = 'fikir'
 from django.contrib.auth import views as auth_views
 urlpatterns = [
@@ -17,7 +17,6 @@ urlpatterns = [
 
      path('detay/<int:pk>',  views.DetailView, name='DetailView'),     
      path('cikis/', auth_views.logout,  {'next_page': "fikir:IndexView"},  name='Logout'),
-     path('begen/', views.likeAnIdea,  name='LikeAnIdea'),
      path('hesapayarlari/', views.ProfileSettingsView.as_view(), name='ProfileSettings'),
      path('paroladegistir/', views.change_password ,  name='ChangePassword'),
 
@@ -40,7 +39,10 @@ urlpatterns = [
      # arama   
      path('anasayfa/arama',  views.search_idea, name='search_idea_view'),     
 
-
+     # ajax
+     path('ajax/load-neighborhoods/', ajax_view.load_neighborhood, name='ajax_load_neighborhoods'),
+     path('ajax/load-streets/', ajax_view.load_street, name='ajax_load_streets'),
+     path('begen/', ajax_view.likeAnIdea,  name='LikeAnIdea'),
 
 
 #      path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
