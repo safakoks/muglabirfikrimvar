@@ -25,17 +25,19 @@
         <!-- Section heading -->
         <h2 class="h1 w-responsive text-info text-center font-weight-bold my-3">2019'da Muğla'm İçin Bir Fikrim Var</h2>
         <!-- Section description -->
-        <div class="mt-0 float-right col-md-2 text-center">
-                <a href="{% url 'fikir:NewIdeaView' %}" class="btn btn-info btn-block">
-                  <i class="fa fa-plus"></i> YENİ FİKİR
-                </a>
-                 
-        </div>
-        <div class="col-md-9">
-        <p class="grey-text w-responsive mx-auto mb-5">Muğla için Bir Fikrim Var uygulamasının amacı Muğla'm için çok güzel bir fikrim var ama kimseye iletemiyorum' diyen, Muğla için derdi olan insanların yönetim süreçlerine doğrudan dahil olmasını sağlamak ve Muğla için belirlenen hedeflere sevgi, hoşgörü ve hizmet ile beraber yürümektir. </p>
-        </div>
+  <div class="row mb-5"> 
+      <div class="col-md-9">
+          <p class="grey-text w-responsive mx-auto">Muğla için Bir Fikrim Var uygulamasının amacı Muğla'm için çok güzel bir fikrim var ama kimseye iletemiyorum' diyen, Muğla için derdi olan insanların yönetim süreçlerine doğrudan dahil olmasını sağlamak ve Muğla için belirlenen hedeflere sevgi, hoşgörü ve hizmet ile beraber yürümektir. </p>
+         </div>
+  
+         <div class="float-right col-md-3 text-center">
+            <a href="{% url 'fikir:NewIdeaView' %}" class="btn btn-info btn-block">
+              <i class="fa fa-plus"></i> YENİ FİKİR
+            </a>
+ </div>
+    </div>
         {% include 'partial/timeline/idea_list.html' with idealist=ideas  %}
-        <!-- Grid row -->
+       
     </div>
 {% endblock %}
 
