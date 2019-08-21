@@ -9,9 +9,9 @@
 <div class="container-fluid mt-5 w-75">       
     <div class="panel panel-default mt-4">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             
-           <div class="panel-body w-25">   
+           <div class="panel-body">   
             <img alt="User Pic" src="{% if current_profile.ProfilePhoto %}{{current_profile.ProfilePhoto.url}}{% else %}{% static 'default/profile_photo.png' %}{% endif %}" id="profile-image1" onerror="this.src='{% static 'mbblogo.png' %}'" class="rounded-circle mx-auto d-block"> 
             </div> 
            </div>
@@ -19,12 +19,12 @@
            
           <div class="col-md-6" >
              <div class="container mt-4" >
-                 <h1>{{current_profile.Name}} {{current_profile.Surname}}  </h1>
+                 <h2>{{current_profile.Name}} {{current_profile.Surname}}  </h2>
                </div>
-                   <h2> @{{current_profile.UserT.username}} </h2>
+                   <h3> @{{current_profile.UserT.username}} </h3>
                    <br/>
                    <hr>
-               <div class="h4">
+               <div class="h5">
                <div class="tital mt-5 " >Katılım Tarihi: {{current_profile.UserT.date_joined}}</div>
                 </div>
            </div>
@@ -39,13 +39,13 @@
 <div class="container-fluid w-75 mt-5">    
       
       <ul class="nav nav-pills mb-3 nav-justified" >
-          <li class="nav-item w-25 mr-3 mt-4">
+          <li class="nav-item mr-3 mt-4">
             <a class="btn nav-link {{my_ideas}}" href="{% url "fikir:ProfileView"%}">Fikirlerim</a>
           </li>
-          <li class="nav-item w-25 mr-3 mt-4" >
+          <li class="nav-item mr-3 mt-4" >
             <a class="btn nav-link {{my_like_ideas}}" href="{% url "fikir:MyLikeProfileView"%}" >Beğendiğim Fikirler</a>
           </li>
-          <li class="nav-item w-25 mt-4">
+          <li class="nav-item mt-4">
             <a class="nav-link btn btn-block btn-info" href="{% url 'fikir:NewIdeaView' %}" > <i class="fa fa-plus" ></i> Yeni Fikir</a>
           </li>
         </ul>
