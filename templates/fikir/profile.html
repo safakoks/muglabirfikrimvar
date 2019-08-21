@@ -9,15 +9,15 @@
 <div class="container-fluid mt-5 w-75">       
     <div class="panel panel-default mt-4">
         <div class="row">
-          <div class="col-md-4">
+         
             
            <div class="panel-body">   
-            <img alt="User Pic" src="{% if current_profile.ProfilePhoto %}{{current_profile.ProfilePhoto.url}}{% else %}{% static 'default/profile_photo.png' %}{% endif %}" id="profile-image1" onerror="this.src='{% static 'mbblogo.png' %}'" class="rounded-circle mx-auto d-block"> 
+            <img alt="User Pic" src="{% if current_profile.ProfilePhoto %}{{current_profile.ProfilePhoto.url}}{% else %}{% static 'default/profile_photo.png' %}{% endif %}" id="profile-image1" onerror="this.src='{% static 'mbblogo.png' %}'" class="col-xs-12 col-md-12 rounded-circle mx-auto d-block"> 
             </div> 
-           </div>
+         
          
            
-          <div class="col-md-6" >
+          <div class="col-md-6 text-center" >
              <div class="container mt-4" >
                  <h2>{{current_profile.Name}} {{current_profile.Surname}}  </h2>
                </div>
