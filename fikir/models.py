@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from PIL import Image
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils.safestring import mark_safe
 # Create your models here.
 class Department(models.Model):
     DepartmentName = models.CharField(max_length=100,verbose_name='Departman Adı')

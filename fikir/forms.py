@@ -6,6 +6,7 @@ import datetime
 from django.contrib.auth.forms import PasswordChangeForm
 
 
+
 class LoginForm(forms.Form):
     username    = forms.CharField(max_length=50,label='Kullanıcı Adı')
     password    = forms.CharField(widget=forms.PasswordInput,label='Parola')
@@ -28,7 +29,12 @@ class UserForm(forms.ModelForm):
     district        = forms.ModelChoiceField(queryset=District.objects.all(), label='İlçe ')
     username        = forms.CharField(max_length=50,label='Kullanıcı Adı')
     password        = forms.CharField(widget=forms.PasswordInput,label='Parola',help_text='Kurallara uygun girdiğinizden emin olunuz')
+    kvkk_field        = forms.BooleanField(
+        label='Kullanım Sözleşmesi Onayı', 
+        initial=False,    
+        help_text="İşlemlere devam etmeden önce lütfen Kişisel Verilerin Korunması Kanunu'na ilişkin aşağıdaki metni okuyarak onaylayınız. <a href='media/metin.pdf'>KVKK</a>.")
     captcha         = ReCaptchaField(label='')
+   
 
     
     def __init__(self, *args, **kwargs):
@@ -38,7 +44,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'password', 'name','surname','phoneNumber','birthday','email','profilePhoto', 'district']
+        fields = ['username', 'password', 'name','surname','phoneNumber','birthday','email','profilePhoto', 'district' ,'kvkk_field']
 
 
 class UserEditForm(forms.ModelForm):
@@ -48,6 +54,8 @@ class UserEditForm(forms.ModelForm):
     Birthday    = forms.DateField(label="Doğum Günü",initial=datetime.date.today)
     Email       = forms.EmailField(label='Email',help_text='*gerekli')
     ProfilePhoto= forms.ImageField(label='Profil Fotoğrafı',help_text='Lütfen profil fotoğrafınızı giriniz')
+
+   
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
         self.fields['ProfilePhoto'].required = False
